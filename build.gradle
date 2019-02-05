@@ -11,18 +11,17 @@ repositories {
 
 dependencies {
     compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
-   
-    ext.tornadofx_version = "1.7.17"
-    compile "no.tornado:tornadofx:$tornadofx_version"
+    compile "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.0.1"
+    compile "org.jetbrains.exposed:exposed:0.12.1"
+
+    compile "no.tornado:tornadofx:1.7.17"
+    compile 'no.tornado:tornadofx-controls:1.0.4'
+    compile "no.tornado:tornadofx-controlsfx:0.1"
     
-    ext.exposed_version = "0.12.1"
-    compile "org.jetbrains.exposed:exposed:$exposed_version"
+    compile "org.webjars:font-awesome:5.6.3"
     
     compile "org.xerial:sqlite-jdbc:3.21.0.1"
     compile "org.slf4j:slf4j-jdk14:1.7.25"
-    
-    ext.coroutines_version = "1.0.1"
-    compile "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutines_version"
 }
 
 compileKotlin {
