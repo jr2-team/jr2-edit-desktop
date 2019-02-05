@@ -22,9 +22,7 @@ class WordEditFragment : Fragment("Добавить слово") {
     override val root = form {
         fieldset("New word") {
             field("Value") {
-                textfield(viewModel.observableWord.valueProp) {
-                    //validator {  }
-                }
+                textfield(viewModel.observableWord.valueProp)
             }
             field("Furigana") {
                 textfield(viewModel.observableWord.furiganaProp)
@@ -37,6 +35,7 @@ class WordEditFragment : Fragment("Добавить слово") {
             }
         }
         button("Сохранить") {
+            //enableWhen(viewModel.observableValidationState)
             action {
                 viewModel.onWordSave()
                 close()
