@@ -16,6 +16,10 @@ class WordDbRepository(
         return@transaction Word.fromEntity(WordEntity[id])
     }
 
+    fun getAll(): List<Word> = transaction(db) {
+        return@transaction WordEntity.all().map { Word.fromEntity(it) }
+    }
+
     fun create(word: Word) = transaction(db) {
         addLogger(KotlinLoggingSqlLogger)
         WordEntity.new {

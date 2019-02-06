@@ -13,7 +13,6 @@ import tornadofx.ViewModel
 import kotlin.properties.Delegates
 
 class WordListViewModel : ViewModel() {
-
     private var words: List<Word> by Delegates.observable(emptyList()) { _, _, newValue ->
         observableWords.clear()
         observableWords.addAll(newValue)
