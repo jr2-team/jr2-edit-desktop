@@ -5,14 +5,14 @@ import ru.jr2.edit.domain.model.Word
 import tornadofx.ItemViewModel
 
 class WordEditItemViewModel(
-    val wordId: Int,
+    wordId: Int,
     private val mode: WordEditMode = if (wordId == 0) WordEditMode.CREATE else WordEditMode.UPDATE,
     private val wordRepository: WordDbRepository = WordDbRepository()
 ) : ItemViewModel<Word>() {
-    var value = bind(Word::valueProp)
-    val furigana = bind(Word::furiganaProp)
-    val basicInterpretation = bind(Word::basicInterpretationProp)
-    val jlptLevel = bind(Word::jlptLevelProp)
+    var valueField = bind(Word::valueProp)
+    val furiganaField = bind(Word::furiganaProp)
+    val basicInterpretationField = bind(Word::basicInterpretationProp)
+    val jlptLevelField = bind(Word::jlptLevelProp)
 
     init {
         item = when (mode) {

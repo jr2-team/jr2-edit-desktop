@@ -1,7 +1,6 @@
 package ru.jr2.edit.presentation.view.word
 
 import javafx.scene.control.Button
-import org.controlsfx.control.action.ActionMap.action
 import ru.jr2.edit.domain.model.Word
 import ru.jr2.edit.presentation.viewmodel.word.list.WordListViewModel
 import tornadofx.*
@@ -9,7 +8,6 @@ import tornadofx.*
 class WordListView : View() {
     private val viewModel: WordListViewModel by inject()
 
-    // TODO: Перенести в .fxml
     private var btnEditWord: Button by singleAssign()
 
     override val root = borderpane {

@@ -17,6 +17,7 @@ class WordDbRepository(
     }
 
     fun getAll(): List<Word> = transaction(db) {
+        addLogger(KotlinLoggingSqlLogger)
         return@transaction WordEntity.all().map { Word.fromEntity(it) }
     }
 

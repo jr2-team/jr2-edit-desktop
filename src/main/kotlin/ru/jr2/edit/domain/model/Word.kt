@@ -13,23 +13,23 @@ class Word(
     basicInterpretation: String = "",
     jlptLevel: Int = 5
 ) {
-    val idProp = SimpleIntegerProperty(this, "id", id)
+    val idProp = SimpleIntegerProperty(id)
     var id by idProp
 
-    val valueProp = SimpleStringProperty(this, "value", value)
+    val valueProp = SimpleStringProperty(value)
     var value by valueProp
 
-    val furiganaProp = SimpleStringProperty(this, "furigana", furigana)
+    val furiganaProp = SimpleStringProperty(furigana)
     var furigana by furiganaProp
 
     val basicInterpretationProp = SimpleStringProperty(
         this,
-        "basicInterpretation",
+        "basicInterpretationField",
         basicInterpretation
     )
     var basicInterpretation: String by basicInterpretationProp
 
-    val jlptLevelProp = SimpleIntegerProperty(this, "jlpt", jlptLevel)
+    val jlptLevelProp = SimpleIntegerProperty(jlptLevel)
     var jlptLevel by jlptLevelProp
 
     companion object {
@@ -37,9 +37,9 @@ class Word(
             Word(
                 id.value,
                 value,
-                furigana ?: "",
-                basicInterpretation ?: "",
-                jlptLevel ?: 5
+                furigana,
+                basicInterpretation,
+                jlptLevel ?: 0
             )
         }
     }

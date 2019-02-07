@@ -11,7 +11,7 @@ class WordEntity(id: EntityID<Int>) : IntEntity(id) {
     var basicInterpretation by WordTable.basicInterpretation
     var jlptLevel by WordTable.jlptLevel
 
-    override fun toString(): String = "$id.value $value"
+    override fun toString(): String = "$id $value"
 
     companion object : IntEntityClass<WordEntity>(WordTable)
 }

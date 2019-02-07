@@ -22,12 +22,36 @@ class Moji(
     val valueProp = SimpleStringProperty(value)
     var value by valueProp
 
+    val strokeCountProp = SimpleIntegerProperty(strokeCount)
+    var strokeCount by strokeCountProp
+
+    val onReadingProp = SimpleStringProperty(onReading)
+    var onReading by onReadingProp
+
+    val kunReadingProp = SimpleStringProperty(kunReading)
+    var kunReading by kunReadingProp
+
     val basicInterpretationProp = SimpleStringProperty(basicInterpretation)
     var basicInterpretation by basicInterpretationProp
 
+    val jlptLevelProp = SimpleIntegerProperty(jlptLevel)
+    var jlptLevel by jlptLevelProp
+
+    val mojiTypeProp = SimpleIntegerProperty(mojiType)
+    var mojiType by mojiTypeProp
+
     companion object {
-        fun fromEntity(mojiEntity: MojiEntity) = with(mojiEntity) {
-            Moji(id.value, value, basicInterpretation = basicInterpretation)
+        fun fromEntity(mojiEntity: MojiEntity): Moji = with(mojiEntity) {
+            return Moji(
+                id.value,
+                value,
+                strokeCount,
+                onReading ?: "",
+                kunReading ?: "",
+                basicInterpretation,
+                jlptLevel ?: 0,
+                mojiType
+            )
         }
     }
 }
