@@ -14,13 +14,16 @@ class RootView : View("JR2-Edit") {
     private val mojiListView: MojiListView by inject()
 
     override val root = tabpane {
-        tab("Слова") {
+        tab("Кана") {
             isClosable = false
-            add(wordListView)
         }
         tab("Канджи") {
             isClosable = false
             add(mojiListView)
+        }
+        tab("Слова") {
+            isClosable = false
+            add(wordListView)
         }
         tab("Предложения") {
 

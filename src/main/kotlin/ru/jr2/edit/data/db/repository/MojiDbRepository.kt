@@ -4,7 +4,7 @@ import org.jetbrains.exposed.dao.EntityID
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.transactions.transaction
 import ru.jr2.edit.EditApp
-import ru.jr2.edit.KotlinLoggingSqlLogger
+import ru.jr2.edit.util.KotlinLoggingSqlLogger
 import ru.jr2.edit.data.db.table.ComponentKanjiTable
 import ru.jr2.edit.data.db.table.MojiTable
 import ru.jr2.edit.domain.entity.MojiEntity

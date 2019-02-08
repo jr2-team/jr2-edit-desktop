@@ -4,7 +4,7 @@ import org.jetbrains.exposed.sql.Database
 import org.jetbrains.exposed.sql.addLogger
 import org.jetbrains.exposed.sql.transactions.transaction
 import ru.jr2.edit.EditApp
-import ru.jr2.edit.KotlinLoggingSqlLogger
+import ru.jr2.edit.util.KotlinLoggingSqlLogger
 import ru.jr2.edit.domain.entity.WordEntity
 import ru.jr2.edit.domain.model.Word
 
