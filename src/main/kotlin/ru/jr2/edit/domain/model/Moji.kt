@@ -40,6 +40,10 @@ class Moji(
     val mojiTypeProp = SimpleIntegerProperty(mojiType)
     var mojiType by mojiTypeProp
 
+    override fun toString(): String {
+        return "$id $value"
+    }
+
     companion object {
         fun fromEntity(mojiEntity: MojiEntity): Moji = with(mojiEntity) {
             return Moji(

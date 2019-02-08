@@ -4,9 +4,9 @@ import org.jetbrains.exposed.sql.Database
 import org.jetbrains.exposed.sql.addLogger
 import org.jetbrains.exposed.sql.transactions.transaction
 import ru.jr2.edit.EditApp
-import ru.jr2.edit.util.KotlinLoggingSqlLogger
 import ru.jr2.edit.domain.entity.WordEntity
 import ru.jr2.edit.domain.model.Word
+import ru.jr2.edit.util.KotlinLoggingSqlLogger
 
 class WordDbRepository(
     private val db: Database = EditApp.instance.db
@@ -21,23 +21,25 @@ class WordDbRepository(
         return@transaction WordEntity.all().map { Word.fromEntity(it) }
     }
 
-    fun create(word: Word) = transaction(db) {
+    fun create(word: Word): Word = transaction(db) {
         addLogger(KotlinLoggingSqlLogger)
-        WordEntity.new {
+        val newWord = WordEntity.new {
             value = word.value
             furigana = word.furigana
             basicInterpretation = word.basicInterpretation
             jlptLevel = word.jlptLevel
         }
+        return@transaction Word.fromEntity(newWord)
     }
 
-    fun update(word: Word) = transaction(db) {
+    fun update(word: Word): Word = transaction(db) {
         addLogger(KotlinLoggingSqlLogger)
-        WordEntity.findById(word.id)?.run {
+        return@transaction WordEntity.findById(word.id)?.run {
             this.value = word.value
             this.furigana = word.furigana
             this.basicInterpretation = word.basicInterpretation
             this.jlptLevel = word.jlptLevel
-        }
+            getById(word.id)
+        } ?: create(word)
     }
 }

@@ -12,7 +12,7 @@ class MojiListViewModel(
     private val mojiRepository: MojiDbRepository = MojiDbRepository()
 ) : ViewModel() {
     val mojis: ObservableList<Moji> = FXCollections.observableArrayList<Moji>()
-    val components: ObservableList<Moji> = FXCollections.observableArrayList<Moji>()
+    var components: ObservableList<Moji> = FXCollections.observableArrayList<Moji>()
     var selectedMoji: Moji? = null
 
     init {
@@ -21,7 +21,7 @@ class MojiListViewModel(
 
     fun onMojiSelect(kanji: Moji) {
         components.clear()
-        components.addAll(mojiRepository.getComponentsOfKanji(kanji.id))
+        components.addAll(mojiRepository.getComponentsOfMoji(kanji.id))
         selectedMoji = kanji
     }
 

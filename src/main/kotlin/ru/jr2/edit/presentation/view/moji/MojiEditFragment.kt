@@ -4,16 +4,16 @@ import javafx.beans.property.SimpleStringProperty
 import javafx.geometry.Orientation.VERTICAL
 import javafx.geometry.Pos
 import javafx.scene.layout.Priority
-import ru.jr2.edit.presentation.viewmodel.moji.MojiEditItemViewModel
+import ru.jr2.edit.presentation.viewmodel.moji.MojiEditViewModel
 import tornadofx.*
 
 class MojiEditFragment : Fragment() {
-    private val itemViewModel: MojiEditItemViewModel
+    private val viewModel: MojiEditViewModel
 
-    val mojiIdParam: Int by param(1)
+    val mojiIdParam: Int by param(0)
 
     init {
-        itemViewModel = MojiEditItemViewModel(mojiIdParam)
+        viewModel = MojiEditViewModel(mojiIdParam)
         if (mojiIdParam == 0) {
             this.title = "Добавить моджи"
         } else {
@@ -24,7 +24,7 @@ class MojiEditFragment : Fragment() {
     override val root = borderpane {
         top = form {
             label("Моджи")
-            textfield(itemViewModel.value) {
+            textfield(viewModel.value) {
                 filterInput { it.controlNewText.length == 1 }
                 setMaxSize(48.0, 48.0)
                 style {
@@ -39,17 +39,17 @@ class MojiEditFragment : Fragment() {
         center = form {
             fieldset {
                 field("Количество черт", VERTICAL) {
-                    textfield(itemViewModel.strokeCount) { }
+                    textfield(viewModel.strokeCount) { }
                 }
                 field("Онные чтения") {
-                    textarea(itemViewModel.onReading) {
+                    textarea(viewModel.onReading) {
                         prefRowCount = 3
                         vgrow = Priority.NEVER
                         isWrapText = true
                     }
                 }
                 field("Кунны чтения") {
-                    textarea(itemViewModel.kunReading) {
+                    textarea(viewModel.kunReading) {
                         prefRowCount = 3
                         vgrow = Priority.NEVER
                         isWrapText = true
@@ -63,7 +63,7 @@ class MojiEditFragment : Fragment() {
                     }
                 }
                 field("Уровень JLPT") {
-                    textfield { }
+                    textfield(viewModel.jlptLevel) { }
                 }
                 field("Вид моджи") {
                     combobox(
@@ -77,14 +77,14 @@ class MojiEditFragment : Fragment() {
                     label("Составные")
                     hbox(10.0) {
                         button("Добавить") {
-                            action { itemViewModel.onShowMojiSearchFragment() }
+                            action { viewModel.onShowMojiSearchFragment() }
                         }
                         button("Изменить") {
-
+                            action { viewModel.onShowMojiEditComponentFragment() }
                         }
                     }
                 }
-                right = label(itemViewModel.mojiComponentStringProp) {
+                right = label(viewModel.mojiComponentStringProp) {
                     style {
                         alignment = Pos.BASELINE_LEFT
                     }

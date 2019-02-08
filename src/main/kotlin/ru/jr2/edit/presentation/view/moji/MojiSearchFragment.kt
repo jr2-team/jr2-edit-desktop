@@ -1,10 +1,8 @@
 package ru.jr2.edit.presentation.view.moji
 
-import javafx.collections.FXCollections
-import javafx.collections.ObservableList
 import org.controlsfx.glyphfont.FontAwesome
-import ru.jr2.edit.data.db.repository.MojiDbRepository
 import ru.jr2.edit.domain.model.Moji
+import ru.jr2.edit.presentation.viewmodel.moji.MojiSearchViewModel
 import tornadofx.*
 import tornadofx.controlsfx.customTextfield
 import tornadofx.controlsfx.toGlyph
@@ -26,24 +24,6 @@ class MojiSearchFragment : Fragment("Поиск моджи") {
                 close()
             }
         }
+
     }
 }
-
-class MojiSearchViewModel(
-    private val mojiRepository: MojiDbRepository = MojiDbRepository()
-) : ViewModel() {
-    val mojis: ObservableList<Moji> = FXCollections.observableArrayList<Moji>()
-
-    fun onSearchQueryChange(query: String) {
-        if (!query.isBlank()) {
-            mojis.clear()
-            mojis.addAll(mojiRepository.getBySearchQuery(query))
-        }
-    }
-
-    fun onMojiSelect(moji: Moji) {
-        fire(MojiSelectedEvent(moji))
-    }
-}
-
-class MojiSelectedEvent(val moji: Moji) : FXEvent()

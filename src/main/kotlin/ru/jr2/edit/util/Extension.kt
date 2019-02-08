@@ -8,8 +8,8 @@ import org.jetbrains.exposed.sql.and
 import tornadofx.Fragment
 
 // tornadofx
-inline fun <reified T : Fragment> T.openDialogFragment() {
-    find<T>().openModal(StageStyle.UTILITY, resizable = false)
+inline fun <reified T : Fragment> T.openDialogFragment(params: Map<*, Any?>? = null) {
+    find<T>(params).openModal(StageStyle.UTILITY, resizable = false)
 }
 
 // exposed

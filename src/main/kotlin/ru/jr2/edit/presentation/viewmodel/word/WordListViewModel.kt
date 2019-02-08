@@ -1,4 +1,4 @@
-package ru.jr2.edit.presentation.viewmodel.word.list
+package ru.jr2.edit.presentation.viewmodel.word
 
 import javafx.collections.FXCollections
 import javafx.collections.ObservableList
@@ -6,7 +6,7 @@ import javafx.stage.StageStyle
 import ru.jr2.edit.data.db.repository.WordDbRepository
 import ru.jr2.edit.domain.model.Word
 import ru.jr2.edit.presentation.view.word.WordEditFragment
-import ru.jr2.edit.presentation.viewmodel.word.edit.WordSavedEvent
+import ru.jr2.edit.presentation.viewmodel.word.WordSavedEvent
 import tornadofx.ViewModel
 import kotlin.properties.Delegates
 

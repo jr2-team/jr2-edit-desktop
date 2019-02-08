@@ -1,16 +1,16 @@
 package ru.jr2.edit.presentation.view.word
 
 import javafx.scene.layout.Priority
-import ru.jr2.edit.presentation.viewmodel.word.edit.WordEditItemViewModel
+import ru.jr2.edit.presentation.viewmodel.word.WordEditViewModel
 import tornadofx.*
 
 class WordEditFragment : Fragment() {
-    private val itemViewModel: WordEditItemViewModel
+    private val viewModel: WordEditViewModel
 
     val wordIdParam: Int by param(0)
 
     init {
-        itemViewModel = WordEditItemViewModel(wordIdParam)
+        viewModel = WordEditViewModel(wordIdParam)
         if (wordIdParam == 0) {
             this.title = "Добавить слово"
         } else {
@@ -22,22 +22,22 @@ class WordEditFragment : Fragment() {
         center = form {
             fieldset {
                 field("Слово") {
-                    textfield(itemViewModel.valueField) {
+                    textfield(viewModel.valueField) {
                         required(message = "Обязательное поле")
                     }
                 }
                 field("Фуригана") {
-                    textfield(itemViewModel.furiganaField) {
+                    textfield(viewModel.furiganaField) {
                         required(message = "Обязательное поле")
                     }
                 }
                 field("Основные интерпритации") {
-                    textfield(itemViewModel.basicInterpretationField) {
+                    textfield(viewModel.basicInterpretationField) {
                         required(message = "Обязательное поле")
                     }
                 }
                 field("Уровень JLPT") {
-                    textfield(itemViewModel.jlptLevelField) {
+                    textfield(viewModel.jlptLevelField) {
                         required(message = "Обязательное поле")
                         // TODO: Добавить enum class JlptLevel
                         filterInput { it.controlNewText.isInt() && it.controlNewText.toInt() in 0..5 }
@@ -46,10 +46,10 @@ class WordEditFragment : Fragment() {
             }
         }
         bottom = button("Сохранить") {
-            enableWhen(itemViewModel.valid)
+            enableWhen(viewModel.valid)
             action {
-                itemViewModel.commit {
-                    itemViewModel.onWordSave()
+                viewModel.commit {
+                    viewModel.onWordSave()
                 }
                 close()
             }

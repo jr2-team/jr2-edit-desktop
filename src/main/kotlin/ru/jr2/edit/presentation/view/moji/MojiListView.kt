@@ -35,7 +35,7 @@ class MojiListView : View() {
             top = label("Составные канджи")
             center = listview(viewModel.components) {
                 cellFormat {
-                    graphic = cache {
+                    graphic = vbox {
                         form {
                             fieldset {
                                 field { label(it.id.toString()) }

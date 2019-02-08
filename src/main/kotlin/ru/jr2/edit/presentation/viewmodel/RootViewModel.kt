@@ -1,7 +1,7 @@
 package ru.jr2.edit.presentation.viewmodel
 
 import javafx.beans.property.SimpleStringProperty
-import ru.jr2.edit.presentation.viewmodel.word.edit.WordSavedEvent
+import ru.jr2.edit.presentation.viewmodel.word.WordSavedEvent
 import tornadofx.ViewModel
 
 class RootViewModel : ViewModel() {

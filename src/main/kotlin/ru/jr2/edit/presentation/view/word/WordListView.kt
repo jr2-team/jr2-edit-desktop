@@ -2,7 +2,7 @@ package ru.jr2.edit.presentation.view.word
 
 import javafx.scene.control.Button
 import ru.jr2.edit.domain.model.Word
-import ru.jr2.edit.presentation.viewmodel.word.list.WordListViewModel
+import ru.jr2.edit.presentation.viewmodel.word.WordListViewModel
 import tornadofx.*
 
 class WordListView : View() {
