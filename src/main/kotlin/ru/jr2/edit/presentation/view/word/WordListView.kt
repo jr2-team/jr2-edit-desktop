@@ -13,7 +13,7 @@ class WordListView : View() {
     override val root = borderpane {
         center = tableview(viewModel.observableWords) {
             column("ID", Word::idProp)
-            column("Значение", Word::valueProp)
+            //column("Значение", Word::valueProp)
             column("Фуригана", Word::furiganaProp)
             column("Интерпретация", Word::basicInterpretationProp)
             smartResize()

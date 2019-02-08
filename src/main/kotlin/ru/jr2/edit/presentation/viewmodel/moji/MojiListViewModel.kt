@@ -17,12 +17,12 @@ class MojiListViewModel(
 
     init {
         fetchContent()
+        subscribeOnEventBus()
     }
 
     fun onMojiSelect(kanji: Moji) {
         components.clear()
         components.addAll(mojiRepository.getComponentsOfMoji(kanji.id))
-        selectedMoji = kanji
     }
 
     fun onShowNewMojiFragment() {
@@ -35,8 +35,21 @@ class MojiListViewModel(
         ).openModal(StageStyle.UTILITY, resizable = false)
     }
 
+    fun onFilterMojiType(mojiType: Int = -1) {
+        fetchContent()
+        if (mojiType != -1) {
+            mojis.removeIf { it.mojiType != mojiType }
+        }
+    }
+
     private fun fetchContent() {
         mojis.clear()
         mojis.addAll(mojiRepository.getAll())
+    }
+
+    private fun subscribeOnEventBus() {
+        subscribe<MojiSavedEvent> { ctx ->
+            if (ctx.isSaved) fetchContent()
+        }
     }
 }

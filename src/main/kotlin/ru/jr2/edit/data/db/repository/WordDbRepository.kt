@@ -21,7 +21,7 @@ class WordDbRepository(
         return@transaction WordEntity.all().map { Word.fromEntity(it) }
     }
 
-    fun create(word: Word): Word = transaction(db) {
+    fun insert(word: Word): Word = transaction(db) {
         addLogger(KotlinLoggingSqlLogger)
         val newWord = WordEntity.new {
             value = word.value
@@ -32,14 +32,14 @@ class WordDbRepository(
         return@transaction Word.fromEntity(newWord)
     }
 
-    fun update(word: Word): Word = transaction(db) {
+    fun insertUpdate(word: Word): Word = transaction(db) {
         addLogger(KotlinLoggingSqlLogger)
         return@transaction WordEntity.findById(word.id)?.run {
-            this.value = word.value
-            this.furigana = word.furigana
-            this.basicInterpretation = word.basicInterpretation
-            this.jlptLevel = word.jlptLevel
+            value = word.value
+            furigana = word.furigana
+            basicInterpretation = word.basicInterpretation
+            jlptLevel = word.jlptLevel
             getById(word.id)
-        } ?: create(word)
+        } ?: insert(word)
     }
 }

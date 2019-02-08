@@ -36,6 +36,7 @@ class MojiDbRepository(
                 { MojiTable.id },
                 { componentAlias[ComponentKanjiTable.mojiComponentId] }
             )
+            .slice(MojiTable.columns)
             .select {
                 componentAlias[ComponentKanjiTable.moji] eq MojiEntity[mojiId].id
             }
@@ -55,7 +56,7 @@ class MojiDbRepository(
             }
     }
 
-    fun create(moji: Moji): Moji = transaction(db) {
+    fun insert(moji: Moji): Moji = transaction(db) {
         val newMoji = MojiEntity.new {
             value = moji.value
             strokeCount = moji.strokeCount
@@ -68,8 +69,27 @@ class MojiDbRepository(
         return@transaction Moji.fromEntity(newMoji)
     }
 
-    fun createMojiComponent(moji: Moji, components: List<Moji>) = transaction(db) {
-        // TODO: Удалять из заного вставлять такое себе, найти способ обновлять получше
+    fun insertUpdate(moji: Moji): Moji = transaction(db) {
+        addLogger(KotlinLoggingSqlLogger)
+        return@transaction MojiEntity.findById(moji.id)?.run {
+            value = moji.value
+            strokeCount = moji.strokeCount
+            kunReading = moji.kunReading
+            onReading = moji.onReading
+            basicInterpretation = moji.basicInterpretation
+            jlptLevel = moji.jlptLevel
+            mojiType = moji.mojiType
+            getById(moji.id)
+        } ?: insert(moji)
+    }
+
+    @Suppress("NAME_SHADOWING")
+    fun insertUpdateMojiComponent(moji: Moji, components: List<Moji>) = transaction(db) {
+        val moji = insertUpdate(moji)
+        /*
+        * Поскольку в Exposed нет (или пока нет) массового обновления записей,
+        * то перед созданием приходится полностью удалять компоненты
+        */
         ComponentKanjiTable.deleteWhere {
             ComponentKanjiTable.moji eq MojiEntity[moji.id].id
         }
@@ -79,5 +99,9 @@ class MojiDbRepository(
             this[ComponentKanjiTable.mojiComponentId] = MojiEntity[it.id].id
             this[ComponentKanjiTable.order] = orderIdx++
         }
+    }
+
+    fun deleteById(id: Int) = transaction(db) {
+        MojiEntity[id].delete()
     }
 }

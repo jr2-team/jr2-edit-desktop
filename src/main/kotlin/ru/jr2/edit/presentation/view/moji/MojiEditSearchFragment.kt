@@ -7,7 +7,7 @@ import tornadofx.*
 import tornadofx.controlsfx.customTextfield
 import tornadofx.controlsfx.toGlyph
 
-class MojiSearchFragment : Fragment("Поиск моджи") {
+class MojiEditSearchFragment : Fragment("Поиск моджи") {
     private val viewModel: MojiSearchViewModel by inject()
     override val root = borderpane {
         top = customTextfield(right = FontAwesome.Glyph.SEARCH.toGlyph()) {

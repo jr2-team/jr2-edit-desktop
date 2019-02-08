@@ -10,7 +10,7 @@ class WordEditViewModel(
     private val mode: EditMode = if (wordId == 0) EditMode.CREATE else EditMode.UPDATE,
     private val wordRepository: WordDbRepository = WordDbRepository()
 ) : ItemViewModel<Word>() {
-    var valueField = bind(Word::valueProp)
+    val valueField = bind(Word::value)
     val furiganaField = bind(Word::furiganaProp)
     val basicInterpretationField = bind(Word::basicInterpretationProp)
     val jlptLevelField = bind(Word::jlptLevelProp)
@@ -22,11 +22,11 @@ class WordEditViewModel(
         }
     }
 
-    fun onWordSave() {
+    fun onSaveClick() {
         if (this.isValid) {
             when (mode) {
-                EditMode.UPDATE -> wordRepository.update(item)
-                EditMode.CREATE -> wordRepository.create(item)
+                EditMode.UPDATE -> wordRepository.insertUpdate(item)
+                EditMode.CREATE -> wordRepository.insert(item)
             }
             fire(WordSavedEvent(item.toString()))
         }

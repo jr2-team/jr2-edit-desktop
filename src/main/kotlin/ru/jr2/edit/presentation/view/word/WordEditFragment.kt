@@ -48,9 +48,7 @@ class WordEditFragment : Fragment() {
         bottom = button("Сохранить") {
             enableWhen(viewModel.valid)
             action {
-                viewModel.commit {
-                    viewModel.onWordSave()
-                }
+                viewModel.commit { viewModel.onSaveClick() }
                 close()
             }
         }

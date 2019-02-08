@@ -31,6 +31,7 @@ class MojiEditFragment : Fragment() {
                     alignment = Pos.CENTER
                     fontSize = 18.px
                 }
+                required(message = "Обязательное поле")
             }
             style {
                 alignment = Pos.CENTER
@@ -39,7 +40,9 @@ class MojiEditFragment : Fragment() {
         center = form {
             fieldset {
                 field("Количество черт", VERTICAL) {
-                    textfield(viewModel.strokeCount) { }
+                    textfield(viewModel.strokeCount) {
+                        required(message = "Обязательное поле")
+                    }
                 }
                 field("Онные чтения") {
                     textarea(viewModel.onReading) {
@@ -55,8 +58,8 @@ class MojiEditFragment : Fragment() {
                         isWrapText = true
                     }
                 }
-                field("Основны переводы") {
-                    textarea {
+                field("Основные переводы") {
+                    textarea(viewModel.basicInterpretation) {
                         prefRowCount = 3
                         vgrow = Priority.NEVER
                         isWrapText = true
@@ -93,7 +96,11 @@ class MojiEditFragment : Fragment() {
         }
         bottom = hbox {
             button("Сохранить") {
-                action { close() }
+                enableWhen(viewModel.valid)
+                action {
+                    viewModel.commit { viewModel.onSaveClick() }
+                    close()
+                }
                 setMinSize(120.0, 28.0)
             }
             alignment = Pos.BOTTOM_RIGHT

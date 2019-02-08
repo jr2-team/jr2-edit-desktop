@@ -4,7 +4,7 @@ import org.jetbrains.exposed.sql.Database
 import org.jetbrains.exposed.sql.SchemaUtils
 import org.jetbrains.exposed.sql.transactions.TransactionManager
 import org.jetbrains.exposed.sql.transactions.transaction
-import org.junit.jupiter.api.Test
+import org.junit.Test
 import ru.jr2.edit.data.db.table.ComponentKanjiTable
 import ru.jr2.edit.data.db.table.MojiTable
 import ru.jr2.edit.domain.entity.MojiEntity
@@ -28,7 +28,7 @@ internal class MojiDbRepositoryTest {
     @Test
     fun getById() = transaction(testDb) {
         SchemaUtils.create(MojiTable, ComponentKanjiTable)
-        val testMoji = repository.create(Moji(value = "Moji"))
+        val testMoji = repository.insert(Moji(value = "Moji"))
         assertEquals(
             testMoji.value,
             repository.getById(testMoji.id).value
@@ -59,23 +59,23 @@ internal class MojiDbRepositoryTest {
     fun createMojiComponent() = transaction(testDb) {
         SchemaUtils.create(MojiTable, ComponentKanjiTable)
 
-        val testMoji0 = repository.create(Moji(value = "Moji0"))
+        val testMoji0 = repository.insert(Moji(value = "Moji0"))
         val testComponents0 = (0..9).map {
-            repository.create(Moji(value = "Moji Comp 0 $it"))
+            repository.insert(Moji(value = "Moji Comp 0 $it"))
         }
-        repository.createMojiComponent(testMoji0, testComponents0)
+        repository.insertUpdateMojiComponent(testMoji0, testComponents0)
 
-        val testMoji1 = repository.create(Moji(value = "Moji1"))
+        val testMoji1 = repository.insert(Moji(value = "Moji1"))
         val testComponents1 = (0..9).map {
-            repository.create(Moji(value = "Moji Comp 1 $it"))
+            repository.insert(Moji(value = "Moji Comp 1 $it"))
         }
-        repository.createMojiComponent(testMoji1, testComponents1)
+        repository.insertUpdateMojiComponent(testMoji1, testComponents1)
 
-        val testMoji2 = repository.create(Moji(value = "Moji2"))
+        val testMoji2 = repository.insert(Moji(value = "Moji2"))
         val testComponents2 = repository.getById(
             *(1..MojiEntity.count() - 2).map { it }.toIntArray()
         )
-        repository.createMojiComponent(testMoji2, testComponents2)
+        repository.insertUpdateMojiComponent(testMoji2, testComponents2)
         assertEquals(
             testComponents0.map { it.value },
             repository.getComponentsOfMoji(testMoji0.id).map { it.value }

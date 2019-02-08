@@ -1,6 +1,5 @@
 package ru.jr2.edit.presentation.view.moji
 
-import javafx.geometry.Pos
 import javafx.scene.control.Button
 import ru.jr2.edit.domain.model.Moji
 import ru.jr2.edit.presentation.viewmodel.moji.MojiListViewModel
@@ -24,6 +23,7 @@ class MojiListView : View() {
             onSelectionChange { moji ->
                 btnEditMoji.isDisable = moji == null
                 moji?.run {
+                    viewModel.selectedMoji = this
                     viewModel.onMojiSelect(this)
                 }
             }
@@ -31,35 +31,49 @@ class MojiListView : View() {
                 viewModel.onShowEditMojiFragment()
             }
         }
-        right = borderpane {
-            top = label("Составные канджи")
-            center = listview(viewModel.components) {
-                cellFormat {
-                    graphic = vbox {
-                        label(it.id.toString())
-                        label(it.value)
-                    }
-                    lineSpacing = 0.5
+        right = listview(viewModel.components) {
+            cellFormat {
+                graphic = vbox {
+                    label(it.id.toString())
+                    label(it.value)
                 }
-                onUserSelect(2) {
-                    information(it.value)
-                }
+                lineSpacing = 0.5
             }
-            bottom = label("Двойной клик для редактирования")
+            onUserSelect(2) {
+                viewModel.selectedMoji = it
+                viewModel.onShowEditMojiFragment()
+            }
         }
-
-        bottom = hbox(spacing = 10) {
-            button("Добавить") {
-                setMinSize(120.0, 28.0)
-                action { viewModel.onShowNewMojiFragment() }
+        bottom = borderpane {
+            right = hbox {
+                togglegroup {
+                    togglebutton("Канджи") {
+                        setMinSize(120.0, 28.0)
+                        action { viewModel.onFilterMojiType(1) }
+                    }
+                    togglebutton("Радикалы") {
+                        setMinSize(120.0, 28.0)
+                        action { viewModel.onFilterMojiType(0) }
+                    }
+                    togglebutton("Все") {
+                        setMinSize(120.0, 28.0)
+                        action { viewModel.onFilterMojiType() }
+                        isSelected = true
+                    }
+                }
             }
-            btnEditMoji = button("Редактировать") {
-                setMinSize(120.0, 28.0)
-                action { viewModel.onShowEditMojiFragment() }
-                isDisable = true
+            left = buttonbar {
+                button("Добавить") {
+                    setMinSize(120.0, 28.0)
+                    action { viewModel.onShowNewMojiFragment() }
+                }
+                btnEditMoji = button("Редактировать") {
+                    setMinSize(120.0, 28.0)
+                    action { viewModel.onShowEditMojiFragment() }
+                    isDisable = true
+                }
             }
             paddingAll = 10.0
-            alignment = Pos.BOTTOM_RIGHT
         }
     }
 }

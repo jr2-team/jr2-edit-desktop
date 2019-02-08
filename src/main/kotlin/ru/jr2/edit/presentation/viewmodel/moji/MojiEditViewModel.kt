@@ -4,8 +4,7 @@ import javafx.beans.property.SimpleStringProperty
 import ru.jr2.edit.data.db.repository.MojiDbRepository
 import ru.jr2.edit.domain.model.Moji
 import ru.jr2.edit.presentation.view.moji.MojiEditComponentFragment
-import ru.jr2.edit.presentation.view.moji.MojiEditFragment
-import ru.jr2.edit.presentation.view.moji.MojiSearchFragment
+import ru.jr2.edit.presentation.view.moji.MojiEditSearchFragment
 import ru.jr2.edit.presentation.viewmodel.EditMode
 import ru.jr2.edit.util.openDialogFragment
 import tornadofx.ItemViewModel
@@ -38,13 +37,20 @@ class MojiEditViewModel(
     }
 
     fun onShowMojiSearchFragment() {
-        MojiSearchFragment().openDialogFragment()
+        MojiEditSearchFragment().openDialogFragment()
     }
 
     fun onShowMojiEditComponentFragment() {
         MojiEditComponentFragment().openDialogFragment(
             mapOf(Pair(MojiEditComponentFragment::mojiIds, mojiComponents.map { it.id }))
         )
+    }
+
+    fun onSaveClick() {
+        if (this.isValid) {
+            mojiRepository.insertUpdateMojiComponent(item, mojiComponents)
+            fire(MojiSavedEvent(true))
+        }
     }
 
     private fun subscribeOnEventBus() {
