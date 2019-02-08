@@ -36,14 +36,10 @@ class MojiListView : View() {
             center = listview(viewModel.components) {
                 cellFormat {
                     graphic = vbox {
-                        form {
-                            fieldset {
-                                field { label(it.id.toString()) }
-                                field { label(it.value) }
-                            }
-                            separator()
-                        }
+                        label(it.id.toString())
+                        label(it.value)
                     }
+                    lineSpacing = 0.5
                 }
                 onUserSelect(2) {
                     information(it.value)
