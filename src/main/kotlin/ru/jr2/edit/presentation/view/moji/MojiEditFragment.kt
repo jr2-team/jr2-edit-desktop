@@ -73,7 +73,7 @@ class MojiEditFragment : Fragment() {
                     }
                 }
                 field("Основные переводы") {
-                    textarea(viewModel.pBasicInterpretation) {
+                    textarea(viewModel.pInterpretation) {
                         prefRowCount = 3
                         vgrow = Priority.NEVER
                         isWrapText = true

@@ -61,7 +61,7 @@ class MojiDbRepository(
             strokeCount = moji.strokeCount
             kunReading = moji.kunReading
             onReading = moji.onReading
-            interpretation = moji.basicInterpretation
+            interpretation = moji.interpretation
             jlptLevel = JlptLevel.fromStr(moji.jlptLevel).code
             mojiType = MojiType.fromStr(moji.mojiType).code
         }
@@ -74,7 +74,7 @@ class MojiDbRepository(
             strokeCount = moji.strokeCount
             kunReading = moji.kunReading
             onReading = moji.onReading
-            interpretation = moji.basicInterpretation
+            interpretation = moji.interpretation
             jlptLevel = JlptLevel.fromStr(moji.jlptLevel).code
             mojiType = MojiType.fromStr(moji.mojiType).code
             getById(moji.id)

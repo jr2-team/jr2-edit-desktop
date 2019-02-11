@@ -14,7 +14,7 @@ class Moji(
     strokeCount: Int = 0,
     onReading: String = String(),
     kunReading: String = String(),
-    basicInterpretation: String = String(),
+    interpretation: String = String(),
     jlptLevel: String = JlptLevel.NO_LEVEL.str,
     mojiType: String = MojiType.KANJI.str
 ) {
@@ -33,8 +33,8 @@ class Moji(
     val pKunReading = SimpleStringProperty(kunReading)
     var kunReading: String by pKunReading
 
-    val pBasicInterpretation = SimpleStringProperty(basicInterpretation)
-    var basicInterpretation: String by pBasicInterpretation
+    val pInterpretation = SimpleStringProperty(interpretation)
+    var interpretation: String by pInterpretation
 
     val pJlptLevel = SimpleStringProperty(jlptLevel)
     var jlptLevel: String by pJlptLevel

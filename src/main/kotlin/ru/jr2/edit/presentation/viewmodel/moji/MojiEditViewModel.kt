@@ -20,7 +20,7 @@ class MojiEditViewModel(
     val pStrokeCount = bind(Moji::pStrokeCount)
     val pOnReading = bind(Moji::pOnReading)
     val pKunReading = bind(Moji::pKunReading)
-    val pBasicInterpretation = bind(Moji::pBasicInterpretation)
+    val pInterpretation = bind(Moji::pInterpretation)
     val pJlptLevel = bind(Moji::pJlptLevel)
     val pMojiType = bind(Moji::pMojiType)
     val pComponents = SimpleStringProperty(String())

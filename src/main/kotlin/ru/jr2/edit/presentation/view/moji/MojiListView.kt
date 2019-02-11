@@ -16,13 +16,12 @@ class MojiListView : View() {
 
     override val root = borderpane {
         center = tableview(viewModel.mojis) {
-            column("ID", Moji::id)
-            column("Значение", Moji::value)
-            column("Интерпретации", Moji::basicInterpretation)
-                .remainingWidth()
-            column("Кунное чтение", Moji::kunReading)
-            column("Онное чтение", Moji::onReading)
-            column("Уровень JLPT", Moji::jlptLevel)
+            column("Значение", Moji::pValue)
+            column("Интерпретации", Moji::pInterpretation).remainingWidth()
+            column("Кунное чтение", Moji::pKunReading)
+            column("Онное чтение", Moji::pOnReading)
+            column("Уровень JLPT", Moji::pJlptLevel)
+            column("Тип моджи", Moji::pMojiType)
             smartResize()
             onSelectionChange { moji ->
                 (moji !is Moji).let {
