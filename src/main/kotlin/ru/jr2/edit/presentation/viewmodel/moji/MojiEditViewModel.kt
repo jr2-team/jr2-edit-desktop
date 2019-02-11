@@ -39,11 +39,12 @@ class MojiEditViewModel(
             }
             EditMode.CREATE -> Moji()
         }
-        subscribeOnEventBus()
     }
 
     fun onMojiSearchClick() {
-        find<MojiEditSearchFragment>().openModal(StageStyle.UTILITY, resizable = false)
+        find<MojiEditSearchFragment>(
+            Scope(this)
+        ).openModal(StageStyle.UTILITY, resizable = false)
     }
 
     fun onEditComponentClick() {
@@ -60,6 +61,12 @@ class MojiEditViewModel(
         components.remove(it)
     }
 
+    fun onComponentAddClick() = selectedComponent?.let {
+        if (!components.contains(it)) {
+            components.add(it)
+        }
+    }
+
     fun onComponentMoveUpClick() = selectedComponent?.let {
         val selectedIdx = components.indexOf(it)
         if (selectedIdx > 0) {
@@ -71,14 +78,6 @@ class MojiEditViewModel(
         val selectedIdx = components.indexOf(it)
         if (selectedIdx < components.size - 1) {
             components.swap(selectedIdx, selectedIdx + 1)
-        }
-    }
-
-    private fun subscribeOnEventBus() {
-        subscribe<MojiSelectedEvent> { ctx ->
-            if (!components.contains(ctx.moji)) {
-                components.add(ctx.moji)
-            }
         }
     }
 }

@@ -4,6 +4,8 @@ import javafx.geometry.Orientation.VERTICAL
 import javafx.geometry.Pos
 import javafx.scene.control.ButtonBar
 import javafx.scene.control.ButtonType
+import javafx.scene.input.KeyCode
+import javafx.scene.input.KeyEvent
 import javafx.scene.layout.Priority
 import ru.jr2.edit.domain.JlptLevel
 import ru.jr2.edit.domain.MojiType
@@ -26,6 +28,10 @@ class MojiEditFragment : Fragment() {
             showCloseWindowWarning()
             it.consume()
         }
+    }
+
+    override fun onDock() {
+        root.requestFocus()
     }
 
     override val root = borderpane {

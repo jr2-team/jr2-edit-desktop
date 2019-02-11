@@ -26,13 +26,21 @@ class MojiListViewModel(
     }
 
     fun onNewMojiClick() {
-        find<MojiEditFragment>().openModal(StageStyle.UTILITY, resizable = false)
+        find<MojiEditFragment>().openModal(
+            StageStyle.UTILITY,
+            escapeClosesWindow = false,
+            resizable = false
+        )
     }
 
     fun onEditMojiClick() {
         find<MojiEditFragment>(
             Pair(MojiEditFragment::paramMojiId, selectedMoji?.id)
-        ).openModal(StageStyle.UTILITY, resizable = false)
+        ).openModal(
+            StageStyle.UTILITY,
+            escapeClosesWindow = false,
+            resizable = false
+        )
     }
 
     fun onDeleteMojiClick() {

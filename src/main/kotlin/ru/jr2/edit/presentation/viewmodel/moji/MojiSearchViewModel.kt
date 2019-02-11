@@ -13,7 +13,7 @@ class MojiSearchViewModel(
         it.addAll(mojiRepository.getAll())
     }
 
-    fun onSearchQueryChange(query: String) {
+    fun onSearchQueryChanged(query: String) {
         mojis.clear()
         mojis.addAll(
             if (!query.isBlank()) {
@@ -22,9 +22,5 @@ class MojiSearchViewModel(
                 mojiRepository.getAll()
             }
         )
-    }
-
-    fun onMojiSelect(moji: Moji) {
-        fire(MojiSelectedEvent(moji))
     }
 }
