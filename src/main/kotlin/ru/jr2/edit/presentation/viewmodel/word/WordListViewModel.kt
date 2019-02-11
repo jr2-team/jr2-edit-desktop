@@ -6,18 +6,12 @@ import javafx.stage.StageStyle
 import ru.jr2.edit.data.db.repository.WordDbRepository
 import ru.jr2.edit.domain.model.Word
 import ru.jr2.edit.presentation.view.word.WordEditFragment
-import ru.jr2.edit.presentation.viewmodel.word.WordSavedEvent
 import tornadofx.ViewModel
-import kotlin.properties.Delegates
 
 class WordListViewModel(
     private val wordRepository: WordDbRepository = WordDbRepository()
 ) : ViewModel() {
-    private var words: List<Word> by Delegates.observable(emptyList()) { _, _, words ->
-        observableWords.clear()
-        observableWords.addAll(words)
-    }
-    val observableWords: ObservableList<Word> = FXCollections.observableArrayList<Word>()
+    val words: ObservableList<Word> = FXCollections.observableArrayList<Word>()
     var selectedWord: Word? = null
 
     init {
@@ -31,12 +25,13 @@ class WordListViewModel(
 
     fun onShowEditWordFragment() {
         find<WordEditFragment>(
-            Pair(WordEditFragment::wordIdParam, selectedWord?.id)
+            Pair(WordEditFragment::paramWordId, selectedWord?.id)
         ).openModal(StageStyle.UTILITY, resizable = false)
     }
 
     private fun fetchWords() {
-        words = wordRepository.getAll()
+        words.clear()
+        words.addAll(wordRepository.getAll())
     }
 
     private fun subscribeOnEventBus() {

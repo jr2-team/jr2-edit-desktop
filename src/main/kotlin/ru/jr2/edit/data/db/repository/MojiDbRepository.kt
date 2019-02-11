@@ -5,15 +5,15 @@ import org.jetbrains.exposed.sql.transactions.transaction
 import ru.jr2.edit.EditApp
 import ru.jr2.edit.data.db.table.ComponentKanjiTable
 import ru.jr2.edit.data.db.table.MojiTable
+import ru.jr2.edit.domain.JlptLevel
+import ru.jr2.edit.domain.MojiType
 import ru.jr2.edit.domain.entity.MojiEntity
 import ru.jr2.edit.domain.model.Moji
-import ru.jr2.edit.util.KotlinLoggingSqlLogger
 
 class MojiDbRepository(
     private val db: Database = EditApp.instance.db
 ) {
     fun getById(id: Int): Moji = transaction(db) {
-        addLogger(KotlinLoggingSqlLogger)
         return@transaction Moji.fromEntity(MojiEntity[id])
     }
 
@@ -28,7 +28,6 @@ class MojiDbRepository(
     }
 
     fun getComponentsOfMoji(mojiId: Int): List<Moji> = transaction(db) {
-        addLogger(KotlinLoggingSqlLogger)
         val componentAlias = ComponentKanjiTable.alias("component_moji")
         return@transaction MojiTable
             .innerJoin(
@@ -49,7 +48,7 @@ class MojiDbRepository(
     fun getBySearchQuery(query: String): List<Moji> = transaction(db) {
         return@transaction MojiTable
             .select {
-                MojiTable.basicInterpretation.upperCase() like "%$query%".toUpperCase()
+                MojiTable.interpretation.upperCase() like "%$query%".toUpperCase()
             }
             .map {
                 Moji.fromEntity(MojiEntity.wrapRow(it))
@@ -62,23 +61,22 @@ class MojiDbRepository(
             strokeCount = moji.strokeCount
             kunReading = moji.kunReading
             onReading = moji.onReading
-            basicInterpretation = moji.basicInterpretation
-            jlptLevel = moji.jlptLevel
-            mojiType = moji.mojiType
+            interpretation = moji.basicInterpretation
+            jlptLevel = JlptLevel.fromStr(moji.jlptLevel).code
+            mojiType = MojiType.fromStr(moji.mojiType).code
         }
         return@transaction Moji.fromEntity(newMoji)
     }
 
     fun insertUpdate(moji: Moji): Moji = transaction(db) {
-        addLogger(KotlinLoggingSqlLogger)
         return@transaction MojiEntity.findById(moji.id)?.run {
             value = moji.value
             strokeCount = moji.strokeCount
             kunReading = moji.kunReading
             onReading = moji.onReading
-            basicInterpretation = moji.basicInterpretation
-            jlptLevel = moji.jlptLevel
-            mojiType = moji.mojiType
+            interpretation = moji.basicInterpretation
+            jlptLevel = JlptLevel.fromStr(moji.jlptLevel).code
+            mojiType = MojiType.fromStr(moji.mojiType).code
             getById(moji.id)
         } ?: insert(moji)
     }
@@ -97,11 +95,14 @@ class MojiDbRepository(
         ComponentKanjiTable.batchInsert(components) {
             this[ComponentKanjiTable.moji] = MojiEntity[moji.id].id
             this[ComponentKanjiTable.mojiComponentId] = MojiEntity[it.id].id
-            this[ComponentKanjiTable.order] = orderIdx++
+            this[ComponentKanjiTable.order] = ++orderIdx
         }
     }
 
-    fun deleteById(id: Int) = transaction(db) {
-        MojiEntity[id].delete()
+    fun delete(moji: Moji) = transaction(db) {
+        ComponentKanjiTable.deleteWhere {
+            ComponentKanjiTable.moji eq MojiEntity[moji.id].id
+        }
+        MojiEntity[moji.id].delete()
     }
 }

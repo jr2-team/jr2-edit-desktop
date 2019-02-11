@@ -10,10 +10,10 @@ class WordEditViewModel(
     private val mode: EditMode = if (wordId == 0) EditMode.CREATE else EditMode.UPDATE,
     private val wordRepository: WordDbRepository = WordDbRepository()
 ) : ItemViewModel<Word>() {
-    val valueField = bind(Word::value)
-    val furiganaField = bind(Word::furiganaProp)
-    val basicInterpretationField = bind(Word::basicInterpretationProp)
-    val jlptLevelField = bind(Word::jlptLevelProp)
+    val pValue = bind(Word::pValue)
+    val pFurigana = bind(Word::pFurigana)
+    val pInterpretation = bind(Word::pInterpretation)
+    val pJlptLevel = bind(Word::pJlptLevel)
 
     init {
         item = when (mode) {

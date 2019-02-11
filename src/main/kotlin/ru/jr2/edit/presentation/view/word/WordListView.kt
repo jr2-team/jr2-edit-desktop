@@ -11,14 +11,16 @@ class WordListView : View() {
     private var btnEditWord: Button by singleAssign()
 
     override val root = borderpane {
-        center = tableview(viewModel.observableWords) {
-            column("ID", Word::idProp)
-            //column("Значение", Word::valueProp)
-            column("Фуригана", Word::furiganaProp)
-            column("Интерпретация", Word::basicInterpretationProp)
+        center = tableview(viewModel.words) {
+            column("ID", Word::pId)
+            //column("Значение", Word::pValue)
+            column("Фуригана", Word::pFurigana)
+            column("Интерпретация", Word::pInterpretation)
             smartResize()
             onSelectionChange { word ->
-                btnEditWord.isDisable = word == null
+                (word !is Word).let {
+                    btnEditWord.isDisable = it
+                }
                 viewModel.selectedWord = word
             }
         }
@@ -32,8 +34,8 @@ class WordListView : View() {
                 }
                 btnEditWord = button("Редактировать") {
                     setMinSize(120.0, 28.0)
-                    action { viewModel.onShowEditWordFragment() }
                     isDisable = true
+                    action { viewModel.onShowEditWordFragment() }
                 }
             }
         }

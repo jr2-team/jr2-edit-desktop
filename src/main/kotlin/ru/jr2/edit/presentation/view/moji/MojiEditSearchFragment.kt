@@ -9,6 +9,7 @@ import tornadofx.controlsfx.toGlyph
 
 class MojiEditSearchFragment : Fragment("Поиск моджи") {
     private val viewModel: MojiSearchViewModel by inject()
+
     override val root = borderpane {
         top = customTextfield(right = FontAwesome.Glyph.SEARCH.toGlyph()) {
             textProperty().addListener { _, _, query ->
@@ -16,14 +17,14 @@ class MojiEditSearchFragment : Fragment("Поиск моджи") {
             }
         }
         center = tableview(viewModel.mojis) {
-            column("Моджи", Moji::valueProp)
-            smartResize()
             placeholder = label("Нет моджи по заданному запросу")
+            column("Моджи", Moji::pValue)
+            smartResize()
             onUserSelect(2) { moji ->
                 viewModel.onMojiSelect(moji)
                 close()
             }
         }
-
+        paddingAll = 10.0
     }
 }

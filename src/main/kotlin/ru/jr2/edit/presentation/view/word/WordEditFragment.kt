@@ -7,45 +7,44 @@ import tornadofx.*
 class WordEditFragment : Fragment() {
     private val viewModel: WordEditViewModel
 
-    val wordIdParam: Int by param(0)
+    val paramWordId: Int by param(0)
 
     init {
-        viewModel = WordEditViewModel(wordIdParam)
-        if (wordIdParam == 0) {
-            this.title = "Добавить слово"
-        } else {
-            this.title = "Редактировать слово"
-        }
+        viewModel = WordEditViewModel(paramWordId)
+        title = if (paramWordId == 0) "Добавить слово" else "Редактировать слово"
     }
 
     override val root = borderpane {
         center = form {
             fieldset {
                 field("Слово") {
-                    textfield(viewModel.valueField) {
+                    textfield(viewModel.pValue) {
                         required(message = "Обязательное поле")
                     }
                 }
                 field("Фуригана") {
-                    textfield(viewModel.furiganaField) {
-                        required(message = "Обязательное поле")
-                    }
+                    textfield(viewModel.pFurigana)
                 }
                 field("Основные интерпритации") {
-                    textfield(viewModel.basicInterpretationField) {
+                    textfield(viewModel.pInterpretation) {
                         required(message = "Обязательное поле")
                     }
                 }
                 field("Уровень JLPT") {
-                    textfield(viewModel.jlptLevelField) {
+                    textfield(viewModel.pJlptLevel) {
                         required(message = "Обязательное поле")
-                        // TODO: Добавить enum class JlptLevel
-                        filterInput { it.controlNewText.isInt() && it.controlNewText.toInt() in 0..5 }
+                        filterInput {
+                            with(it.controlNewText) {
+                                return@filterInput isInt() && toInt() in 0..5
+                            }
+                        }
                     }
                 }
+
             }
         }
         bottom = button("Сохранить") {
+            setMinSize(120.0, 28.0)
             enableWhen(viewModel.valid)
             action {
                 viewModel.commit { viewModel.onSaveClick() }

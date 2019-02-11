@@ -15,7 +15,7 @@ inline fun <reified T : Fragment> T.openDialogFragment(params: Map<*, Any?>? = n
 // exposed
 fun Query.andWhere(andPart: SqlExpressionBuilder.() -> Op<Boolean>) = adjustWhere {
     val expr = Op.build { andPart() }
-    if (this == null) {
+    if (this !is Op<Boolean>) {
         expr
     } else {
         this and expr

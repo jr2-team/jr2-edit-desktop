@@ -7,7 +7,7 @@ object MojiTable : IntIdTable("moji") {
     val strokeCount = integer("stroke_count")
     val onReading = varchar("on_reading", 500).nullable()
     val kunReading = varchar("kun_reading", 500).nullable()
-    val basicInterpretation = varchar("basic_interpretation", 500)
-    val jlptLevel = integer("jlpt_level").nullable()
+    val interpretation = varchar("basic_interpretation", 500).nullable()
+    val jlptLevel = integer("jlpt_level")
     val mojiType = integer("moji_type")
 }

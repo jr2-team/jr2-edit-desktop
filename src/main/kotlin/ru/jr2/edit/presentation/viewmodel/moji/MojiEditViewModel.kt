@@ -1,34 +1,40 @@
 package ru.jr2.edit.presentation.viewmodel.moji
 
 import javafx.beans.property.SimpleStringProperty
+import javafx.collections.FXCollections
+import javafx.collections.ObservableList
+import javafx.stage.StageStyle
 import ru.jr2.edit.data.db.repository.MojiDbRepository
 import ru.jr2.edit.domain.model.Moji
 import ru.jr2.edit.presentation.view.moji.MojiEditComponentFragment
 import ru.jr2.edit.presentation.view.moji.MojiEditSearchFragment
 import ru.jr2.edit.presentation.viewmodel.EditMode
-import ru.jr2.edit.util.openDialogFragment
-import tornadofx.ItemViewModel
+import tornadofx.*
 
 class MojiEditViewModel(
     mojiId: Int,
     private val mode: EditMode = if (mojiId == 0) EditMode.CREATE else EditMode.UPDATE,
     private val mojiRepository: MojiDbRepository = MojiDbRepository()
 ) : ItemViewModel<Moji>() {
-    val value = bind(Moji::valueProp)
-    val strokeCount = bind(Moji::strokeCountProp)
-    val onReading = bind(Moji::onReadingProp)
-    val kunReading = bind(Moji::kunReadingProp)
-    val basicInterpretation = bind(Moji::basicInterpretationProp)
-    val jlptLevel = bind(Moji::jlptLevelProp)
-    val mojiType = bind(Moji::mojiTypeProp)
+    val pValue = bind(Moji::pValue)
+    val pStrokeCount = bind(Moji::pStrokeCount)
+    val pOnReading = bind(Moji::pOnReading)
+    val pKunReading = bind(Moji::pKunReading)
+    val pBasicInterpretation = bind(Moji::pBasicInterpretation)
+    val pJlptLevel = bind(Moji::pJlptLevel)
+    val pMojiType = bind(Moji::pMojiType)
+    val pComponents = SimpleStringProperty(String())
 
-    val mojiComponentStringProp = SimpleStringProperty(String())
-    private val mojiComponents = mutableListOf<Moji>()
+    val components: ObservableList<Moji> = FXCollections.observableArrayList<Moji>()
+    var selectedComponent: Moji? = null
 
     init {
+        components.onChange {
+            pComponents.value = components.joinToString { it.value }
+        }
         item = when (mode) {
             EditMode.UPDATE -> {
-                mojiComponents.addAll(mojiRepository.getComponentsOfMoji(mojiId))
+                components.addAll(mojiRepository.getComponentsOfMoji(mojiId))
                 mojiRepository.getById(mojiId)
             }
             EditMode.CREATE -> Moji()
@@ -36,32 +42,42 @@ class MojiEditViewModel(
         subscribeOnEventBus()
     }
 
-    fun onShowMojiSearchFragment() {
-        MojiEditSearchFragment().openDialogFragment()
+    fun onMojiSearchClick() {
+        find<MojiEditSearchFragment>().openModal(StageStyle.UTILITY, resizable = false)
     }
 
-    fun onShowMojiEditComponentFragment() {
-        MojiEditComponentFragment().openDialogFragment(
-            mapOf(Pair(MojiEditComponentFragment::mojiIds, mojiComponents.map { it.id }))
-        )
+    fun onEditComponentClick() {
+        find<MojiEditComponentFragment>(Scope(this))
+            .openModal(StageStyle.UTILITY, resizable = false)
     }
 
     fun onSaveClick() {
-        if (this.isValid) {
-            mojiRepository.insertUpdateMojiComponent(item, mojiComponents)
-            fire(MojiSavedEvent(true))
+        mojiRepository.insertUpdateMojiComponent(item, components)
+        fire(MojiSavedEvent(true))
+    }
+
+    fun onComponentRemoveClick() = selectedComponent?.let {
+        components.remove(it)
+    }
+
+    fun onComponentMoveUpClick() = selectedComponent?.let {
+        val selectedIdx = components.indexOf(it)
+        if (selectedIdx > 0) {
+            components.swap(selectedIdx, selectedIdx - 1)
+        }
+    }
+
+    fun onComponentMoveDownClick() = selectedComponent?.let {
+        val selectedIdx = components.indexOf(it)
+        if (selectedIdx < components.size - 1) {
+            components.swap(selectedIdx, selectedIdx + 1)
         }
     }
 
     private fun subscribeOnEventBus() {
         subscribe<MojiSelectedEvent> { ctx ->
-            mojiComponents.find {
-                it.value == ctx.moji.value
-            }.run {
-                if (this == null) {
-                    mojiComponents.add(ctx.moji)
-                    mojiComponentStringProp.value += ctx.moji.value + ' '
-                }
+            if (!components.contains(ctx.moji)) {
+                components.add(ctx.moji)
             }
         }
     }

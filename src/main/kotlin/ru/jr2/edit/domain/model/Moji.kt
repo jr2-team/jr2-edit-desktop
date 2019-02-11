@@ -2,46 +2,48 @@ package ru.jr2.edit.domain.model
 
 import javafx.beans.property.SimpleIntegerProperty
 import javafx.beans.property.SimpleStringProperty
+import ru.jr2.edit.domain.JlptLevel
+import ru.jr2.edit.domain.MojiType
 import ru.jr2.edit.domain.entity.MojiEntity
 import tornadofx.getValue
 import tornadofx.setValue
 
 class Moji(
     id: Int = 0,
-    value: String = "",
+    value: String = String(),
     strokeCount: Int = 0,
-    onReading: String = "",
-    kunReading: String = "",
-    basicInterpretation: String = "",
-    jlptLevel: Int = 0,
-    mojiType: Int = 1
+    onReading: String = String(),
+    kunReading: String = String(),
+    basicInterpretation: String = String(),
+    jlptLevel: String = JlptLevel.NO_LEVEL.str,
+    mojiType: String = MojiType.KANJI.str
 ) {
-    val idProp = SimpleIntegerProperty(id)
-    var id by idProp
+    val pId = SimpleIntegerProperty(id)
+    var id: Int by pId
 
-    val valueProp = SimpleStringProperty(value)
-    var value by valueProp
+    val pValue = SimpleStringProperty(value)
+    var value: String by pValue
 
-    val strokeCountProp = SimpleIntegerProperty(strokeCount)
-    var strokeCount by strokeCountProp
+    val pStrokeCount = SimpleIntegerProperty(strokeCount)
+    var strokeCount: Int by pStrokeCount
 
-    val onReadingProp = SimpleStringProperty(onReading)
-    var onReading by onReadingProp
+    val pOnReading = SimpleStringProperty(onReading)
+    var onReading: String by pOnReading
 
-    val kunReadingProp = SimpleStringProperty(kunReading)
-    var kunReading by kunReadingProp
+    val pKunReading = SimpleStringProperty(kunReading)
+    var kunReading: String by pKunReading
 
-    val basicInterpretationProp = SimpleStringProperty(basicInterpretation)
-    var basicInterpretation by basicInterpretationProp
+    val pBasicInterpretation = SimpleStringProperty(basicInterpretation)
+    var basicInterpretation: String by pBasicInterpretation
 
-    val jlptLevelProp = SimpleIntegerProperty(jlptLevel)
-    var jlptLevel by jlptLevelProp
+    val pJlptLevel = SimpleStringProperty(jlptLevel)
+    var jlptLevel: String by pJlptLevel
 
-    val mojiTypeProp = SimpleIntegerProperty(mojiType)
-    var mojiType by mojiTypeProp
+    val pMojiType = SimpleStringProperty(mojiType)
+    var mojiType: String by pMojiType
 
     override fun toString(): String {
-        return "$id $value"
+        return "$value - $mojiType"
     }
 
     companion object {
@@ -50,11 +52,11 @@ class Moji(
                 id.value,
                 value,
                 strokeCount,
-                onReading ?: "",
-                kunReading ?: "",
-                basicInterpretation,
-                jlptLevel ?: 0,
-                mojiType
+                onReading ?: String(),
+                kunReading ?: String(),
+                interpretation ?: String(),
+                JlptLevel.fromCode(jlptLevel).str,
+                MojiType.fromCode(mojiType).str
             )
         }
     }

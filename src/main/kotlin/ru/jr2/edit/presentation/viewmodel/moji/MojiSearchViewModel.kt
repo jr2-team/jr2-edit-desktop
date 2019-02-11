@@ -9,13 +9,19 @@ import tornadofx.ViewModel
 class MojiSearchViewModel(
     private val mojiRepository: MojiDbRepository = MojiDbRepository()
 ) : ViewModel() {
-    val mojis: ObservableList<Moji> = FXCollections.observableArrayList<Moji>()
+    val mojis: ObservableList<Moji> = FXCollections.observableArrayList<Moji>().also {
+        it.addAll(mojiRepository.getAll())
+    }
 
     fun onSearchQueryChange(query: String) {
-        if (!query.isBlank()) {
-            mojis.clear()
-            mojis.addAll(mojiRepository.getBySearchQuery(query))
-        }
+        mojis.clear()
+        mojis.addAll(
+            if (!query.isBlank()) {
+                mojiRepository.getBySearchQuery(query)
+            } else {
+                mojiRepository.getAll()
+            }
+        )
     }
 
     fun onMojiSelect(moji: Moji) {

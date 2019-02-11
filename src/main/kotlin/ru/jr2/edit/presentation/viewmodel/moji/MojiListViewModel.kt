@@ -25,21 +25,26 @@ class MojiListViewModel(
         components.addAll(mojiRepository.getComponentsOfMoji(kanji.id))
     }
 
-    fun onShowNewMojiFragment() {
+    fun onNewMojiClick() {
         find<MojiEditFragment>().openModal(StageStyle.UTILITY, resizable = false)
     }
 
-    fun onShowEditMojiFragment() {
+    fun onEditMojiClick() {
         find<MojiEditFragment>(
-            Pair(MojiEditFragment::mojiIdParam, selectedMoji?.id)
+            Pair(MojiEditFragment::paramMojiId, selectedMoji?.id)
         ).openModal(StageStyle.UTILITY, resizable = false)
     }
 
-    fun onFilterMojiType(mojiType: Int = -1) {
-        fetchContent()
-        if (mojiType != -1) {
-            mojis.removeIf { it.mojiType != mojiType }
+    fun onDeleteMojiClick() {
+        selectedMoji?.let {
+            mojiRepository.delete(it)
+            mojis.remove(it)
         }
+    }
+
+    // TODO: Добавить фильтрацию
+    fun onFilterMojiType(mojiType: Int = -1) {
+
     }
 
     private fun fetchContent() {

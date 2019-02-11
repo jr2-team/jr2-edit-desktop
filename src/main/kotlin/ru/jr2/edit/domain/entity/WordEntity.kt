@@ -8,7 +8,7 @@ import ru.jr2.edit.data.db.table.WordTable
 class WordEntity(id: EntityID<Int>) : IntEntity(id) {
     var value by WordTable.value
     var furigana by WordTable.furigana
-    var basicInterpretation by WordTable.basicInterpretation
+    var interpretation by WordTable.interpretation
     var jlptLevel by WordTable.jlptLevel
 
     override fun toString(): String = "$id $value"

@@ -1,42 +1,42 @@
 package ru.jr2.edit.presentation.view.moji
 
-import javafx.collections.FXCollections
-import javafx.collections.ObservableList
-import ru.jr2.edit.data.db.repository.MojiDbRepository
+import javafx.geometry.Pos
 import ru.jr2.edit.domain.model.Moji
-import tornadofx.Fragment
-import tornadofx.borderpane
-import tornadofx.listview
+import ru.jr2.edit.presentation.viewmodel.moji.MojiEditViewModel
+import tornadofx.*
 
-class MojiEditComponentFragment : Fragment() {
-    private val viewModel: MojiComponentViewModel
-
-    val mojiIds: List<Int> by param(emptyList())
-
-    init {
-        viewModel = MojiComponentViewModel(mojiIds)
-    }
+class MojiEditComponentFragment : Fragment("") {
+    private val viewModel: MojiEditViewModel by inject()
 
     override val root = borderpane {
-        center = listview(viewModel.observableMojiComponents) {
-
-        }
-    }
-}
-
-class MojiComponentViewModel(
-    mojiIds: List<Int>,
-    private val mojiRepository: MojiDbRepository = MojiDbRepository()
-) {
-    val observableMojiComponents: ObservableList<Moji> =
-        FXCollections.observableArrayList<Moji>()
-
-    init {
-        observableMojiComponents.clear()
-        observableMojiComponents.addAll(
-            mojiIds.map {
-                mojiRepository.getById(it)
+        center = tableview(viewModel.components) {
+            placeholder = label("У моджи нет компонентов")
+            column("Моджи", Moji::pValue)
+            smartResize()
+            onSelectionChange { moji ->
+                viewModel.selectedComponent = moji
             }
-        )
+        }
+        bottom = borderpane {
+            right = buttonbar {
+                button("Убрать") {
+                    action { viewModel.onComponentRemoveClick() }
+                }
+                button("Выше") {
+                    action { viewModel.onComponentMoveUpClick() }
+                }
+                button("Ниже") {
+                    action { viewModel.onComponentMoveDownClick() }
+                }
+                style {
+                    alignment = Pos.BASELINE_RIGHT
+                }
+            }
+            left = button("ОК") {
+                action { close() }
+            }
+            paddingTop = 10.0
+        }
+        paddingAll = 10.0
     }
 }

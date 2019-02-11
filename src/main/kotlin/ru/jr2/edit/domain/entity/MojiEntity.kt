@@ -10,7 +10,7 @@ class MojiEntity(id: EntityID<Int>) : IntEntity(id) {
     var strokeCount by MojiTable.strokeCount
     var onReading by MojiTable.onReading
     var kunReading by MojiTable.kunReading
-    var basicInterpretation by MojiTable.basicInterpretation
+    var interpretation by MojiTable.interpretation
     var jlptLevel by MojiTable.jlptLevel
     var mojiType by MojiTable.mojiType
 

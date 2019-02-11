@@ -2,14 +2,11 @@ package ru.jr2.edit.presentation.view
 
 import ru.jr2.edit.presentation.view.moji.MojiListView
 import ru.jr2.edit.presentation.view.word.WordListView
-import ru.jr2.edit.presentation.viewmodel.RootViewModel
 import tornadofx.View
 import tornadofx.tab
 import tornadofx.tabpane
 
 class RootView : View("JR2-Edit") {
-    private val viewModel: RootViewModel by inject()
-
     private val wordListView: WordListView by inject()
     private val mojiListView: MojiListView by inject()
 
@@ -17,7 +14,7 @@ class RootView : View("JR2-Edit") {
         tab("Кана") {
             isClosable = false
         }
-        tab("Канджи") {
+        tab("Моджи") {
             isClosable = false
             add(mojiListView)
         }
@@ -26,7 +23,7 @@ class RootView : View("JR2-Edit") {
             add(wordListView)
         }
         tab("Предложения") {
-
+            isClosable = false
         }
     }
 }
