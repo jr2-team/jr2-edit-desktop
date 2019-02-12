@@ -1,6 +1,6 @@
 package ru.jr2.edit.presentation.view
 
-import ru.jr2.edit.presentation.view.moji.MojiListView
+import ru.jr2.edit.presentation.view.moji.list.MojiListView
 import ru.jr2.edit.presentation.view.word.WordListView
 import tornadofx.View
 import tornadofx.tab

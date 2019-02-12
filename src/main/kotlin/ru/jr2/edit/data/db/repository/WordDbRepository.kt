@@ -37,4 +37,8 @@ class WordDbRepository(
             getById(word.id)
         } ?: insert(word)
     }
+
+    fun delete(word: Word) = transaction(db) {
+        WordEntity[word.id].delete()
+    }
 }

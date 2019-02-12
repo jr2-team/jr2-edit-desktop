@@ -5,14 +5,14 @@ import javafx.collections.ObservableList
 import javafx.stage.StageStyle
 import ru.jr2.edit.data.db.repository.MojiDbRepository
 import ru.jr2.edit.domain.model.Moji
-import ru.jr2.edit.presentation.view.moji.MojiEditFragment
+import ru.jr2.edit.presentation.view.moji.edit.MojiEditFragment
 import tornadofx.ViewModel
 
 class MojiListViewModel(
     private val mojiRepository: MojiDbRepository = MojiDbRepository()
 ) : ViewModel() {
     val mojis: ObservableList<Moji> = FXCollections.observableArrayList<Moji>()
-    var components: ObservableList<Moji> = FXCollections.observableArrayList<Moji>()
+    val components: ObservableList<Moji> = FXCollections.observableArrayList<Moji>()
     var selectedMoji: Moji? = null
 
     init {

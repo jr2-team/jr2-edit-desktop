@@ -15,28 +15,43 @@ class WordListViewModel(
     var selectedWord: Word? = null
 
     init {
-        fetchWords()
+        fetchContent()
         subscribeOnEventBus()
     }
 
-    fun onShowNewWordFragment() {
-        find<WordEditFragment>().openModal(StageStyle.UTILITY, resizable = false)
+    fun onNewWordClick() {
+        find<WordEditFragment>().openModal(
+            StageStyle.UTILITY,
+            resizable = false,
+            escapeClosesWindow = false
+        )
     }
 
-    fun onShowEditWordFragment() {
+    fun onEditWordClick() {
         find<WordEditFragment>(
             Pair(WordEditFragment::paramWordId, selectedWord?.id)
-        ).openModal(StageStyle.UTILITY, resizable = false)
+        ).openModal(
+            StageStyle.UTILITY,
+            resizable = false,
+            escapeClosesWindow = false
+        )
     }
 
-    private fun fetchWords() {
+    fun onDeleteWordClick() {
+        selectedWord?.let {
+            wordRepository.delete(it)
+            words.remove(it)
+        }
+    }
+
+    private fun fetchContent() {
         words.clear()
         words.addAll(wordRepository.getAll())
     }
 
     private fun subscribeOnEventBus() {
-        subscribe<WordSavedEvent> {
-            fetchWords()
+        subscribe<WordSavedEvent> { ctx ->
+            if (ctx.isSaved) fetchContent()
         }
     }
 }

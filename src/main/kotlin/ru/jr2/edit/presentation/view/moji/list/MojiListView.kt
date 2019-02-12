@@ -1,9 +1,10 @@
-package ru.jr2.edit.presentation.view.moji
+package ru.jr2.edit.presentation.view.moji.list
 
 import javafx.geometry.Pos
 import javafx.scene.control.Button
 import javafx.scene.control.ButtonBar
 import javafx.scene.control.ButtonType
+import ru.jr2.edit.Style.Companion.bottomButtonPane
 import ru.jr2.edit.domain.model.Moji
 import ru.jr2.edit.presentation.viewmodel.moji.MojiListViewModel
 import tornadofx.*
@@ -37,6 +38,7 @@ class MojiListView : View() {
                 viewModel.onEditMojiClick()
             }
         }
+
         right = listview(viewModel.components) {
             placeholder = label("Нет компонентов")
             cellFormat {
@@ -53,29 +55,24 @@ class MojiListView : View() {
             this.minWidth = 120.0
             this.maxWidth = 120.0
         }
+
         bottom = borderpane {
-            right = button("Фильтровать") {
-                setMinSize(120.0, 28.0)
-            }
+            right = button("Фильтровать")
+
             left = buttonbar {
                 button("Добавить") {
-                    setMinSize(120.0, 28.0)
                     action { viewModel.onNewMojiClick() }
                 }
                 btnEditMoji = button("Редактировать") {
-                    setMinSize(120.0, 28.0)
                     action { viewModel.onEditMojiClick() }
                     isDisable = true
                 }
                 btnDelete = button("Удалить") {
-                    setMinSize(120.0, 28.0)
-                    action {
-                        showDeleteMojiWarning()
-                    }
+                    action { showDeleteMojiWarning() }
                     isDisable = true
                 }
             }
-            paddingAll = 10.0
+            addClass(bottomButtonPane)
         }
     }
 

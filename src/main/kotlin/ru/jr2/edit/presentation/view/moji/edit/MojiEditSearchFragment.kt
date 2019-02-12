@@ -1,6 +1,8 @@
-package ru.jr2.edit.presentation.view.moji
+package ru.jr2.edit.presentation.view.moji.edit
 
 import org.controlsfx.glyphfont.FontAwesome
+import ru.jr2.edit.Style
+import ru.jr2.edit.Style.Companion.utilityFragment
 import ru.jr2.edit.domain.model.Moji
 import ru.jr2.edit.presentation.viewmodel.moji.MojiEditViewModel
 import ru.jr2.edit.presentation.viewmodel.moji.MojiSearchViewModel
@@ -18,9 +20,12 @@ class MojiEditSearchFragment : Fragment("Поиск моджи") {
                 searchViewModel.onSearchQueryChanged(query)
             }
         }
+
         center = tableview(searchViewModel.mojis) {
             placeholder = label("Нет моджи по заданному запросу")
             column("Моджи", Moji::pValue)
+            column("Вид", Moji::pMojiType)
+            column("Перевод", Moji::pInterpretation).remainingWidth()
             smartResize()
             onSelectionChange { moji ->
                 viewModel.selectedComponent = moji
@@ -29,15 +34,21 @@ class MojiEditSearchFragment : Fragment("Поиск моджи") {
                 viewModel.onComponentAddClick()
             }
         }
+
         bottom = borderpane {
             right = button("Добавить") {
                 action { viewModel.onComponentAddClick() }
+                addClass(Style.mediumButton)
             }
+
             left = button("ОК") {
                 action { close() }
+                addClass(Style.mediumButton)
             }
-            paddingTop = 10.0
+
+            paddingAll = 10.0
         }
-        paddingAll = 10.0
+
+        addClass(utilityFragment)
     }
 }

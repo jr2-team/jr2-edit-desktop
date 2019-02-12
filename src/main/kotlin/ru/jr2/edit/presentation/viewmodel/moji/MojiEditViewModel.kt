@@ -6,8 +6,8 @@ import javafx.collections.ObservableList
 import javafx.stage.StageStyle
 import ru.jr2.edit.data.db.repository.MojiDbRepository
 import ru.jr2.edit.domain.model.Moji
-import ru.jr2.edit.presentation.view.moji.MojiEditComponentFragment
-import ru.jr2.edit.presentation.view.moji.MojiEditSearchFragment
+import ru.jr2.edit.presentation.view.moji.edit.MojiEditComponentFragment
+import ru.jr2.edit.presentation.view.moji.edit.MojiEditSearchFragment
 import ru.jr2.edit.presentation.viewmodel.EditMode
 import tornadofx.*
 
@@ -42,9 +42,8 @@ class MojiEditViewModel(
     }
 
     fun onMojiSearchClick() {
-        find<MojiEditSearchFragment>(
-            Scope(this)
-        ).openModal(StageStyle.UTILITY, resizable = false)
+        find<MojiEditSearchFragment>(Scope(this))
+            .openModal(StageStyle.UTILITY, resizable = false)
     }
 
     fun onEditComponentClick() {
@@ -62,9 +61,7 @@ class MojiEditViewModel(
     }
 
     fun onComponentAddClick() = selectedComponent?.let {
-        if (!components.contains(it)) {
-            components.add(it)
-        }
+        if (!components.contains(it)) components.add(it)
     }
 
     fun onComponentMoveUpClick() = selectedComponent?.let {

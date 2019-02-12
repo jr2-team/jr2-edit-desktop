@@ -1,10 +1,14 @@
 package ru.jr2.edit.presentation.view.word
 
+import javafx.geometry.Pos
 import javafx.scene.layout.Priority
+import ru.jr2.edit.Style.Companion.largeButton
+import ru.jr2.edit.domain.JlptLevel
+import ru.jr2.edit.presentation.view.BaseFragment
 import ru.jr2.edit.presentation.viewmodel.word.WordEditViewModel
 import tornadofx.*
 
-class WordEditFragment : Fragment() {
+class WordEditFragment : BaseFragment() {
     private val viewModel: WordEditViewModel
 
     val paramWordId: Int by param(0)
@@ -18,40 +22,34 @@ class WordEditFragment : Fragment() {
         center = form {
             fieldset {
                 field("Слово") {
-                    textfield(viewModel.pValue) {
-                        required(message = "Обязательное поле")
-                    }
+                    textfield(viewModel.pValue).required(message = "Обязательное поле")
                 }
                 field("Фуригана") {
                     textfield(viewModel.pFurigana)
                 }
                 field("Основные интерпритации") {
-                    textfield(viewModel.pInterpretation) {
+                    textarea(viewModel.pInterpretation) {
+                        vgrow = Priority.NEVER
                         required(message = "Обязательное поле")
                     }
                 }
                 field("Уровень JLPT") {
-                    textfield(viewModel.pJlptLevel) {
-                        required(message = "Обязательное поле")
-                        filterInput {
-                            with(it.controlNewText) {
-                                return@filterInput isInt() && toInt() in 0..5
-                            }
-                        }
-                    }
+                    combobox(viewModel.pJlptLevel, JlptLevel.getNames())
                 }
+            }
+        }
 
+        bottom = hbox {
+            button("Сохранить") {
+                enableWhen(viewModel.valid)
+                action {
+                    viewModel.commit { viewModel.onSaveClick() }
+                    close()
+                }
+                addClass(largeButton)
             }
+            alignment = Pos.BOTTOM_RIGHT
         }
-        bottom = button("Сохранить") {
-            setMinSize(120.0, 28.0)
-            enableWhen(viewModel.valid)
-            action {
-                viewModel.commit { viewModel.onSaveClick() }
-                close()
-            }
-        }
-        paddingAll = 15.0
-        vgrow = Priority.ALWAYS
+        paddingAll = 10.0
     }
 }

@@ -23,12 +23,10 @@ class WordEditViewModel(
     }
 
     fun onSaveClick() {
-        if (this.isValid) {
-            when (mode) {
-                EditMode.UPDATE -> wordRepository.insertUpdate(item)
-                EditMode.CREATE -> wordRepository.insert(item)
-            }
-            fire(WordSavedEvent(item.toString()))
+        when (mode) {
+            EditMode.UPDATE -> wordRepository.insertUpdate(item)
+            EditMode.CREATE -> wordRepository.insert(item)
         }
+        fire(WordSavedEvent(true))
     }
 }

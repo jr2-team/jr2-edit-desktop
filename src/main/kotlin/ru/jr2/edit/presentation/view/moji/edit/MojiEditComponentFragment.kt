@@ -1,6 +1,8 @@
-package ru.jr2.edit.presentation.view.moji
+package ru.jr2.edit.presentation.view.moji.edit
 
-import javafx.geometry.Pos
+import ru.jr2.edit.Style.Companion.mediumButton
+import ru.jr2.edit.Style.Companion.miniButton
+import ru.jr2.edit.Style.Companion.utilityFragment
 import ru.jr2.edit.domain.model.Moji
 import ru.jr2.edit.presentation.viewmodel.moji.MojiEditViewModel
 import tornadofx.*
@@ -12,31 +14,36 @@ class MojiEditComponentFragment : Fragment("") {
         center = tableview(viewModel.components) {
             placeholder = label("У моджи нет компонентов")
             column("Моджи", Moji::pValue)
+            column("Вид", Moji::pMojiType)
+            column("Перевод", Moji::pInterpretation).remainingWidth()
             smartResize()
-            onSelectionChange { moji ->
-                viewModel.selectedComponent = moji
-            }
+            onSelectionChange { viewModel.selectedComponent = it }
         }
+
         bottom = borderpane {
             right = buttonbar {
-                button("Убрать") {
+                button("-") {
                     action { viewModel.onComponentRemoveClick() }
+                    addClass(miniButton)
                 }
-                button("Выше") {
+                button("⌃") {
                     action { viewModel.onComponentMoveUpClick() }
+                    addClass(miniButton)
                 }
-                button("Ниже") {
+                button("˅") {
+                    addClass(miniButton)
                     action { viewModel.onComponentMoveDownClick() }
                 }
-                style {
-                    alignment = Pos.BASELINE_RIGHT
-                }
             }
+
             left = button("ОК") {
                 action { close() }
+                addClass(mediumButton)
             }
-            paddingTop = 10.0
+
+            paddingAll = 10.0
         }
-        paddingAll = 10.0
+
+        addClass(utilityFragment)
     }
 }

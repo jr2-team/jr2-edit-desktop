@@ -39,6 +39,7 @@ class MojiDbRepository(
             .select {
                 componentAlias[ComponentKanjiTable.moji] eq MojiEntity[mojiId].id
             }
+            .orderBy(componentAlias[ComponentKanjiTable.order])
             .map {
                 Moji.fromEntity(MojiEntity.wrapRow(it))
             }
@@ -53,6 +54,15 @@ class MojiDbRepository(
             .map {
                 Moji.fromEntity(MojiEntity.wrapRow(it))
             }
+    }
+
+    fun doesExist(moji: Moji): Boolean = transaction(db) {
+        val mojisFound = MojiEntity.find {
+            (MojiTable.value eq moji.value).and(
+                MojiTable.mojiType eq MojiType.fromStr(moji.mojiType).code
+            )
+        }.count()
+        return@transaction mojisFound > 0
     }
 
     fun insert(moji: Moji): Moji = transaction(db) {
