@@ -8,14 +8,17 @@ import ru.jr2.edit.data.db.repository.MojiDbRepository
 import ru.jr2.edit.domain.model.Moji
 import ru.jr2.edit.presentation.view.moji.edit.MojiEditComponentFragment
 import ru.jr2.edit.presentation.view.moji.edit.MojiEditSearchFragment
+import ru.jr2.edit.presentation.viewmodel.BaseEditViewModel
 import ru.jr2.edit.presentation.viewmodel.EditMode
-import tornadofx.*
+import tornadofx.Scope
+import tornadofx.find
+import tornadofx.onChange
+import tornadofx.swap
 
 class MojiEditViewModel(
     mojiId: Int,
-    private val mode: EditMode = if (mojiId == 0) EditMode.CREATE else EditMode.UPDATE,
     private val mojiRepository: MojiDbRepository = MojiDbRepository()
-) : ItemViewModel<Moji>() {
+) : BaseEditViewModel<Moji>(mojiId, mojiRepository, Moji()) {
     val pValue = bind(Moji::pValue)
     val pStrokeCount = bind(Moji::pStrokeCount)
     val pOnReading = bind(Moji::pOnReading)
@@ -30,14 +33,10 @@ class MojiEditViewModel(
 
     init {
         components.onChange {
-            pComponents.value = components.joinToString { it.value }
+            pComponents.value = components.joinToString { c -> c.value }
         }
-        item = when (mode) {
-            EditMode.UPDATE -> {
-                components.addAll(mojiRepository.getComponentsOfMoji(mojiId))
-                mojiRepository.getById(mojiId)
-            }
-            EditMode.CREATE -> Moji()
+        if (mode == EditMode.UPDATE) {
+            components.addAll(mojiRepository.getComponentsOfMoji(mojiId))
         }
     }
 

@@ -7,19 +7,12 @@ import ru.jr2.edit.Style.Companion.largeButton
 import ru.jr2.edit.Style.Companion.mediumButton
 import ru.jr2.edit.domain.JlptLevel
 import ru.jr2.edit.domain.MojiType
-import ru.jr2.edit.presentation.view.BaseFragment
+import ru.jr2.edit.presentation.view.BaseEditFragment
 import ru.jr2.edit.presentation.viewmodel.moji.MojiEditViewModel
 import tornadofx.*
 
-class MojiEditFragment : BaseFragment() {
-    private val viewModel: MojiEditViewModel
-
-    val paramMojiId: Int by param(0)
-
-    init {
-        viewModel = MojiEditViewModel(paramMojiId)
-        title = if (paramMojiId == 0) "Добавить моджи" else "Редактировать моджи"
-    }
+class MojiEditFragment : BaseEditFragment() {
+    private val viewModel: MojiEditViewModel = MojiEditViewModel(baseModelId)
 
     override val root = borderpane {
         top = form {

@@ -2,17 +2,16 @@ package ru.jr2.edit.presentation.view.moji.list
 
 import javafx.geometry.Pos
 import javafx.scene.control.Button
-import javafx.scene.control.ButtonBar
-import javafx.scene.control.ButtonType
 import ru.jr2.edit.Style.Companion.bottomButtonPane
 import ru.jr2.edit.domain.model.Moji
 import ru.jr2.edit.presentation.viewmodel.moji.MojiListViewModel
+import ru.jr2.edit.util.showWarningMsg
 import tornadofx.*
 
 class MojiListView : View() {
     private val viewModel: MojiListViewModel by inject()
 
-    private var btnEditMoji: Button by singleAssign()
+    private var btnEdit: Button by singleAssign()
     private var btnDelete: Button by singleAssign()
 
     override val root = borderpane {
@@ -26,7 +25,7 @@ class MojiListView : View() {
             smartResize()
             onSelectionChange { moji ->
                 (moji !is Moji).let {
-                    btnEditMoji.isDisable = it
+                    btnEdit.isDisable = it
                     btnDelete.isDisable = it
                 }
                 moji?.let {
@@ -63,7 +62,7 @@ class MojiListView : View() {
                 button("Добавить") {
                     action { viewModel.onNewMojiClick() }
                 }
-                btnEditMoji = button("Редактировать") {
+                btnEdit = button("Редактировать") {
                     action { viewModel.onEditMojiClick() }
                     isDisable = true
                 }
@@ -72,20 +71,14 @@ class MojiListView : View() {
                     isDisable = true
                 }
             }
+
             addClass(bottomButtonPane)
         }
     }
 
-    private fun showDeleteMojiWarning() = warning(
+    private fun showDeleteMojiWarning() = showWarningMsg(
         "Удалить моджи",
         "Вы уверены, что хотите удалить ${viewModel.selectedMoji.toString()}?",
-        ButtonType.OK, ButtonType.CANCEL,
-        title = "Удалить моджи",
-        actionFn = {
-            when (it.buttonData) {
-                ButtonBar.ButtonData.OK_DONE -> viewModel.onDeleteMojiClick()
-                else -> this.close()
-            }
-        }
+        viewModel::onDeleteMojiClick
     )
 }

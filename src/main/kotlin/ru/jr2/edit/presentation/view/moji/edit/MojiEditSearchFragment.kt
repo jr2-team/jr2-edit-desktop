@@ -25,7 +25,7 @@ class MojiEditSearchFragment : Fragment("Поиск моджи") {
             placeholder = label("Нет моджи по заданному запросу")
             column("Моджи", Moji::pValue)
             column("Вид", Moji::pMojiType)
-            column("Перевод", Moji::pInterpretation).remainingWidth()
+            column("Интерпретация", Moji::pInterpretation).remainingWidth()
             smartResize()
             onSelectionChange { moji ->
                 viewModel.selectedComponent = moji

@@ -4,19 +4,12 @@ import javafx.geometry.Pos
 import javafx.scene.layout.Priority
 import ru.jr2.edit.Style.Companion.largeButton
 import ru.jr2.edit.domain.JlptLevel
-import ru.jr2.edit.presentation.view.BaseFragment
+import ru.jr2.edit.presentation.view.BaseEditFragment
 import ru.jr2.edit.presentation.viewmodel.word.WordEditViewModel
 import tornadofx.*
 
-class WordEditFragment : BaseFragment() {
-    private val viewModel: WordEditViewModel
-
-    val paramWordId: Int by param(0)
-
-    init {
-        viewModel = WordEditViewModel(paramWordId)
-        title = if (paramWordId == 0) "Добавить слово" else "Редактировать слово"
-    }
+class WordEditFragment : BaseEditFragment("слово") {
+    private val viewModel: WordEditViewModel = WordEditViewModel(baseModelId)
 
     override val root = borderpane {
         center = form {

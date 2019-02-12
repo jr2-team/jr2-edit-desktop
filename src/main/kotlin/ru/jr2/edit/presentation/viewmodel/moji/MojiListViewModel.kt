@@ -35,7 +35,7 @@ class MojiListViewModel(
 
     fun onEditMojiClick() {
         find<MojiEditFragment>(
-            Pair(MojiEditFragment::paramMojiId, selectedMoji?.id)
+            Pair(MojiEditFragment::baseModelId, selectedMoji?.id)
         ).openModal(
             StageStyle.UTILITY,
             escapeClosesWindow = false,

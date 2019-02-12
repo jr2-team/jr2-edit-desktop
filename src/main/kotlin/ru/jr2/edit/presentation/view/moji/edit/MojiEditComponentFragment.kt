@@ -7,7 +7,7 @@ import ru.jr2.edit.domain.model.Moji
 import ru.jr2.edit.presentation.viewmodel.moji.MojiEditViewModel
 import tornadofx.*
 
-class MojiEditComponentFragment : Fragment("") {
+class MojiEditComponentFragment : Fragment("Редактирование списка компонентов") {
     private val viewModel: MojiEditViewModel by inject()
 
     override val root = borderpane {
@@ -15,7 +15,7 @@ class MojiEditComponentFragment : Fragment("") {
             placeholder = label("У моджи нет компонентов")
             column("Моджи", Moji::pValue)
             column("Вид", Moji::pMojiType)
-            column("Перевод", Moji::pInterpretation).remainingWidth()
+            column("Интерпретация", Moji::pInterpretation).remainingWidth()
             smartResize()
             onSelectionChange { viewModel.selectedComponent = it }
         }

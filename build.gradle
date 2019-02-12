@@ -14,7 +14,7 @@ dependencies {
     compile "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.1.1"
     compile "org.jetbrains.kotlinx:kotlinx-coroutines-javafx:1.1.1"
 
-    compile "org.jetbrains.exposed:exposed:0.12.1"
+    compile "org.jetbrains.exposed:exposed:0.12.2"
 
     compile "no.tornado:tornadofx:1.7.17"
     compile "no.tornado:tornadofx-controls:1.0.4"

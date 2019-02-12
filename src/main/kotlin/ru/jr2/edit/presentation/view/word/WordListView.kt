@@ -4,6 +4,7 @@ import javafx.scene.control.Button
 import ru.jr2.edit.Style
 import ru.jr2.edit.domain.model.Word
 import ru.jr2.edit.presentation.viewmodel.word.WordListViewModel
+import ru.jr2.edit.util.showWarningMsg
 import tornadofx.*
 
 class WordListView : View() {
@@ -14,7 +15,7 @@ class WordListView : View() {
 
     override val root = borderpane {
         center = tableview(viewModel.words) {
-            column("Значение", Word::pValue)
+            column("Слово", Word::pValue)
             column("Фуригана", Word::pFurigana)
             column("Интерпретация", Word::pInterpretation).remainingWidth()
             column("Уровень JLPT", Word::pJlptLevel)
@@ -38,11 +39,17 @@ class WordListView : View() {
                 }
                 btnDeleteWord = button("Удалить") {
                     isDisable = true
-                    action { viewModel.onDeleteWordClick() }
+                    action { showDeleteWordWarning() }
                 }
             }
 
             addClass(Style.bottomButtonPane)
         }
     }
+
+    private fun showDeleteWordWarning() = showWarningMsg(
+        "Удалить слово",
+        "Вы уверены, что хотите удалить ${viewModel.selectedWord.toString()}?",
+        viewModel::onDeleteWordClick
+    )
 }

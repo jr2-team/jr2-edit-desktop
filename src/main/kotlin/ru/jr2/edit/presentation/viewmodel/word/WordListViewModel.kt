@@ -29,7 +29,7 @@ class WordListViewModel(
 
     fun onEditWordClick() {
         find<WordEditFragment>(
-            Pair(WordEditFragment::paramWordId, selectedWord?.id)
+            Pair(WordEditFragment::baseModelId, selectedWord?.id)
         ).openModal(
             StageStyle.UTILITY,
             resizable = false,

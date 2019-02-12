@@ -17,13 +17,7 @@ class Moji(
     interpretation: String = String(),
     jlptLevel: String = JlptLevel.NO_LEVEL.str,
     mojiType: String = MojiType.KANJI.str
-) {
-    val pId = SimpleIntegerProperty(id)
-    var id: Int by pId
-
-    val pValue = SimpleStringProperty(value)
-    var value: String by pValue
-
+) : BaseModel(id, value) {
     val pStrokeCount = SimpleIntegerProperty(strokeCount)
     var strokeCount: Int by pStrokeCount
 
@@ -42,13 +36,9 @@ class Moji(
     val pMojiType = SimpleStringProperty(mojiType)
     var mojiType: String by pMojiType
 
-    override fun toString(): String {
-        return "$value - $mojiType"
-    }
-
     companion object {
         fun fromEntity(mojiEntity: MojiEntity): Moji = with(mojiEntity) {
-            return Moji(
+            Moji(
                 id.value,
                 value,
                 strokeCount,

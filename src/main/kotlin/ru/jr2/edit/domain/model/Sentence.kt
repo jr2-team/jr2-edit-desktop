@@ -1,17 +1,15 @@
 package ru.jr2.edit.domain.model
 
 import javafx.beans.property.SimpleStringProperty
-import ru.jr2.edit.domain.JlptLevel
-import ru.jr2.edit.domain.entity.WordEntity
+import ru.jr2.edit.domain.entity.SentenceEntity
 import tornadofx.getValue
 import tornadofx.setValue
 
-class Word(
+class Sentence(
     id: Int = 0,
     value: String = String(),
     furigana: String = String(),
-    interpretation: String = String(),
-    jlptLevel: String = JlptLevel.NO_LEVEL.str
+    interpretation: String = String()
 ) : BaseModel(id, value) {
     val pFurigana = SimpleStringProperty(furigana)
     var furigana: String by pFurigana
@@ -19,17 +17,13 @@ class Word(
     val pInterpretation = SimpleStringProperty(interpretation)
     var interpretation: String by pInterpretation
 
-    val pJlptLevel = SimpleStringProperty(jlptLevel)
-    var jlptLevel: String by pJlptLevel
-
     companion object {
-        fun fromEntity(wordEntity: WordEntity) = with(wordEntity) {
-            Word(
+        fun fromEntity(sentenceEntity: SentenceEntity): Sentence = with(sentenceEntity) {
+            Sentence(
                 id.value,
                 value,
                 furigana ?: String(),
-                interpretation ?: String(),
-                JlptLevel.fromCode(jlptLevel).str
+                interpretation ?: String()
             )
         }
     }

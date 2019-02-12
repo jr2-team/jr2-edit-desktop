@@ -28,6 +28,7 @@ internal class MojiDbRepositoryTest {
     @Test
     fun getById() = transaction(testDb) {
         SchemaUtils.create(MojiTable, ComponentKanjiTable)
+
         val testMoji = repository.insert(Moji(value = "Moji"))
         assertEquals(
             testMoji.value,
@@ -36,23 +37,20 @@ internal class MojiDbRepositoryTest {
     }
 
     @Test
-    fun getById1() = transaction(testDb) {
-    }
+    fun insertUpdate() = transaction(testDb) {
+        SchemaUtils.create(MojiTable)
 
-    @Test
-    fun getAll() {
-    }
+        val testMoji0 = repository.insertUpdate(Moji(value = "Moji0"))
+        assertEquals(
+            testMoji0.value,
+            repository.getById(testMoji0.id).value
+        )
 
-    @Test
-    fun getComponentsOfMoji() {
-    }
-
-    @Test
-    fun getBySearchQuery() {
-    }
-
-    @Test
-    fun create() {
+        val testMoji1 = repository.insertUpdate(Moji(id = testMoji0.id, value = "Moji1"))
+        assertEquals(
+            testMoji1.value,
+            repository.getById(testMoji1.id).value
+        )
     }
 
     @Test
