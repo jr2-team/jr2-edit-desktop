@@ -7,9 +7,9 @@ import tornadofx.ItemViewModel
 abstract class BaseEditViewModel<T : BaseModel>(
     baseModelId: Int,
     repository: BaseDbRepository<T>,
-    intiBaseModel: T,
+    initBaseModel: T,
     internal val mode: EditMode = if (baseModelId == 0) EditMode.CREATE else EditMode.UPDATE
-) : ItemViewModel<T>(intiBaseModel) {
+) : ItemViewModel<T>(initBaseModel) {
     init {
         if (mode == EditMode.UPDATE) {
             item = repository.getById(baseModelId)

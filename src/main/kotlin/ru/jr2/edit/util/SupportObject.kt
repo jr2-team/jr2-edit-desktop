@@ -4,6 +4,7 @@ import org.jetbrains.exposed.sql.SqlLogger
 import org.jetbrains.exposed.sql.Transaction
 import org.jetbrains.exposed.sql.statements.StatementContext
 import org.jetbrains.exposed.sql.statements.expandArgs
+import org.joda.time.DateTime
 import org.slf4j.LoggerFactory
 import ru.jr2.edit.EditApp
 
@@ -13,3 +14,5 @@ object KotlinLoggingSqlLogger : SqlLogger {
         logger.info("SQL: ${context.expandArgs(transaction)}")
     }
 }
+
+val MinDateTime = DateTime(2019, 0, 0, 0, 0)

@@ -53,3 +53,24 @@ enum class JlptLevel(val code: Int, val str: String) {
         fun getNames() = JlptLevel.values().map { it.str }
     }
 }
+
+enum class GroupType(val code: Int, val str: String) {
+    KANJI_GROUP(0, "Группа канджи"),
+    WORD_GROUP(1, "Группа слов");
+
+    companion object {
+        fun fromCode(code: Int): GroupType = when (code) {
+            KANJI_GROUP.code -> KANJI_GROUP
+            WORD_GROUP.code -> WORD_GROUP
+            else -> throw IllegalArgumentException()
+        }
+
+        fun fromStr(str: String): GroupType = when (str) {
+            KANJI_GROUP.str -> KANJI_GROUP
+            WORD_GROUP.str -> WORD_GROUP
+            else -> throw IllegalArgumentException()
+        }
+
+        fun getNames() = GroupType.values().map { it.str }
+    }
+}
