@@ -2,8 +2,8 @@ package ru.jr2.edit.domain.model
 
 import javafx.beans.property.SimpleIntegerProperty
 import javafx.beans.property.SimpleStringProperty
-import ru.jr2.edit.domain.JlptLevel
-import ru.jr2.edit.domain.MojiType
+import ru.jr2.edit.domain.misc.JlptLevel
+import ru.jr2.edit.domain.misc.MojiType
 import ru.jr2.edit.domain.entity.MojiEntity
 import tornadofx.getValue
 import tornadofx.setValue

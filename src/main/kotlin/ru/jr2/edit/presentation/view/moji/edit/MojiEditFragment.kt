@@ -5,8 +5,8 @@ import javafx.geometry.Pos
 import javafx.scene.layout.Priority
 import ru.jr2.edit.Style.Companion.largeButton
 import ru.jr2.edit.Style.Companion.mediumButton
-import ru.jr2.edit.domain.JlptLevel
-import ru.jr2.edit.domain.MojiType
+import ru.jr2.edit.domain.misc.JlptLevel
+import ru.jr2.edit.domain.misc.MojiType
 import ru.jr2.edit.presentation.view.BaseEditFragment
 import ru.jr2.edit.presentation.viewmodel.moji.MojiEditViewModel
 import tornadofx.*
@@ -21,7 +21,7 @@ class MojiEditFragment : BaseEditFragment() {
                 setMaxSize(48.0, 48.0)
                 required(message = "Обязательное поле")
                 filterInput {
-                    with(it.controlNewText) { return@filterInput length == 1 }
+                    with(it.controlNewText) { length == 1 }
                 }
                 style {
                     alignment = Pos.CENTER
@@ -37,9 +37,7 @@ class MojiEditFragment : BaseEditFragment() {
                     textfield(viewModel.pStrokeCount) {
                         required(message = requiredMsg)
                         filterInput {
-                            with(it.controlNewText) {
-                                return@filterInput isInt() && this.toInt() > 0
-                            }
+                            with(it.controlNewText) { isInt() && toInt() > 0 }
                         }
                     }
                 }

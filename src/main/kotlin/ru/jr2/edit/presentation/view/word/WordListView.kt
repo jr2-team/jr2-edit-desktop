@@ -1,7 +1,9 @@
 package ru.jr2.edit.presentation.view.word
 
+import javafx.geometry.Pos
 import javafx.scene.control.Button
 import ru.jr2.edit.Style
+import ru.jr2.edit.Style.Companion.filter
 import ru.jr2.edit.domain.model.Word
 import ru.jr2.edit.presentation.viewmodel.word.WordListViewModel
 import ru.jr2.edit.util.showWarningMsg
@@ -12,6 +14,11 @@ class WordListView : View() {
 
     private var btnEditWord: Button by singleAssign()
     private var btnDeleteWord: Button by singleAssign()
+
+    override fun onTabSelected() {
+        super.onTabSelected()
+        viewModel.loadContent()
+    }
 
     override val root = borderpane {
         center = tableview(viewModel.words) {
@@ -31,6 +38,26 @@ class WordListView : View() {
         }
 
         bottom = borderpane {
+            right = hbox(10.0) {
+                button("-") {
+                    action { viewModel.onChangePageClick(false) }
+                }
+                textfield(viewModel.pCurrentPage) {
+                    alignment = Pos.BASELINE_CENTER
+                    filterInput {
+                        with(it.controlNewText) {
+                            isInt() && toInt() in 1..viewModel.pTotalPageCount.value
+                        }
+                    }
+                }
+                button("+").action { viewModel.onChangePageClick(true) }
+                label(viewModel.pTotalPageCount) {
+                    alignment = Pos.BASELINE_CENTER
+                }
+
+                addClass(filter)
+            }
+
             left = buttonbar {
                 button("Добавить").action { viewModel.onNewWordClick() }
                 btnEditWord = button("Редактировать") {

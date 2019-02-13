@@ -3,7 +3,7 @@ package ru.jr2.edit.presentation.view.word
 import javafx.geometry.Pos
 import javafx.scene.layout.Priority
 import ru.jr2.edit.Style.Companion.largeButton
-import ru.jr2.edit.domain.JlptLevel
+import ru.jr2.edit.domain.misc.JlptLevel
 import ru.jr2.edit.presentation.view.BaseEditFragment
 import ru.jr2.edit.presentation.viewmodel.word.WordEditViewModel
 import tornadofx.*

@@ -1,8 +1,11 @@
 package ru.jr2.edit.data.db.repository
 
+import org.jetbrains.exposed.sql.batchInsert
+import org.jetbrains.exposed.sql.selectAll
 import org.jetbrains.exposed.sql.transactions.transaction
-import ru.jr2.edit.domain.JlptLevel
+import ru.jr2.edit.data.db.table.WordTable
 import ru.jr2.edit.domain.entity.WordEntity
+import ru.jr2.edit.domain.misc.JlptLevel
 import ru.jr2.edit.domain.model.Word
 
 class WordDbRepository : BaseDbRepository<Word>() {
@@ -11,14 +14,24 @@ class WordDbRepository : BaseDbRepository<Word>() {
     }
 
     override fun getById(vararg id: Int): List<Word> = transaction(db) {
-        return@transaction id.map {
+        id.map {
             Word.fromEntity(WordEntity[it])
         }
     }
 
     override fun getAll(): List<Word> = transaction(db) {
-        return@transaction WordEntity.all().map { Word.fromEntity(it) }
+        WordEntity.all().map { Word.fromEntity(it) }
     }
+
+    fun getWithOffset(n: Int, offset: Int): List<Word> = transaction(db) {
+        WordTable.selectAll()
+            .limit(n, offset)
+            .map {
+                Word.fromEntity(WordEntity.wrapRow(it))
+            }
+    }
+
+    fun getCount(): Int = transaction(db) { WordEntity.count() }
 
     override fun insert(word: Word): Word = transaction(db) {
         val newWord = WordEntity.new {
@@ -27,11 +40,20 @@ class WordDbRepository : BaseDbRepository<Word>() {
             interpretation = word.interpretation
             jlptLevel = JlptLevel.fromStr(word.jlptLevel).code
         }
-        return@transaction Word.fromEntity(newWord)
+        Word.fromEntity(newWord)
+    }
+
+    fun insertAll(words: List<Word>) = transaction(db) {
+        WordTable.batchInsert(words) {
+            this[WordTable.value] = if (it.value.isBlank()) it.furigana else it.value
+            this[WordTable.furigana] = it.furigana
+            this[WordTable.interpretation] = it.interpretation
+            this[WordTable.jlptLevel] = JlptLevel.fromStr(it.jlptLevel).code
+        }
     }
 
     override fun insertUpdate(word: Word): Word = transaction(db) {
-        return@transaction WordEntity.findById(word.id)?.run {
+        WordEntity.findById(word.id)?.run {
             value = word.value
             furigana = word.furigana
             interpretation = word.interpretation

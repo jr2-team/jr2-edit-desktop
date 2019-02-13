@@ -14,6 +14,8 @@ class Style : Stylesheet() {
         val bottomButtonPane by cssclass()
         val utilityFragment by cssclass()
         val fragmentMiniButton by cssclass()
+
+        val filter by cssclass()
     }
 
     init {
@@ -23,12 +25,18 @@ class Style : Stylesheet() {
             wrapText = true
         }
 
-        bottomButtonPane {
+        filter {
             padding = box(10.px)
-            button {
-                minWidth = 120.px
+            s(button, textField, label) {
+                minWidth = 48.px
+                maxWidth = 48.px
                 minHeight = 28.px
             }
+
+        }
+
+        bottomButtonPane {
+            padding = box(10.px)
             buttonBar {
                 button {
                     minWidth = 120.px

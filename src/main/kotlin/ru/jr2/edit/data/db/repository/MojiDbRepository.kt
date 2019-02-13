@@ -5,8 +5,8 @@ import org.jetbrains.exposed.sql.transactions.transaction
 import ru.jr2.edit.EditApp
 import ru.jr2.edit.data.db.table.ComponentKanjiTable
 import ru.jr2.edit.data.db.table.MojiTable
-import ru.jr2.edit.domain.JlptLevel
-import ru.jr2.edit.domain.MojiType
+import ru.jr2.edit.domain.misc.JlptLevel
+import ru.jr2.edit.domain.misc.MojiType
 import ru.jr2.edit.domain.entity.MojiEntity
 import ru.jr2.edit.domain.model.Moji
 import ru.jr2.edit.domain.model.Word
