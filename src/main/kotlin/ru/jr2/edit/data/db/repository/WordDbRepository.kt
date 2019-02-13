@@ -5,6 +5,7 @@ import org.jetbrains.exposed.sql.selectAll
 import org.jetbrains.exposed.sql.transactions.transaction
 import ru.jr2.edit.data.db.table.WordTable
 import ru.jr2.edit.domain.entity.WordEntity
+import ru.jr2.edit.domain.misc.Entry
 import ru.jr2.edit.domain.misc.JlptLevel
 import ru.jr2.edit.domain.model.Word
 
@@ -43,13 +44,13 @@ class WordDbRepository : BaseDbRepository<Word>() {
         Word.fromEntity(newWord)
     }
 
-    fun insertAll(words: List<Word>) = transaction(db) {
-        WordTable.batchInsert(words) {
+    fun insertAllEntries(entries: List<Entry>) = transaction(db) {
+        /*WordTable.batchInsert(words) {
             this[WordTable.value] = if (it.value.isBlank()) it.furigana else it.value
             this[WordTable.furigana] = it.furigana
             this[WordTable.interpretation] = it.interpretation
             this[WordTable.jlptLevel] = JlptLevel.fromStr(it.jlptLevel).code
-        }
+        }*/
     }
 
     override fun insertUpdate(word: Word): Word = transaction(db) {

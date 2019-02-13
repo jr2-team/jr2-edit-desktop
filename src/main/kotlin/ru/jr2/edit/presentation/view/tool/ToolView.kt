@@ -1,4 +1,4 @@
-package ru.jr2.edit.presentation.view.parser
+package ru.jr2.edit.presentation.view.tool
 
 import com.fasterxml.jackson.dataformat.xml.XmlMapper
 import ru.jr2.edit.EditApp
@@ -34,7 +34,7 @@ class ToolViewModel(
 
         val dictionary = xmlMapper.readValue(xmlStreamReader, Dictionary::class.java)
 
-        val words = dictionary.entries?.map { e ->
+        /*val words = dictionary.entries?.map { e ->
             Word().apply {
                 e.kanjiElement?.first()?.reading?.let { value = it }
                 e.readingElement?.first()?.reading?.let { furigana = it }
@@ -46,7 +46,7 @@ class ToolViewModel(
                 }
 
             }
-        }
-        WordDbRepository().insertAll(words!!)
+        }*/
+        dictionary.entries?.let { WordDbRepository().insertAllEntries(it) }
     }
 }

@@ -1,7 +1,7 @@
 package ru.jr2.edit.presentation.view
 
 import ru.jr2.edit.presentation.view.moji.list.MojiListView
-import ru.jr2.edit.presentation.view.parser.ToolView
+import ru.jr2.edit.presentation.view.tool.ToolView
 import ru.jr2.edit.presentation.view.sentence.SentenceListView
 import ru.jr2.edit.presentation.view.word.WordListView
 import tornadofx.View
