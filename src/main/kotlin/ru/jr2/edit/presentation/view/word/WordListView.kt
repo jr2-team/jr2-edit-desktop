@@ -3,7 +3,7 @@ package ru.jr2.edit.presentation.view.word
 import javafx.geometry.Pos
 import javafx.scene.control.Button
 import ru.jr2.edit.Style
-import ru.jr2.edit.Style.Companion.filter
+import ru.jr2.edit.Style.Companion.paginationControl
 import ru.jr2.edit.domain.model.Word
 import ru.jr2.edit.presentation.viewmodel.word.WordListViewModel
 import ru.jr2.edit.util.showWarningMsg
@@ -55,7 +55,7 @@ class WordListView : View() {
                     alignment = Pos.BASELINE_CENTER
                 }
 
-                addClass(filter)
+                addClass(paginationControl)
             }
 
             left = buttonbar {

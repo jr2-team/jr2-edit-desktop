@@ -1,52 +1,35 @@
 package ru.jr2.edit.presentation.view.tool
 
-import com.fasterxml.jackson.dataformat.xml.XmlMapper
-import ru.jr2.edit.EditApp
-import ru.jr2.edit.data.db.repository.WordDbRepository
-import ru.jr2.edit.domain.misc.Dictionary
-import ru.jr2.edit.domain.misc.GlossaryEntry
-import ru.jr2.edit.domain.model.Word
+import ru.jr2.edit.Style
+import ru.jr2.edit.Style.Companion.toolSection
+import ru.jr2.edit.presentation.viewmodel.tool.ToolViewModel
 import tornadofx.*
-import java.io.File
-import java.nio.file.Paths
-import javax.xml.stream.XMLInputFactory
 
 
 class ToolView : View() {
     private val viewModel: ToolViewModel by inject()
 
-    override val root = borderpane {
-        center = button("Parse") {
-            action { viewModel.onParseClick() }
-        }
-    }
-}
+    override val root = form {
+        borderpane {
+            top = label("Парсинг Edict-словоря слов")
 
-class ToolViewModel(
-    private val xmlMapper: XmlMapper = EditApp.instance.xmlMapper
-) : ViewModel() {
-    fun onParseClick() {
-        val pathToJMdict = "${Paths.get("").toAbsolutePath()}\\JMdict"
+            left = label(viewModel.pWordEdictProcessingState)
 
-        val xmlStreamReader = XMLInputFactory
-            .newInstance()
-            .createXMLStreamReader(File(pathToJMdict).inputStream())
-
-        val dictionary = xmlMapper.readValue(xmlStreamReader, Dictionary::class.java)
-
-        /*val words = dictionary.entries?.map { e ->
-            Word().apply {
-                e.kanjiElement?.first()?.reading?.let { value = it }
-                e.readingElement?.first()?.reading?.let { furigana = it }
-                val gloses = e.senses?.filter { it.glossaryEntries is List<GlossaryEntry> }?.flatMap {
-                    it.glossaryEntries!!
+            right = buttonbar {
+                button("Обработать файл") {
+                    disableProperty().bind(viewModel.pIsBusy)
+                    action {
+                        viewModel.onWordEdictFileChoose(chooseFile(null, emptyArray()))
+                    }
+                    addClass(Style.mediumButton)
                 }
-                interpretation = gloses?.filter { it.language == "rus" }.run {
-                    this!!.joinToString { it.definition }
+                button("Отмена") {
+                    disableProperty().bind(viewModel.pIsBusy.not())
+                    action { viewModel.onCancelProcessingClick() }
+                    addClass(Style.mediumButton)
                 }
-
             }
-        }*/
-        dictionary.entries?.let { WordDbRepository().insertAllEntries(it) }
+            addClass(toolSection)
+        }
     }
 }

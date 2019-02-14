@@ -1,4 +1,4 @@
-package ru.jr2.edit.domain.misc
+package ru.jr2.edit.data.editc.mapping
 
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty
@@ -9,19 +9,19 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlText
 class Dictionary(
     @JacksonXmlProperty(localName = "entry")
     @JacksonXmlElementWrapper(useWrapping = false)
-    var entries: List<Entry>?
+    var entries: List<WordEdictEntry>
 )
 
 @JacksonXmlRootElement(localName = "entry")
-class Entry(
+class WordEdictEntry(
     @JacksonXmlProperty(localName = "ent_seq")
     val id: Int = 0,
     @JacksonXmlProperty(localName = "k_ele")
     @JacksonXmlElementWrapper(useWrapping = false)
-    val kanjiElement: List<KanjiElement>?,
+    val kanjiElements: List<KanjiElement>?,
     @JacksonXmlProperty(localName = "r_ele")
     @JacksonXmlElementWrapper(useWrapping = false)
-    val readingElement: List<KanaElement>?,
+    val readingElements: List<KanaElement>?,
     @JacksonXmlProperty(localName = "sense")
     @JacksonXmlElementWrapper(useWrapping = false)
     val senses: List<Sense>?
@@ -67,6 +67,10 @@ class GlossaryEntry(
     @JacksonXmlProperty(isAttribute = true, localName = "lang", namespace = "xml")
     val language: String?
 ) {
+    /*
+    Пришлось вынести из конструктора, поскольку адаптер jackson
+    под kotlin не вопринимает аннатацию @JacksonXmlText
+     */
     @JacksonXmlText
     val definition = String()
 }
