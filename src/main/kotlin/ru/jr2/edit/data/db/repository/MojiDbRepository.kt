@@ -5,9 +5,9 @@ import org.jetbrains.exposed.sql.transactions.transaction
 import ru.jr2.edit.EditApp
 import ru.jr2.edit.data.db.table.ComponentKanjiTable
 import ru.jr2.edit.data.db.table.MojiTable
+import ru.jr2.edit.domain.entity.MojiEntity
 import ru.jr2.edit.domain.misc.JlptLevel
 import ru.jr2.edit.domain.misc.MojiType
-import ru.jr2.edit.domain.entity.MojiEntity
 import ru.jr2.edit.domain.model.Moji
 import ru.jr2.edit.domain.model.Word
 
@@ -15,17 +15,15 @@ class MojiDbRepository(
     override val db: Database = EditApp.instance.db
 ) : BaseDbRepository<Moji>(db) {
     override fun getById(id: Int): Moji = transaction(db) {
-        return@transaction Moji.fromEntity(MojiEntity[id])
+        Moji.fromEntity(MojiEntity[id])
     }
 
     override fun getById(vararg id: Int): List<Moji> = transaction(db) {
-        return@transaction id.map {
-            Moji.fromEntity(MojiEntity[it])
-        }
+        id.map { Moji.fromEntity(MojiEntity[it]) }
     }
 
     override fun getAll(): List<Moji> = transaction(db) {
-        return@transaction MojiEntity.all().map { Moji.fromEntity(it) }
+        MojiEntity.all().map { Moji.fromEntity(it) }
     }
 
     override fun insert(moji: Moji): Moji = transaction(db) {
@@ -38,11 +36,25 @@ class MojiDbRepository(
             jlptLevel = JlptLevel.fromStr(moji.jlptLevel).code
             mojiType = MojiType.fromStr(moji.mojiType).code
         }
-        return@transaction Moji.fromEntity(newMoji)
+        Moji.fromEntity(newMoji)
+    }
+
+    fun insertAll(mojis: List<Moji>) {
+        transaction(db) {
+            MojiTable.batchInsert(mojis) {
+                this[MojiTable.value] = it.value
+                this[MojiTable.strokeCount] = it.strokeCount
+                this[MojiTable.onReading] = it.onReading
+                this[MojiTable.kunReading] = it.kunReading
+                this[MojiTable.interpretation] = it.interpretation
+                this[MojiTable.jlptLevel] = JlptLevel.fromStr(it.jlptLevel).code
+                this[MojiTable.mojiType] = MojiType.fromStr(it.mojiType).code
+            }
+        }
     }
 
     override fun insertUpdate(moji: Moji): Moji = transaction(db) {
-        return@transaction MojiEntity.findById(moji.id)?.run {
+        MojiEntity.findById(moji.id)?.run {
             value = moji.value
             strokeCount = moji.strokeCount
             kunReading = moji.kunReading
@@ -54,6 +66,7 @@ class MojiDbRepository(
         } ?: insert(moji)
     }
 
+
     override fun delete(moji: Moji) = transaction(db) {
         ComponentKanjiTable.deleteWhere {
             ComponentKanjiTable.moji eq MojiEntity[moji.id].id
@@ -63,7 +76,7 @@ class MojiDbRepository(
 
     fun getComponentsOfMoji(mojiId: Int): List<Moji> = transaction(db) {
         val componentAlias = ComponentKanjiTable.alias("component_moji")
-        return@transaction MojiTable
+        MojiTable
             .innerJoin(
                 componentAlias,
                 { MojiTable.id },
@@ -81,7 +94,7 @@ class MojiDbRepository(
 
     // TODO: Придумать мхеанизм поиска, перевод каны в романджи?
     fun getBySearchQuery(query: String): List<Moji> = transaction(db) {
-        return@transaction MojiTable
+        MojiTable
             .select {
                 MojiTable.interpretation.upperCase() like "%$query%".toUpperCase()
             }
@@ -96,7 +109,7 @@ class MojiDbRepository(
                 MojiTable.mojiType eq MojiType.fromStr(moji.mojiType).code
             )
         }.count()
-        return@transaction mojisFound > 0
+        mojisFound > 0
     }
 
     fun getByWord(word: Word): List<Moji> = transaction(db) {
@@ -108,7 +121,7 @@ class MojiDbRepository(
         }.map {
             it?.run { Moji.fromEntity(it) }
         }
-        return@transaction listOf<Moji>()
+        listOf<Moji>()
     }
 
     @Suppress("NAME_SHADOWING")

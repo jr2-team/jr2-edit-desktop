@@ -19,12 +19,12 @@ class ParseWordEdictUseCase(
     val pParseStateMsg = SimpleStringProperty(String())
 
     suspend fun parseEdictAndSaveToDb(edictFile: File) = coroutineScope {
-        changeStateMsg("Извлечение вхождений из файла")
+        changeStateMsg("Извлечение вхождений слов из файла")
         val wordEntries = wordEdictRepository.getWordEntriesFromFile(edictFile)
-        changeStateMsg("Обработка вхождений")
+        changeStateMsg("Обработка слов")
         // Не могу понять, на солько pmap действительно работает
         val words = wordEntries.pmap { transformEntry(it) }
-        changeStateMsg("Запись в БД")
+        changeStateMsg("Запись слов в БД")
         withContext(Dispatchers.Default) { wordDbRepository.insertAll(words) }
     }
 

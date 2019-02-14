@@ -6,71 +6,50 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlText
 
 @JacksonXmlRootElement(localName = "JMdict")
-class Dictionary(
+class WordDictionary(
     @JacksonXmlProperty(localName = "entry")
-    @JacksonXmlElementWrapper(useWrapping = false)
-    var entries: List<WordEdictEntry>
+    @JacksonXmlElementWrapper(useWrapping = false) var entries: List<WordEdictEntry>
 )
 
 @JacksonXmlRootElement(localName = "entry")
 class WordEdictEntry(
-    @JacksonXmlProperty(localName = "ent_seq")
-    val id: Int = 0,
+    @JacksonXmlProperty(localName = "ent_seq") val id: Int = 0,
     @JacksonXmlProperty(localName = "k_ele")
-    @JacksonXmlElementWrapper(useWrapping = false)
-    val kanjiElements: List<KanjiElement>?,
+    @JacksonXmlElementWrapper(useWrapping = false) val kanjiElements: List<KanjiElement>?,
     @JacksonXmlProperty(localName = "r_ele")
-    @JacksonXmlElementWrapper(useWrapping = false)
-    val readingElements: List<KanaElement>?,
+    @JacksonXmlElementWrapper(useWrapping = false) val readingElements: List<KanaElement>?,
     @JacksonXmlProperty(localName = "sense")
-    @JacksonXmlElementWrapper(useWrapping = false)
-    val senses: List<Sense>?
+    @JacksonXmlElementWrapper(useWrapping = false) val senses: List<Sense>?
 )
 
 @JacksonXmlRootElement(localName = "k_ele")
 class KanjiElement(
-    @JacksonXmlProperty(localName = "keb")
-    val reading: String?,
-    @JacksonXmlProperty(localName = "ke_inf")
-    val info: String?,
-    @JacksonXmlProperty(localName = "ke_pri")
-    val priority: String?
+    @JacksonXmlProperty(localName = "keb") val reading: String?,
+    @JacksonXmlProperty(localName = "ke_inf") val info: String?,
+    @JacksonXmlProperty(localName = "ke_pri") val priority: String?
 )
 
 @JacksonXmlRootElement(localName = "r_ele")
 class KanaElement(
-    @JacksonXmlProperty(localName = "reb")
-    var reading: String?,
-    @JacksonXmlProperty(localName = "re_inf")
-    val info: String?,
-    @JacksonXmlProperty(localName = "re_pri")
-    val priority: String?
+    @JacksonXmlProperty(localName = "reb") var reading: String?,
+    @JacksonXmlProperty(localName = "re_inf") val info: String?,
+    @JacksonXmlProperty(localName = "re_pri") val priority: String?
 )
 
 @JacksonXmlRootElement(localName = "sense")
 class Sense(
     @JacksonXmlProperty(localName = "pos")
-    @JacksonXmlElementWrapper(useWrapping = false)
-    val partsOfSpeach: List<String>?,
+    @JacksonXmlElementWrapper(useWrapping = false) val partsOfSpeach: List<String>?,
     @JacksonXmlProperty(localName = "gloss")
-    @JacksonXmlElementWrapper(useWrapping = false)
-    val glossaryEntries: List<GlossaryEntry>?,
+    @JacksonXmlElementWrapper(useWrapping = false) val glossaryEntries: List<GlossaryEntry>?,
     @JacksonXmlProperty(localName = "xref")
-    @JacksonXmlElementWrapper(useWrapping = false)
-    val references: List<String>?
+    @JacksonXmlElementWrapper(useWrapping = false) val references: List<String>?
 )
 
 @JacksonXmlRootElement(localName = "gloss")
 class GlossaryEntry(
-    @JacksonXmlProperty(isAttribute = true, localName = "g_type")
-    val type: String?,
-    @JacksonXmlProperty(isAttribute = true, localName = "lang", namespace = "xml")
-    val language: String?
+    @JacksonXmlProperty(isAttribute = true, localName = "g_type") val type: String?,
+    @JacksonXmlProperty(isAttribute = true, localName = "lang", namespace = "xml") val language: String?
 ) {
-    /*
-    Пришлось вынести из конструктора, поскольку адаптер jackson
-    под kotlin не вопринимает аннатацию @JacksonXmlText
-     */
-    @JacksonXmlText
-    val definition = String()
+    @JacksonXmlText val definition = String()
 }
