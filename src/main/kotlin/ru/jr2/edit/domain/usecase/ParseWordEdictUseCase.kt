@@ -22,7 +22,7 @@ class ParseWordEdictUseCase(
         changeStateMsg("Извлечение вхождений из файла")
         val wordEntries = wordEdictRepository.getWordEntriesFromFile(edictFile)
         changeStateMsg("Обработка вхождений")
-        // Не могу понять, насолько pmap действительно работает
+        // Не могу понять, на солько pmap действительно работает
         val words = wordEntries.pmap { transformEntry(it) }
         changeStateMsg("Запись в БД")
         withContext(Dispatchers.Default) { wordDbRepository.insertAll(words) }
