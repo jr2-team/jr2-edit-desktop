@@ -1,19 +1,16 @@
 package ru.jr2.edit
 
-import tornadofx.Stylesheet
-import tornadofx.box
-import tornadofx.cssclass
-import tornadofx.px
+import tornadofx.*
 
 class Style : Stylesheet() {
     companion object {
         val largeButton by cssclass()
         val mediumButton by cssclass()
         val miniButton by cssclass()
-
         val bottomButtonPane by cssclass()
         val utilityFragment by cssclass()
         val fragmentMiniButton by cssclass()
+        val paginationControl by cssclass()
     }
 
     init {
@@ -23,12 +20,16 @@ class Style : Stylesheet() {
             wrapText = true
         }
 
-        bottomButtonPane {
-            padding = box(10.px)
-            button {
-                minWidth = 120.px
+        paginationControl {
+            s(button, textField, label) {
+                minWidth = 48.px
+                maxWidth = 48.px
                 minHeight = 28.px
             }
+        }
+
+        bottomButtonPane {
+            padding = box(10.px)
             buttonBar {
                 button {
                     minWidth = 120.px

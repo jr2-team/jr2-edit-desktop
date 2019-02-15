@@ -1,7 +1,7 @@
 package ru.jr2.edit.domain.model
 
 import javafx.beans.property.SimpleStringProperty
-import ru.jr2.edit.domain.JlptLevel
+import ru.jr2.edit.domain.misc.JlptLevel
 import ru.jr2.edit.domain.entity.WordEntity
 import tornadofx.getValue
 import tornadofx.setValue

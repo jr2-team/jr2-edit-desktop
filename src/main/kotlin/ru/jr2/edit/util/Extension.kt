@@ -1,6 +1,8 @@
 package ru.jr2.edit.util
 
 import javafx.stage.StageStyle
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.withContext
 import org.jetbrains.exposed.sql.Op
 import org.jetbrains.exposed.sql.Query
 import org.jetbrains.exposed.sql.SqlExpressionBuilder
@@ -20,4 +22,9 @@ fun Query.andWhere(andPart: SqlExpressionBuilder.() -> Op<Boolean>) = adjustWher
     } else {
         this and expr
     }
+}
+
+// coroutines
+suspend fun <A, B> Iterable<A>.pmap(f: suspend (A) -> B): List<B> = coroutineScope {
+    map { withContext(coroutineContext) { f(it) } }
 }

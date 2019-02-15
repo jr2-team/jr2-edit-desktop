@@ -3,19 +3,20 @@ package ru.jr2.edit.presentation.view.word
 import javafx.geometry.Pos
 import javafx.scene.layout.Priority
 import ru.jr2.edit.Style.Companion.largeButton
-import ru.jr2.edit.domain.JlptLevel
+import ru.jr2.edit.domain.misc.JlptLevel
+import ru.jr2.edit.domain.model.Word
 import ru.jr2.edit.presentation.view.BaseEditFragment
 import ru.jr2.edit.presentation.viewmodel.word.WordEditViewModel
 import tornadofx.*
 
-class WordEditFragment : BaseEditFragment("слово") {
-    private val viewModel: WordEditViewModel = WordEditViewModel(baseModelId)
+class WordEditFragment : BaseEditFragment<Word, WordEditViewModel>() {
+    override val viewModel = WordEditViewModel(paramItemId)
 
     override val root = borderpane {
         center = form {
             fieldset {
                 field("Слово") {
-                    textfield(viewModel.pValue).required(message = "Обязательное поле")
+                    textfield(viewModel.pValue).required(message = requiredMsg)
                 }
                 field("Фуригана") {
                     textfield(viewModel.pFurigana)
@@ -23,23 +24,20 @@ class WordEditFragment : BaseEditFragment("слово") {
                 field("Основные интерпритации") {
                     textarea(viewModel.pInterpretation) {
                         vgrow = Priority.NEVER
-                        required(message = "Обязательное поле")
-                    }
+                    }.required(message = requiredMsg)
                 }
                 field("Уровень JLPT") {
                     combobox(viewModel.pJlptLevel, JlptLevel.getNames())
                 }
             }
         }
-
         bottom = hbox {
             button("Сохранить") {
                 enableWhen(viewModel.valid)
-                action {
-                    viewModel.commit { viewModel.onSaveClick() }
-                    close()
-                }
                 addClass(largeButton)
+            }.action {
+                viewModel.onSaveClick()
+                close()
             }
             alignment = Pos.BOTTOM_RIGHT
         }

@@ -1,6 +1,7 @@
 package ru.jr2.edit.presentation.view
 
-import ru.jr2.edit.presentation.view.moji.list.MojiListView
+import ru.jr2.edit.presentation.view.group.GroupListView
+import ru.jr2.edit.presentation.view.moji.MojiListView
 import ru.jr2.edit.presentation.view.sentence.SentenceListView
 import ru.jr2.edit.presentation.view.word.WordListView
 import tornadofx.View
@@ -11,6 +12,7 @@ class RootView : View("JR2-Edit") {
     private val mojiListView: MojiListView by inject()
     private val wordListView: WordListView by inject()
     private val sentenceListView: SentenceListView by inject()
+    private val groupListView: GroupListView by inject()
 
     override val root = tabpane {
         tab("Кана") {
@@ -28,8 +30,9 @@ class RootView : View("JR2-Edit") {
             isClosable = false
             add(sentenceListView)
         }
-        tab("Управление группами") {
+        tab("Группы") {
             isClosable = false
+            add(groupListView)
         }
     }
 }
