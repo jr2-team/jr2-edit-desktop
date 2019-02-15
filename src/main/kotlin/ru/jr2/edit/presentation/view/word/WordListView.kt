@@ -21,6 +21,12 @@ class WordListView : View() {
     }
 
     override val root = borderpane {
+        top = buttonbar {
+            button("Edict").action { viewModel.onParseClick() }
+            button("Обновить данные").action { viewModel.loadContent() }
+            paddingAll = 5.0
+        }
+
         center = tableview(viewModel.words) {
             column("Слово", Word::pValue)
             column("Фуригана", Word::pFurigana)

@@ -16,11 +16,16 @@ class KanjiEdictEntry(
     @JacksonXmlProperty val literal: String,
     @JacksonXmlProperty val codepoint: CodePoint,
     @JacksonXmlProperty val radical: Radical,
-    @JacksonXmlProperty val grade: Int,
-    @JacksonXmlProperty val strokeCount: Int,
-    @JacksonXmlProperty(localName = "freq") val frequency: Int,
-    @JacksonXmlProperty val jlpt: Int,
+    @JacksonXmlProperty val misc: Misc,
     @JacksonXmlProperty(localName = "reading_meaning") val readingMeaning: ReadingMeaning?
+)
+
+@JacksonXmlRootElement(localName = "misc")
+class Misc(
+    @JacksonXmlProperty(localName = "stroke_count") val strokeCount: Int,
+    @JacksonXmlProperty val grade: Int,
+    @JacksonXmlProperty(localName = "freq") val frequency: Int,
+    @JacksonXmlProperty val jlpt: Int
 )
 
 @JacksonXmlRootElement(localName = "codepoint")
@@ -75,10 +80,9 @@ class Reading(
 }
 
 @JacksonXmlRootElement(localName = "meaning")
-class Meaning {
-    @JacksonXmlProperty(isAttribute = true, localName = "m_lang")
-    val language: String = String()
-
+class Meaning(
+    @JacksonXmlProperty(isAttribute = true, localName = "m_lang") val language: String = String()
+) {
     @JacksonXmlText
     val value: String = String()
 }

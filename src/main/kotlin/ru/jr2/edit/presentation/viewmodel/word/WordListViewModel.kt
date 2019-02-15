@@ -7,6 +7,7 @@ import javafx.stage.StageStyle
 import ru.jr2.edit.data.db.repository.WordDbRepository
 import ru.jr2.edit.domain.model.Word
 import ru.jr2.edit.presentation.view.word.WordEditFragment
+import ru.jr2.edit.presentation.view.word.WordParseFragment
 import tornadofx.ViewModel
 import tornadofx.getValue
 import tornadofx.onChange
@@ -66,6 +67,14 @@ class WordListViewModel(
             wordRepository.delete(it)
             loadContent()
         }
+    }
+
+    fun onParseClick() {
+        find<WordParseFragment>().openModal(
+            StageStyle.UTILITY,
+            escapeClosesWindow = false,
+            resizable = false
+        )
     }
 
     private fun subscribeOnEventBus() {

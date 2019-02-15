@@ -5,6 +5,7 @@ import javafx.collections.ObservableList
 import javafx.stage.StageStyle
 import ru.jr2.edit.data.db.repository.MojiDbRepository
 import ru.jr2.edit.domain.model.Moji
+import ru.jr2.edit.presentation.view.moji.KanjiParseFragment
 import ru.jr2.edit.presentation.view.moji.edit.MojiEditFragment
 import tornadofx.ViewModel
 
@@ -16,8 +17,12 @@ class MojiListViewModel(
     var selectedMoji: Moji? = null
 
     init {
-        fetchContent()
         subscribeOnEventBus()
+    }
+
+    fun loadContent() {
+        mojis.clear()
+        mojis.addAll(mojiRepository.getAll())
     }
 
     fun onMojiSelect(kanji: Moji) {
@@ -55,14 +60,19 @@ class MojiListViewModel(
 
     }
 
-    private fun fetchContent() {
-        mojis.clear()
-        mojis.addAll(mojiRepository.getAll())
+    fun onParseClick() {
+        find<KanjiParseFragment>().openModal(
+            StageStyle.UTILITY,
+            escapeClosesWindow = false,
+            resizable = false
+        )
     }
 
     private fun subscribeOnEventBus() {
         subscribe<MojiSavedEvent> { ctx ->
-            if (ctx.isSaved) fetchContent()
+            if (ctx.isSaved) loadContent()
         }
     }
+
+
 }

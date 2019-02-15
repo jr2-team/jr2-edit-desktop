@@ -1,4 +1,4 @@
-package ru.jr2.edit.presentation.view.moji.list
+package ru.jr2.edit.presentation.view.moji
 
 import javafx.geometry.Pos
 import javafx.scene.control.Button
@@ -14,9 +14,23 @@ class MojiListView : View() {
     private var btnEdit: Button by singleAssign()
     private var btnDelete: Button by singleAssign()
 
+    override fun onTabSelected() {
+        super.onTabSelected()
+        viewModel.loadContent()
+    }
+
     override val root = borderpane {
+        top = buttonbar {
+            button("Edict").action { viewModel.onParseClick() }
+            button("KanjiVG").action { }
+            button("Обновить данные").action { viewModel.loadContent() }
+            paddingAll = 5.0
+        }
+
         center = tableview(viewModel.mojis) {
-            column("Значение", Moji::pValue)
+            column("Значение", Moji::pValue).style {
+                fontSize = 18.px
+            }
             column("Интерпретации", Moji::pInterpretation).remainingWidth()
             column("Кунное чтение", Moji::pKunReading)
             column("Онное чтение", Moji::pOnReading)

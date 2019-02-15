@@ -1,10 +1,8 @@
 package ru.jr2.edit.domain.usecase
 
 import javafx.beans.property.SimpleStringProperty
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.withContext
 import ru.jr2.edit.data.db.repository.WordDbRepository
 import ru.jr2.edit.data.editc.mapping.WordEdictEntry
 import ru.jr2.edit.data.editc.repository.WordEdictRepository
@@ -19,13 +17,12 @@ class ParseWordEdictUseCase(
     val pParseStateMsg = SimpleStringProperty(String())
 
     suspend fun parseEdictAndSaveToDb(edictFile: File) = coroutineScope {
-        changeStateMsg("Извлечение вхождений слов из файла")
+        changeStateMsg("Извлечение cлов из файла")
         val wordEntries = wordEdictRepository.getWordEntriesFromFile(edictFile)
         changeStateMsg("Обработка слов")
-        // Не могу понять, на солько pmap действительно работает
         val words = wordEntries.pmap { transformEntry(it) }
         changeStateMsg("Запись слов в БД")
-        withContext(Dispatchers.Default) { wordDbRepository.insertAll(words) }
+        wordDbRepository.insertAll(words)
     }
 
     // TODO: Подстроить схему БД под JMdict более точно
