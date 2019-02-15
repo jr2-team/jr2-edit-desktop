@@ -6,6 +6,8 @@ import com.fasterxml.jackson.dataformat.xml.XmlMapper
 import com.fasterxml.jackson.module.kotlin.registerKotlinModule
 import javafx.stage.Stage
 import org.jetbrains.exposed.sql.transactions.TransactionManager
+import org.joda.time.DateTimeZone
+import org.joda.time.format.DateTimeFormat
 import ru.jr2.edit.presentation.view.RootView
 import tornadofx.App
 import tornadofx.importStylesheet
@@ -21,6 +23,7 @@ class EditApp : App(RootView::class, Style::class) {
     init {
         TransactionManager.manager.defaultIsolationLevel = TRANSACTION_READ_UNCOMMITTED
         instance = this
+        DateTimeFormat.forPattern("dd.MM.yyyy")
     }
 
     override fun start(stage: Stage) {

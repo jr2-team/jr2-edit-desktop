@@ -94,13 +94,11 @@ class MojiDbRepository(
 
     // TODO: Придумать мхеанизм поиска, перевод каны в романджи?
     fun getBySearchQuery(query: String): List<Moji> = transaction(db) {
-        MojiTable
-            .select {
-                MojiTable.interpretation.upperCase() like "%$query%".toUpperCase()
-            }
-            .map {
-                Moji.fromEntity(MojiEntity.wrapRow(it))
-            }
+        MojiEntity.find {
+            MojiTable.interpretation.upperCase() like "%$query%".toUpperCase()
+        }.map {
+            Moji.fromEntity(it)
+        }
     }
 
     fun doesExist(moji: Moji): Boolean = transaction(db) {

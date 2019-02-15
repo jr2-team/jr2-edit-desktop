@@ -8,6 +8,7 @@ import ru.jr2.edit.domain.entity.MojiEntity
 import tornadofx.getValue
 import tornadofx.setValue
 
+// TODO: Убрать конструктор
 class Moji(
     id: Int = 0,
     value: String = String(),

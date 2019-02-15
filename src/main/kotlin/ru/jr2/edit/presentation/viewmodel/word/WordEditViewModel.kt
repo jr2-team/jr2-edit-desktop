@@ -6,19 +6,10 @@ import ru.jr2.edit.presentation.viewmodel.BaseEditViewModel
 import ru.jr2.edit.presentation.viewmodel.EditMode
 
 class WordEditViewModel(
-    wordId: Int,
-    private val wordRepository: WordDbRepository = WordDbRepository()
-) : BaseEditViewModel<Word>(wordId, wordRepository, Word()) {
+    wordId: Int
+) : BaseEditViewModel<Word>(wordId, WordDbRepository(), Word()) {
     val pValue = bind(Word::pValue)
     val pFurigana = bind(Word::pFurigana)
     val pInterpretation = bind(Word::pInterpretation)
     val pJlptLevel = bind(Word::pJlptLevel)
-
-    fun onSaveClick() {
-        when (mode) {
-            EditMode.UPDATE -> wordRepository.insertUpdate(item)
-            EditMode.CREATE -> wordRepository.insert(item)
-        }
-        fire(WordSavedEvent(true))
-    }
 }

@@ -21,9 +21,13 @@ class WordListView : View() {
     }
 
     override val root = borderpane {
-        top = buttonbar {
-            button("Edict").action { viewModel.onParseClick() }
-            button("Обновить данные").action { viewModel.loadContent() }
+        top = hbox {
+            button("Edict") {
+                addClass(Style.mediumButton)
+            }.action { viewModel.onParseClick() }
+            button("Обновить данные") {
+                addClass(Style.mediumButton)
+            }.action { viewModel.loadContent() }
             paddingAll = 5.0
         }
 
@@ -44,7 +48,7 @@ class WordListView : View() {
         }
 
         bottom = borderpane {
-            right = hbox(10.0) {
+            right = hbox {
                 button("-") {
                     action { viewModel.onChangePageClick(false) }
                 }
@@ -60,7 +64,6 @@ class WordListView : View() {
                 label(viewModel.pTotalPageCount) {
                     alignment = Pos.BASELINE_CENTER
                 }
-
                 addClass(paginationControl)
             }
 

@@ -11,7 +11,6 @@ class Style : Stylesheet() {
         val utilityFragment by cssclass()
         val fragmentMiniButton by cssclass()
         val paginationControl by cssclass()
-        val toolSection by cssclass()
     }
 
     init {
@@ -22,13 +21,11 @@ class Style : Stylesheet() {
         }
 
         paginationControl {
-            padding = box(10.px)
             s(button, textField, label) {
                 minWidth = 48.px
                 maxWidth = 48.px
                 minHeight = 28.px
             }
-
         }
 
         bottomButtonPane {
@@ -61,12 +58,6 @@ class Style : Stylesheet() {
             minHeight = 28.px
             maxWidth = 20.px
             maxHeight = 28.px
-        }
-
-        toolSection {
-            padding = box(10.px)
-            borderColor += box(c("#222222"))
-            minWidth = 200.px
         }
     }
 }

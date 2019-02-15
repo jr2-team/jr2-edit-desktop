@@ -7,6 +7,7 @@ import ru.jr2.edit.data.db.repository.MojiDbRepository
 import ru.jr2.edit.domain.model.Moji
 import ru.jr2.edit.presentation.view.moji.KanjiParseFragment
 import ru.jr2.edit.presentation.view.moji.edit.MojiEditFragment
+import ru.jr2.edit.presentation.viewmodel.BaseEditViewModel
 import tornadofx.ViewModel
 
 class MojiListViewModel(
@@ -17,7 +18,9 @@ class MojiListViewModel(
     var selectedMoji: Moji? = null
 
     init {
-        subscribeOnEventBus()
+        subscribe<BaseEditViewModel.ItemSavedEvent> { ctx ->
+            if (ctx.isSaved) loadContent()
+        }
     }
 
     fun loadContent() {
@@ -40,7 +43,7 @@ class MojiListViewModel(
 
     fun onEditMojiClick() {
         find<MojiEditFragment>(
-            Pair(MojiEditFragment::baseModelId, selectedMoji?.id)
+            Pair(MojiEditFragment::paramItemId, selectedMoji?.id)
         ).openModal(
             StageStyle.UTILITY,
             escapeClosesWindow = false,
@@ -67,12 +70,4 @@ class MojiListViewModel(
             resizable = false
         )
     }
-
-    private fun subscribeOnEventBus() {
-        subscribe<MojiSavedEvent> { ctx ->
-            if (ctx.isSaved) loadContent()
-        }
-    }
-
-
 }

@@ -1,18 +1,19 @@
 package ru.jr2.edit.presentation.view
 
+import ru.jr2.edit.domain.model.BaseModel
+import ru.jr2.edit.presentation.viewmodel.BaseEditViewModel
 import ru.jr2.edit.util.showWarningMsg
 import tornadofx.Fragment
 
-abstract class BaseEditFragment(baseModelName: String = "") : Fragment() {
-    val baseModelId: Int by param(0)
+abstract class BaseEditFragment<T : BaseModel, VT : BaseEditViewModel<T>>(
+    titleCreate: String = "Создать запись",
+    titleEdit: String = "Редактировать запись"
+) : Fragment() {
+    internal abstract val viewModel: VT
+    val paramItemId: Int by param(0)
 
     init {
-        // TODO: Использовать baseModelName - плохо, поскольку добавляет семантическое поведения
-        title = if (baseModelId == 0) {
-            "Добавить $baseModelName"
-        } else {
-            "Редактировать $baseModelName"
-        }
+        title = if (paramItemId == 0) titleCreate else titleEdit
     }
 
     override fun onBeforeShow() {
@@ -24,6 +25,7 @@ abstract class BaseEditFragment(baseModelName: String = "") : Fragment() {
     }
 
     override fun onDock() {
+        super.onDock()
         root.requestFocus()
     }
 

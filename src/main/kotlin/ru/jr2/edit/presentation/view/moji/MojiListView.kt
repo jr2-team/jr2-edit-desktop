@@ -3,6 +3,7 @@ package ru.jr2.edit.presentation.view.moji
 import javafx.geometry.Pos
 import javafx.scene.control.Button
 import ru.jr2.edit.Style.Companion.bottomButtonPane
+import ru.jr2.edit.Style.Companion.mediumButton
 import ru.jr2.edit.domain.model.Moji
 import ru.jr2.edit.presentation.viewmodel.moji.MojiListViewModel
 import ru.jr2.edit.util.showWarningMsg
@@ -20,23 +21,32 @@ class MojiListView : View() {
     }
 
     override val root = borderpane {
-        top = buttonbar {
-            button("Edict").action { viewModel.onParseClick() }
-            button("KanjiVG").action { }
-            button("Обновить данные").action { viewModel.loadContent() }
+        top = hbox {
+            button("Edict") {
+                addClass(mediumButton)
+            }.action { viewModel.onParseClick() }
+            button("KanjiVG") {
+                addClass(mediumButton)
+            }.action { }
+            button("Обновить данные") {
+                addClass(mediumButton)
+            }.action { viewModel.loadContent() }
             paddingAll = 5.0
         }
 
         center = tableview(viewModel.mojis) {
-            column("Значение", Moji::pValue).style {
-                fontSize = 18.px
-            }
-            column("Интерпретации", Moji::pInterpretation).remainingWidth()
+            column(String(), Moji::pValue) {
+                style {
+                    alignment = Pos.BASELINE_CENTER
+                    fontSize = 18.px
+                }
+            }.contentWidth()
+            column("Интерпретации", Moji::pInterpretation)
             column("Кунное чтение", Moji::pKunReading)
             column("Онное чтение", Moji::pOnReading)
             column("Уровень JLPT", Moji::pJlptLevel)
             column("Тип моджи", Moji::pMojiType)
-            smartResize()
+            columnResizePolicy = SmartResize.POLICY
             onSelectionChange { moji ->
                 (moji !is Moji).let {
                     btnEdit.isDisable = it

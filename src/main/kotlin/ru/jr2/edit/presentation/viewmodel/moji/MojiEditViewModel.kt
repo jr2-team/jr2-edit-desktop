@@ -50,17 +50,12 @@ class MojiEditViewModel(
             .openModal(StageStyle.UTILITY, resizable = false)
     }
 
-    fun onSaveClick() {
-        mojiRepository.insertUpdateMojiComponent(item, components)
-        fire(MojiSavedEvent(true))
+    fun onComponentAddClick() = selectedComponent?.let {
+        if (!components.contains(it)) components.add(it)
     }
 
     fun onComponentRemoveClick() = selectedComponent?.let {
         components.remove(it)
-    }
-
-    fun onComponentAddClick() = selectedComponent?.let {
-        if (!components.contains(it)) components.add(it)
     }
 
     fun onComponentMoveUpClick() = selectedComponent?.let {
@@ -75,5 +70,11 @@ class MojiEditViewModel(
         if (selectedIdx < components.size - 1) {
             components.swap(selectedIdx, selectedIdx + 1)
         }
+    }
+
+    override fun onSaveClick(doOnSave: () -> Unit) {
+        commit()
+        mojiRepository.insertUpdateMojiComponent(item, components)
+        fire(ItemSavedEvent(true))
     }
 }

@@ -6,6 +6,7 @@ import javafx.stage.StageStyle
 import ru.jr2.edit.data.db.repository.SentenceDbRepository
 import ru.jr2.edit.domain.model.Sentence
 import ru.jr2.edit.presentation.view.sentence.SentenceEditFragment
+import ru.jr2.edit.presentation.viewmodel.BaseEditViewModel
 import tornadofx.ViewModel
 
 class SentenceListViewModel(
@@ -16,11 +17,12 @@ class SentenceListViewModel(
     var selectedSentence: Sentence? = null
 
     init {
-        fetchContent()
-        subscribeOnEventBus()
+        subscribe<BaseEditViewModel.ItemSavedEvent> { ctx ->
+            if (ctx.isSaved) loadContent()
+        }
     }
 
-    private fun fetchContent() {
+    private fun loadContent() {
         sentences.clear()
         sentences.addAll(sentenceRepository.getAll())
     }
@@ -35,7 +37,7 @@ class SentenceListViewModel(
 
     fun onEditSentenceClick() {
         find<SentenceEditFragment>(
-            Pair(SentenceEditFragment::baseModelId, selectedSentence?.id ?: 0)
+            Pair(SentenceEditFragment::paramItemId, selectedSentence?.id ?: 0)
         ).openModal(
             StageStyle.UTILITY,
             escapeClosesWindow = false,
@@ -47,12 +49,6 @@ class SentenceListViewModel(
         selectedSentence?.let {
             sentenceRepository.delete(it)
             sentences.remove(it)
-        }
-    }
-
-    private fun subscribeOnEventBus() {
-        subscribe<SentenceSavedEvent> { ctx ->
-            if (ctx.isSaved) fetchContent()
         }
     }
 }

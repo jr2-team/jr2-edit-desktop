@@ -8,6 +8,7 @@ import ru.jr2.edit.data.db.repository.WordDbRepository
 import ru.jr2.edit.domain.model.Word
 import ru.jr2.edit.presentation.view.word.WordEditFragment
 import ru.jr2.edit.presentation.view.word.WordParseFragment
+import ru.jr2.edit.presentation.viewmodel.BaseEditViewModel
 import tornadofx.ViewModel
 import tornadofx.getValue
 import tornadofx.onChange
@@ -27,7 +28,9 @@ class WordListViewModel(
 
     init {
         pCurrentPage.onChange { loadContent() }
-        subscribeOnEventBus()
+        subscribe<BaseEditViewModel.ItemSavedEvent> { ctx ->
+            if (ctx.isSaved) loadContent()
+        }
     }
 
     fun loadContent() {
@@ -54,7 +57,7 @@ class WordListViewModel(
 
     fun onEditWordClick() {
         find<WordEditFragment>(
-            Pair(WordEditFragment::baseModelId, selectedWord?.id)
+            Pair(WordEditFragment::paramItemId, selectedWord?.id)
         ).openModal(
             StageStyle.UTILITY,
             resizable = false,
@@ -75,12 +78,6 @@ class WordListViewModel(
             escapeClosesWindow = false,
             resizable = false
         )
-    }
-
-    private fun subscribeOnEventBus() {
-        subscribe<WordSavedEvent> { ctx ->
-            if (ctx.isSaved) loadContent()
-        }
     }
 
     companion object {
