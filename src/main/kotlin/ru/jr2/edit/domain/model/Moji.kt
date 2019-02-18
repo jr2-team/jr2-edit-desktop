@@ -2,53 +2,70 @@ package ru.jr2.edit.domain.model
 
 import javafx.beans.property.SimpleIntegerProperty
 import javafx.beans.property.SimpleStringProperty
+import ru.jr2.edit.domain.entity.KanjiReadingEntity
+import ru.jr2.edit.domain.entity.MojiEntity
 import ru.jr2.edit.domain.misc.JlptLevel
 import ru.jr2.edit.domain.misc.MojiType
-import ru.jr2.edit.domain.entity.MojiEntity
 import tornadofx.getValue
 import tornadofx.setValue
 
-// TODO: Убрать конструктор
-class Moji(
-    id: Int = 0,
-    value: String = String(),
-    strokeCount: Int = 0,
-    onReading: String = String(),
-    kunReading: String = String(),
-    interpretation: String = String(),
-    jlptLevel: String = JlptLevel.NO_LEVEL.str,
-    mojiType: String = MojiType.KANJI.str
-) : BaseModel(id, value) {
-    val pStrokeCount = SimpleIntegerProperty(strokeCount)
+class Moji(id: Int = 0) : BaseModel(id) {
+    val pMoji = SimpleStringProperty()
+    var moji: String by pMoji
+
+    val pStrokeCount = SimpleIntegerProperty()
     var strokeCount: Int by pStrokeCount
 
-    val pOnReading = SimpleStringProperty(onReading)
-    var onReading: String by pOnReading
+    val pOnReading = SimpleStringProperty()
+    var onReading: String? by pOnReading
 
-    val pKunReading = SimpleStringProperty(kunReading)
-    var kunReading: String by pKunReading
+    val pKunReading = SimpleStringProperty()
+    var kunReading: String? by pKunReading
 
-    val pInterpretation = SimpleStringProperty(interpretation)
-    var interpretation: String by pInterpretation
+    val pInterpretation = SimpleStringProperty()
+    var interpretation: String? by pInterpretation
 
-    val pJlptLevel = SimpleStringProperty(jlptLevel)
+    val pJlptLevel = SimpleStringProperty()
     var jlptLevel: String by pJlptLevel
 
-    val pMojiType = SimpleStringProperty(mojiType)
+    val pMojiType = SimpleStringProperty()
     var mojiType: String by pMojiType
 
+    val pFrequency = SimpleIntegerProperty()
+    var frequency: Int by pFrequency
+
+    val pGrade = SimpleIntegerProperty()
+    var grade: Int? by pGrade
+
+    var svg: String? = null
+
     companion object {
-        fun fromEntity(mojiEntity: MojiEntity): Moji = with(mojiEntity) {
-            Moji(
-                id.value,
-                value,
-                strokeCount,
-                onReading ?: String(),
-                kunReading ?: String(),
-                interpretation ?: String(),
-                JlptLevel.fromCode(jlptLevel).str,
-                MojiType.fromCode(mojiType).str
-            )
+        fun fromEntity(
+            mojiEntity: MojiEntity,
+            kanjiReadingEntities: List<KanjiReadingEntity>? = null
+        ): Moji {
+            val moji = Moji(mojiEntity.id.value).apply {
+                moji = mojiEntity.moji
+                strokeCount = mojiEntity.strokeCount
+                interpretation = mojiEntity.interpretation
+                frequency = mojiEntity.frequency
+                grade = mojiEntity.grade
+                svg = mojiEntity.svg
+                jlptLevel = JlptLevel.fromCode(mojiEntity.jlptLevel).str
+                mojiType = MojiType.fromCode(mojiEntity.mojiType).str
+            }
+            /**
+             * Если у моджи есть Он-/Кун- чтения
+             */
+            if (kanjiReadingEntities is List<KanjiReadingEntity>) {
+                moji.onReading = kanjiReadingEntities
+                    .filter { it.readingType == 0 }
+                    .joinToString(" ") { it.reading }
+                moji.kunReading = kanjiReadingEntities
+                    .filter { it.readingType == 1 }
+                    .joinToString(" ") { it.reading }
+            }
+            return moji
         }
     }
 }

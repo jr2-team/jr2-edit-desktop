@@ -13,7 +13,7 @@ class MojiEditComponentFragment : Fragment("Редактирование спи�
     override val root = borderpane {
         center = tableview(viewModel.components) {
             placeholder = label("У моджи нет компонентов")
-            column("Моджи", Moji::pValue)
+            column("Моджи", Moji::moji)
             column("Вид", Moji::pMojiType)
             column("Интерпретация", Moji::pInterpretation).remainingWidth()
             smartResize()

@@ -16,7 +16,7 @@ class WordEditFragment : BaseEditFragment<Word, WordEditViewModel>() {
         center = form {
             fieldset {
                 field("Слово") {
-                    textfield(viewModel.pValue).required(message = requiredMsg)
+                    textfield(viewModel.pWord).required(message = requiredMsg)
                 }
                 field("Фуригана") {
                     textfield(viewModel.pFurigana)

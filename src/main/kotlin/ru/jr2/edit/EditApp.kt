@@ -1,29 +1,25 @@
 package ru.jr2.edit
 
-import DbSetting
+import Jr2Database
 import com.fasterxml.jackson.databind.DeserializationFeature
 import com.fasterxml.jackson.dataformat.xml.XmlMapper
 import com.fasterxml.jackson.module.kotlin.registerKotlinModule
 import javafx.stage.Stage
-import org.jetbrains.exposed.sql.transactions.TransactionManager
-import org.joda.time.DateTimeZone
-import org.joda.time.format.DateTimeFormat
+import org.jetbrains.exposed.sql.Database
 import ru.jr2.edit.presentation.view.RootView
 import tornadofx.App
 import tornadofx.importStylesheet
-import java.sql.Connection.TRANSACTION_READ_UNCOMMITTED
 
 class EditApp : App(RootView::class, Style::class) {
-    val db = DbSetting.db
+    val db: Database
     val xmlMapper = XmlMapper().apply {
         configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
         registerKotlinModule()
     }
 
     init {
-        TransactionManager.manager.defaultIsolationLevel = TRANSACTION_READ_UNCOMMITTED
         instance = this
-        DateTimeFormat.forPattern("dd.MM.yyyy")
+        db = Jr2Database.db
     }
 
     override fun start(stage: Stage) {

@@ -18,7 +18,7 @@ class MojiEditFragment : BaseEditFragment<Moji, MojiEditViewModel>() {
     override val root = borderpane {
         top = form {
             label("Моджи")
-            textfield(viewModel.pValue) {
+            textfield(viewModel.pMoji) {
                 setMaxSize(48.0, 48.0)
                 filterInput {
                     with(it.controlNewText) { length == 1 }
@@ -74,7 +74,6 @@ class MojiEditFragment : BaseEditFragment<Moji, MojiEditViewModel>() {
                 }
             }
         }
-
         bottom = hbox {
             button("Сохранить") {
                 enableWhen(viewModel.valid)

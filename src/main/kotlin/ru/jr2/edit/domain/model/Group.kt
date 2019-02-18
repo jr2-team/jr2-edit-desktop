@@ -6,17 +6,18 @@ import ru.jr2.edit.domain.misc.GroupType
 import tornadofx.getValue
 import tornadofx.setValue
 
-class Group(
-    id: Int = 0,
-    value: String = String(),
-    groupType: String = GroupType.WORD_GROUP.str
-) : BaseModel(id, value) {
-    val pGroupType = SimpleStringProperty(groupType)
+class Group(id: Int = 0) : BaseModel(id) {
+    val pName = SimpleStringProperty()
+    var name: String by pName
+
+    val pGroupType = SimpleStringProperty()
     var groupType: String by pGroupType
 
     companion object {
-        fun fromEntity(groupEntity: GroupEntity): Group = with(groupEntity) {
-            Group(id.value, value, GroupType.fromCode(groupType).str)
-        }
+        fun fromEntity(groupEntity: GroupEntity): Group =
+            Group(groupEntity.id.value).apply {
+                name = groupEntity.name
+                groupType = GroupType.fromCode(groupEntity.groupType).str
+            }
     }
 }

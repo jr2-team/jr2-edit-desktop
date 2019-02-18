@@ -37,7 +37,7 @@ class GroupListView : View() {
             add(btnSwitchToWord)
         }
         center = tableview(viewModel.groups) {
-            column("Имя группы", Group::pValue)
+            column("Имя группы", Group::pName)
         }
         bottom = borderpane {
             left = buttonbar {

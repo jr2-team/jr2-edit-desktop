@@ -6,11 +6,12 @@ import org.jetbrains.exposed.dao.IntEntityClass
 import ru.jr2.edit.data.db.table.MojiTable
 
 class MojiEntity(id: EntityID<Int>) : IntEntity(id) {
-    var value by MojiTable.value
+    var moji by MojiTable.moji
     var strokeCount by MojiTable.strokeCount
-    var onReading by MojiTable.onReading
-    var kunReading by MojiTable.kunReading
     var interpretation by MojiTable.interpretation
+    var frequency by MojiTable.frequency
+    var grade by MojiTable.grade
+    var svg by MojiTable.svg
     var jlptLevel by MojiTable.jlptLevel
     var mojiType by MojiTable.mojiType
 

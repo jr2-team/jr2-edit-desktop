@@ -19,25 +19,25 @@ class SentenceDbRepository : BaseDbRepository<Sentence>() {
         return@transaction SentenceEntity.all().map { Sentence.fromEntity(it) }
     }
 
-    override fun insert(sentence: Sentence): Sentence = transaction(db) {
+    override fun insert(model: Sentence): Sentence = transaction(db) {
         val newSentence = SentenceEntity.new {
-            value = sentence.value
-            furigana = sentence.furigana
-            interpretation = sentence.interpretation
+            sentence = model.sentence
+            furigana = model.furigana
+            interpretation = model.interpretation
         }
         return@transaction Sentence.fromEntity(newSentence)
     }
 
-    override fun insertUpdate(sentence: Sentence): Sentence = transaction(db) {
-        return@transaction SentenceEntity.findById(sentence.id)?.run {
-            value = sentence.value
-            furigana = sentence.furigana
-            interpretation = sentence.interpretation
-            getById(sentence.id)
-        } ?: insert(sentence)
+    override fun insertUpdate(model: Sentence): Sentence = transaction(db) {
+        return@transaction SentenceEntity.findById(model.id)?.run {
+            sentence = model.sentence
+            furigana = model.furigana
+            interpretation = model.interpretation
+            getById(model.id)
+        } ?: insert(model)
     }
 
-    override fun delete(sentence: Sentence) = transaction(db) {
-        SentenceEntity[sentence.id].delete()
+    override fun delete(model: Sentence) = transaction(db) {
+        SentenceEntity[model.id].delete()
     }
 }

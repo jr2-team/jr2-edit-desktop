@@ -15,7 +15,7 @@ class SentenceEditFragment : BaseEditFragment<Sentence, SentenceEditViewModel>()
         center = form {
             fieldset {
                 field("Предложение") {
-                    textarea(viewModel.pValue) {
+                    textarea(viewModel.pSentence) {
                         vgrow = Priority.NEVER
                         required()
                     }

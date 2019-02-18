@@ -20,10 +20,9 @@ class MojiEditSearchFragment : Fragment("Поиск моджи") {
                 searchViewModel.onSearchQueryChanged(query)
             }
         }
-
         center = tableview(searchViewModel.mojis) {
             placeholder = label("Нет моджи по заданному запросу")
-            column("Моджи", Moji::pValue)
+            column("Моджи", Moji::pMoji)
             column("Вид", Moji::pMojiType)
             column("Интерпретация", Moji::pInterpretation).remainingWidth()
             smartResize()
@@ -34,7 +33,6 @@ class MojiEditSearchFragment : Fragment("Поиск моджи") {
                 viewModel.onComponentAddClick()
             }
         }
-
         bottom = borderpane {
             right = button("Добавить") {
                 action { viewModel.onComponentAddClick() }
@@ -48,7 +46,6 @@ class MojiEditSearchFragment : Fragment("Поиск моджи") {
 
             paddingAll = 10.0
         }
-
         addClass(utilityFragment)
     }
 }

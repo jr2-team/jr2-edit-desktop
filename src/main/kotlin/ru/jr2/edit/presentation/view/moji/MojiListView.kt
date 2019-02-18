@@ -33,9 +33,8 @@ class MojiListView : View() {
             }.action { viewModel.loadContent() }
             paddingAll = 5.0
         }
-
         center = tableview(viewModel.mojis) {
-            column(String(), Moji::pValue) {
+            column(String(), Moji::pMoji) {
                 style {
                     alignment = Pos.BASELINE_CENTER
                     fontSize = 18.px
@@ -61,7 +60,6 @@ class MojiListView : View() {
                 viewModel.onEditMojiClick()
             }
         }
-
         right = listview(viewModel.components) {
             placeholder = label("Нет компонентов")
             cellFormat {
@@ -78,7 +76,6 @@ class MojiListView : View() {
             this.minWidth = 120.0
             this.maxWidth = 120.0
         }
-
         bottom = borderpane {
             right = button("Фильтровать")
 
@@ -95,7 +92,6 @@ class MojiListView : View() {
                     isDisable = true
                 }
             }
-
             addClass(bottomButtonPane)
         }
     }

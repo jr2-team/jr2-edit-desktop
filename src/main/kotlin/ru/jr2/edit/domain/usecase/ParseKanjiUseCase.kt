@@ -27,9 +27,8 @@ class ParseKanjiUseCase(
         mojiDbRepository.insertAll(kanjis)
     }
 
-    // TODO: Пределать схему БД
     private fun transformEntry(kanjiEdictEntry: KanjiEdictEntry) = Moji().apply {
-        value = kanjiEdictEntry.literal
+        moji = kanjiEdictEntry.literal
         strokeCount = kanjiEdictEntry.misc.strokeCount
         onReading = kanjiEdictEntry.readingMeaning?.rmgroup?.reading?.filter {
             it.type == "ja_on"

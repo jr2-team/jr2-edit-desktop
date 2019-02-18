@@ -30,9 +30,8 @@ class WordListView : View() {
             }.action { viewModel.loadContent() }
             paddingAll = 5.0
         }
-
         center = tableview(viewModel.words) {
-            column("Слово", Word::pValue)
+            column("Слово", Word::pWord)
             column("Фуригана", Word::pFurigana)
             column("Интерпретация", Word::pInterpretation).remainingWidth()
             column("Уровень JLPT", Word::pJlptLevel)
@@ -46,7 +45,6 @@ class WordListView : View() {
             }
             onUserSelect(2) { viewModel.onEditWordClick() }
         }
-
         bottom = borderpane {
             right = hbox {
                 button("-") {
@@ -66,7 +64,6 @@ class WordListView : View() {
                 }
                 addClass(paginationControl)
             }
-
             left = buttonbar {
                 button("Добавить").action { viewModel.onNewWordClick() }
                 btnEditWord = button("Редактировать") {
@@ -78,7 +75,6 @@ class WordListView : View() {
                     action { showDeleteWordWarning() }
                 }
             }
-
             addClass(Style.bottomButtonPane)
         }
     }
