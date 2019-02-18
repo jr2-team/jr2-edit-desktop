@@ -17,25 +17,25 @@ class Moji(id: Int = 0) : BaseModel(id) {
     var strokeCount: Int by pStrokeCount
 
     val pOnReading = SimpleStringProperty()
-    var onReading: String? by pOnReading
+    var onReading: String by pOnReading
 
     val pKunReading = SimpleStringProperty()
-    var kunReading: String? by pKunReading
+    var kunReading: String by pKunReading
 
     val pInterpretation = SimpleStringProperty()
-    var interpretation: String? by pInterpretation
+    var interpretation: String by pInterpretation
 
-    val pJlptLevel = SimpleStringProperty()
+    val pJlptLevel = SimpleStringProperty(JlptLevel.JLPT1.str)
     var jlptLevel: String by pJlptLevel
 
-    val pMojiType = SimpleStringProperty()
+    val pMojiType = SimpleStringProperty(MojiType.KANJI.str)
     var mojiType: String by pMojiType
 
     val pFrequency = SimpleIntegerProperty()
     var frequency: Int by pFrequency
 
     val pGrade = SimpleIntegerProperty()
-    var grade: Int? by pGrade
+    var grade: Int by pGrade
 
     var svg: String? = null
 
@@ -47,11 +47,11 @@ class Moji(id: Int = 0) : BaseModel(id) {
             val moji = Moji(mojiEntity.id.value).apply {
                 moji = mojiEntity.moji
                 strokeCount = mojiEntity.strokeCount
-                interpretation = mojiEntity.interpretation
+                interpretation = mojiEntity.interpretation ?: String()
                 frequency = mojiEntity.frequency
-                grade = mojiEntity.grade
+                grade = mojiEntity.grade ?: 0
                 svg = mojiEntity.svg
-                jlptLevel = JlptLevel.fromCode(mojiEntity.jlptLevel).str
+                jlptLevel = JlptLevel.fromCode(mojiEntity.jlptLevel).str // TODO: Переделать
                 mojiType = MojiType.fromCode(mojiEntity.mojiType).str
             }
             /**
@@ -60,10 +60,10 @@ class Moji(id: Int = 0) : BaseModel(id) {
             if (kanjiReadingEntities is List<KanjiReadingEntity>) {
                 moji.onReading = kanjiReadingEntities
                     .filter { it.readingType == 0 }
-                    .joinToString(" ") { it.reading }
+                    .joinToString { it.reading }
                 moji.kunReading = kanjiReadingEntities
                     .filter { it.readingType == 1 }
-                    .joinToString(" ") { it.reading }
+                    .joinToString { it.reading }
             }
             return moji
         }

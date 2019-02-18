@@ -9,6 +9,6 @@ object MojiTable : IntIdTable("moji") {
     val frequency = integer("frequency")
     val grade = integer("grade").nullable()
     val svg = varchar("svg", 10000).nullable()
-    val jlptLevel = integer("jlpt_level")
-    val mojiType = integer("moji_type")
+    val jlptLevel = integer("jlpt_level").nullable()
+    val mojiType = integer("moji_type").default(1)
 }

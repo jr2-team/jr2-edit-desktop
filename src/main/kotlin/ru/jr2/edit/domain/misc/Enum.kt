@@ -30,13 +30,13 @@ enum class JlptLevel(val code: Int, val str: String) {
     NO_LEVEL(0, "Без JLPT уровня");
 
     companion object {
-        fun fromCode(code: Int): JlptLevel = when (code) {
+        fun fromCode(code: Int?): JlptLevel = when (code) {
             JLPT5.code -> JLPT5
             JLPT4.code -> JLPT4
             JLPT3.code -> JLPT3
             JLPT2.code -> JLPT2
             JLPT1.code -> JLPT1
-            NO_LEVEL.code -> NO_LEVEL
+            NO_LEVEL.code, null -> NO_LEVEL
             else -> throw IllegalArgumentException()
         }
 

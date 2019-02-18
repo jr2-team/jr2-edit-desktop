@@ -74,7 +74,7 @@ class MojiEditViewModel(
 
     override fun onSaveClick(doOnSave: () -> Unit) {
         commit()
-        mojiRepository.insertUpdateMojiComponent(item, components)
+        mojiRepository.insertUpdate(item)
         fire(ItemSavedEvent(true))
     }
 }

@@ -4,7 +4,7 @@ import org.jetbrains.exposed.dao.IntIdTable
 import org.jetbrains.exposed.sql.ReferenceOption.CASCADE
 
 object GroupTable : IntIdTable("group") {
-    val name = varchar("name", 1000)
+    val name = varchar("name", 100)
     val isUserGroup = bool("is_user_group").default(false)
     val groupType = integer("group_type")
     val creationDate = datetime("creation_date")

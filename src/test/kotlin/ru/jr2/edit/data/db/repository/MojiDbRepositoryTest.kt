@@ -1,96 +1,82 @@
 package ru.jr2.edit.data.db.repository
 
+import junit.framework.Assert.assertEquals
 import org.jetbrains.exposed.sql.Database
-import org.jetbrains.exposed.sql.SchemaUtils
-import org.jetbrains.exposed.sql.transactions.TransactionManager
 import org.jetbrains.exposed.sql.transactions.transaction
 import org.junit.Test
-import ru.jr2.edit.data.db.table.ComponentKanjiTable
-import ru.jr2.edit.data.db.table.MojiTable
+import ru.jr2.edit.data.db.AppDatabase
+import ru.jr2.edit.domain.entity.KanjiReadingEntity
 import ru.jr2.edit.domain.entity.MojiEntity
+import ru.jr2.edit.domain.misc.JlptLevel
+import ru.jr2.edit.domain.model.KanjiReading
 import ru.jr2.edit.domain.model.Moji
-import java.sql.Connection
-import kotlin.test.assertEquals
-import kotlin.test.assertNotEquals
 
 internal class MojiDbRepositoryTest {
-    private val testDb: Database = Database.connect(
-        "jdbc:sqlite:file:test?mode=memory&cache=shared",
-        "org.sqlite.JDBC"
-    )
+    private val testDb: Database = AppDatabase(true).db
     private val repository = MojiDbRepository(testDb)
-
-    init {
-        TransactionManager.manager.defaultIsolationLevel =
-                Connection.TRANSACTION_READ_UNCOMMITTED
-    }
 
     @Test
     fun getById() = transaction(testDb) {
-        SchemaUtils.create(MojiTable, ComponentKanjiTable)
-
-        val testMoji = repository.insert(Moji(value = "Moji"))
+        AppDatabase.updateSchema(testDb)
+        var testMojiToInsert = getTestMoji()
+        testMojiToInsert = repository.insert(testMojiToInsert)
         assertEquals(
-            testMoji.value,
-            repository.getById(testMoji.id).value
+            testMojiToInsert.moji,
+            repository.getById(testMojiToInsert.id).moji
         )
     }
 
     @Test
     fun insertUpdate() = transaction(testDb) {
-        SchemaUtils.create(MojiTable)
-
-        val testMoji0 = repository.insertUpdate(Moji(value = "Moji0"))
-        assertEquals(
-            testMoji0.value,
-            repository.getById(testMoji0.id).value
+        AppDatabase.updateSchema(testDb)
+        val components = repository.insertAll(getKanjiComponents())
+        val testMoji = repository.insertUpdate(
+            getTestMoji(),
+            getKanjiReadings(),
+            components
         )
-
-        val testMoji1 = repository.insertUpdate(Moji(id = testMoji0.id, value = "Moji1"))
+        assertEquals(getTestMoji().moji, repository.getById(testMoji.id).moji)
+        assertEquals(getKanjiReadings().count(), KanjiReadingEntity.all().count())
         assertEquals(
-            testMoji1.value,
-            repository.getById(testMoji1.id).value
+            getKanjiComponents().map { it.moji },
+            repository.getComponentsOfMoji(testMoji.id).map { it.moji }
         )
     }
 
     @Test
-    fun createMojiComponent() = transaction(testDb) {
-        SchemaUtils.create(MojiTable, ComponentKanjiTable)
-
-        val testMoji0 = repository.insert(Moji(value = "Moji0"))
-        val testComponents0 = (0..9).map {
-            repository.insert(Moji(value = "Moji Comp 0 $it"))
-        }
-        repository.insertUpdateMojiComponent(testMoji0, testComponents0)
-
-        val testMoji1 = repository.insert(Moji(value = "Moji1"))
-        val testComponents1 = (0..9).map {
-            repository.insert(Moji(value = "Moji Comp 1 $it"))
-        }
-        repository.insertUpdateMojiComponent(testMoji1, testComponents1)
-
-        val testMoji2 = repository.insert(Moji(value = "Moji2"))
-        val testComponents2 = repository.getById(
-            *(1..MojiEntity.count() - 2).map { it }.toIntArray()
+    fun delete() = transaction(testDb) {
+        AppDatabase.updateSchema(testDb)
+        val components = repository.insertAll(getKanjiComponents())
+        val testMoji = repository.insertUpdate(
+            getTestMoji(),
+            getKanjiReadings(),
+            components
         )
-        repository.insertUpdateMojiComponent(testMoji2, testComponents2)
-        assertEquals(
-            testComponents0.map { it.value },
-            repository.getComponentsOfMoji(testMoji0.id).map { it.value }
-        )
-        assertEquals(
-            testComponents1.map { it.value },
-            repository.getComponentsOfMoji(testMoji1.id).map {
-                it.value
-            }
-        )
-        assertEquals(
-            testComponents2.map { it.value },
-            repository.getComponentsOfMoji(testMoji2.id).map { it.value }
-        )
-        assertNotEquals(
-            repository.getComponentsOfMoji(testMoji0.id).map { it.value },
-            repository.getComponentsOfMoji(testMoji1.id).map { it.value }
-        )
+        repository.delete(testMoji)
+        assertEquals(0, KanjiReadingEntity.all().count())
+        assertEquals(0, MojiEntity.all().count())
     }
+
+    private fun getTestMoji() = Moji().apply {
+        moji = "生"
+        strokeCount = 5
+        jlptLevel = JlptLevel.JLPT4.str
+        frequency = 29
+        grade = 1
+    }
+
+    private fun getKanjiReadings() = listOf(
+        KanjiReading("セイ", 0, 0, false),
+        KanjiReading("ショウ", 0, 1, false),
+        KanjiReading("い.きる", 1, 0, false),
+        KanjiReading("い.かす", 1, 1, false)
+    )
+
+    private fun getKanjiComponents() = listOf(
+        Moji().apply { moji = "A" },
+        Moji().apply { moji = "B" },
+        Moji().apply { moji = "C" },
+        Moji().apply { moji = "D" },
+        Moji().apply { moji = "E" }
+    )
 }
