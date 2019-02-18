@@ -13,9 +13,9 @@ abstract class BaseDbRepository<T : BaseModel>(
 
     abstract fun getAll(): List<T>
 
-    abstract fun insert(o: T): T
+    abstract fun insert(model: T): T
 
-    abstract fun insertUpdate(o: T): T
+    abstract fun insertUpdate(model: T): T
 
-    abstract fun delete(o: T)
+    abstract fun delete(model: T)
 }

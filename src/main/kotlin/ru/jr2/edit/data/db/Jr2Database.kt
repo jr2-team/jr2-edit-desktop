@@ -14,10 +14,10 @@ object Jr2Database {
 
     init {
         TransactionManager.manager.defaultIsolationLevel = Connection.TRANSACTION_READ_UNCOMMITTED
-        createSchema(db)
+        updateSchema(db)
     }
 
-    private fun createSchema(db: Database) = transaction(db) {
+    private fun updateSchema(db: Database) = transaction(db) {
         SchemaUtils.createMissingTablesAndColumns(
             WordTable,
             MojiTable,

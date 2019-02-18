@@ -33,12 +33,12 @@ class WordDbRepository : BaseDbRepository<Word>() {
 
     fun getCount(): Int = transaction(db) { WordEntity.count() }
 
-    override fun insert(word: Word): Word = transaction(db) {
+    override fun insert(model: Word): Word = transaction(db) {
         val newWord = WordEntity.new {
-            this.word = word.word
-            furigana = word.furigana
-            interpretation = word.interpretation
-            jlptLevel = JlptLevel.fromStr(word.jlptLevel).code
+            this.word = model.word
+            furigana = model.furigana
+            interpretation = model.interpretation
+            jlptLevel = JlptLevel.fromStr(model.jlptLevel).code
         }
         Word.fromEntity(newWord)
     }
@@ -54,17 +54,17 @@ class WordDbRepository : BaseDbRepository<Word>() {
         }
     }
 
-    override fun insertUpdate(wordModel: Word): Word = transaction(db) {
-        WordEntity.findById(wordModel.id)?.run {
-            word = wordModel.word
-            furigana = wordModel.furigana
-            interpretation = wordModel.interpretation
-            jlptLevel = JlptLevel.fromStr(wordModel.jlptLevel).code
-            getById(wordModel.id)
-        } ?: insert(wordModel)
+    override fun insertUpdate(model: Word): Word = transaction(db) {
+        WordEntity.findById(model.id)?.run {
+            word = model.word
+            furigana = model.furigana
+            interpretation = model.interpretation
+            jlptLevel = JlptLevel.fromStr(model.jlptLevel).code
+            getById(model.id)
+        } ?: insert(model)
     }
 
-    override fun delete(word: Word) = transaction(db) {
-        WordEntity[word.id].delete()
+    override fun delete(model: Word) = transaction(db) {
+        WordEntity[model.id].delete()
     }
 }

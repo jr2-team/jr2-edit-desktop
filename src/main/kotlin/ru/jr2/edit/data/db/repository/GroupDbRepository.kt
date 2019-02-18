@@ -29,11 +29,11 @@ class GroupDbRepository : BaseDbRepository<Group>() {
         }
     }
 
-    override fun insert(o: Group): Group {
+    override fun insert(model: Group): Group {
         return Group()
     }
 
-    override fun insertUpdate(o: Group): Group {
+    override fun insertUpdate(model: Group): Group {
         return Group()
     }
 

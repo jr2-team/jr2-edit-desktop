@@ -25,16 +25,16 @@ class MojiDbRepository(
         MojiEntity.all().map { Moji.fromEntity(it) }
     }
 
-    override fun insert(mojiModel: Moji): Moji = transaction(db) {
+    override fun insert(model: Moji): Moji = transaction(db) {
         val newMoji = MojiEntity.new {
-            moji = mojiModel.moji
-            strokeCount = mojiModel.strokeCount
-            interpretation = mojiModel.interpretation
-            frequency = mojiModel.frequency
-            grade = mojiModel.grade
-            svg = mojiModel.svg
-            jlptLevel = JlptLevel.fromStr(mojiModel.jlptLevel).code
-            mojiType = MojiType.fromStr(mojiModel.mojiType).code
+            moji = model.moji
+            strokeCount = model.strokeCount
+            interpretation = model.interpretation
+            frequency = model.frequency
+            grade = model.grade
+            svg = model.svg
+            jlptLevel = JlptLevel.fromStr(model.jlptLevel).code
+            mojiType = MojiType.fromStr(model.mojiType).code
         }
         Moji.fromEntity(newMoji)
     }
@@ -54,26 +54,26 @@ class MojiDbRepository(
         }
     }
 
-    override fun insertUpdate(mojiModel: Moji): Moji = transaction(db) {
-        MojiEntity.findById(mojiModel.id)?.run {
-            moji = mojiModel.moji
-            strokeCount = mojiModel.strokeCount
-            interpretation = mojiModel.interpretation
-            frequency = mojiModel.frequency
-            grade = mojiModel.grade
-            svg = mojiModel.svg
-            jlptLevel = JlptLevel.fromStr(mojiModel.jlptLevel).code
-            mojiType = MojiType.fromStr(mojiModel.mojiType).code
-            getById(mojiModel.id)
-        } ?: insert(mojiModel)
+    override fun insertUpdate(model: Moji): Moji = transaction(db) {
+        MojiEntity.findById(model.id)?.run {
+            moji = model.moji
+            strokeCount = model.strokeCount
+            interpretation = model.interpretation
+            frequency = model.frequency
+            grade = model.grade
+            svg = model.svg
+            jlptLevel = JlptLevel.fromStr(model.jlptLevel).code
+            mojiType = MojiType.fromStr(model.mojiType).code
+            getById(model.id)
+        } ?: insert(model)
     }
 
 
-    override fun delete(moji: Moji) = transaction(db) {
+    override fun delete(model: Moji) = transaction(db) {
         ComponentKanjiTable.deleteWhere {
-            ComponentKanjiTable.moji eq MojiEntity[moji.id].id
+            ComponentKanjiTable.moji eq MojiEntity[model.id].id
         }
-        MojiEntity[moji.id].delete()
+        MojiEntity[model.id].delete()
     }
 
     fun getComponentsOfMoji(mojiId: Int): List<Moji> = transaction(db) {
