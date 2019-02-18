@@ -1,36 +1,31 @@
 package ru.jr2.edit.domain.model
 
 import javafx.beans.property.SimpleStringProperty
-import ru.jr2.edit.domain.misc.JlptLevel
 import ru.jr2.edit.domain.entity.WordEntity
+import ru.jr2.edit.domain.misc.JlptLevel
 import tornadofx.getValue
 import tornadofx.setValue
 
-class Word(
-    id: Int = 0,
-    value: String = String(),
-    furigana: String = String(),
-    interpretation: String = String(),
-    jlptLevel: String = JlptLevel.NO_LEVEL.str
-) : BaseModel(id, value) {
-    val pFurigana = SimpleStringProperty(furigana)
-    var furigana: String by pFurigana
+class Word(id: Int = 0) : BaseModel(id) {
+    val pWord = SimpleStringProperty()
+    var word: String by pWord
 
-    val pInterpretation = SimpleStringProperty(interpretation)
-    var interpretation: String by pInterpretation
+    val pFurigana = SimpleStringProperty()
+    var furigana: String? by pFurigana
 
-    val pJlptLevel = SimpleStringProperty(jlptLevel)
+    val pInterpretation = SimpleStringProperty()
+    var interpretation: String? by pInterpretation
+
+    val pJlptLevel = SimpleStringProperty()
     var jlptLevel: String by pJlptLevel
 
     companion object {
-        fun fromEntity(wordEntity: WordEntity) = with(wordEntity) {
-            Word(
-                id.value,
-                value,
-                furigana ?: String(),
-                interpretation ?: String(),
-                JlptLevel.fromCode(jlptLevel).str
-            )
-        }
+        fun fromEntity(wordEntity: WordEntity) =
+            Word(wordEntity.id.value).apply {
+                word = wordEntity.word
+                furigana = wordEntity.furigana
+                interpretation = wordEntity.interpretation
+                jlptLevel = JlptLevel.fromCode(wordEntity.jlptLevel).str
+            }
     }
 }

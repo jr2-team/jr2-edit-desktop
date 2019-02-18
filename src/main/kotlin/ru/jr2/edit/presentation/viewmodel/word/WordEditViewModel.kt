@@ -8,7 +8,7 @@ import ru.jr2.edit.presentation.viewmodel.EditMode
 class WordEditViewModel(
     wordId: Int
 ) : BaseEditViewModel<Word>(wordId, WordDbRepository(), Word()) {
-    val pValue = bind(Word::pValue)
+    val pWord = bind(Word::pWord)
     val pFurigana = bind(Word::pFurigana)
     val pInterpretation = bind(Word::pInterpretation)
     val pJlptLevel = bind(Word::pJlptLevel)

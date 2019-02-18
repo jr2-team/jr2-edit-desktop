@@ -15,7 +15,7 @@ class SentenceListView : View() {
 
     override val root = borderpane {
         center = tableview(viewModel.sentences) {
-            column("Значение", Sentence::pValue)
+            column("Значение", Sentence::pSentence)
             column("Интерпретация", Sentence::pInterpretation).remainingWidth()
             smartResize()
             onSelectionChange { sentence ->

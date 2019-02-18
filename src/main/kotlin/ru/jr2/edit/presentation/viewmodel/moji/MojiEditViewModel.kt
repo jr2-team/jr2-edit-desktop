@@ -19,7 +19,7 @@ class MojiEditViewModel(
     mojiId: Int,
     private val mojiRepository: MojiDbRepository = MojiDbRepository()
 ) : BaseEditViewModel<Moji>(mojiId, mojiRepository, Moji()) {
-    val pValue = bind(Moji::pValue)
+    val pMoji = bind(Moji::pMoji)
     val pStrokeCount = bind(Moji::pStrokeCount)
     val pOnReading = bind(Moji::pOnReading)
     val pKunReading = bind(Moji::pKunReading)
@@ -33,7 +33,7 @@ class MojiEditViewModel(
 
     init {
         components.onChange {
-            pComponents.value = components.joinToString { c -> c.value }
+            pComponents.value = components.joinToString { c -> c.moji }
         }
         if (mode == EditMode.UPDATE) {
             components.addAll(mojiRepository.getComponentsOfMoji(mojiId))

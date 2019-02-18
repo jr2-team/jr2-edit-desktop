@@ -35,7 +35,7 @@ class WordDbRepository : BaseDbRepository<Word>() {
 
     override fun insert(word: Word): Word = transaction(db) {
         val newWord = WordEntity.new {
-            value = word.value
+            this.word = word.word
             furigana = word.furigana
             interpretation = word.interpretation
             jlptLevel = JlptLevel.fromStr(word.jlptLevel).code
@@ -46,7 +46,7 @@ class WordDbRepository : BaseDbRepository<Word>() {
     fun insertAll(words: List<Word>) {
         transaction(db) {
             WordTable.batchInsert(words) {
-                this[WordTable.value] = it.value
+                this[WordTable.word] = it.word
                 this[WordTable.furigana] = it.furigana
                 this[WordTable.interpretation] = it.interpretation
                 this[WordTable.jlptLevel] = JlptLevel.fromStr(it.jlptLevel).code
@@ -54,14 +54,14 @@ class WordDbRepository : BaseDbRepository<Word>() {
         }
     }
 
-    override fun insertUpdate(word: Word): Word = transaction(db) {
-        WordEntity.findById(word.id)?.run {
-            value = word.value
-            furigana = word.furigana
-            interpretation = word.interpretation
-            jlptLevel = JlptLevel.fromStr(word.jlptLevel).code
-            getById(word.id)
-        } ?: insert(word)
+    override fun insertUpdate(wordModel: Word): Word = transaction(db) {
+        WordEntity.findById(wordModel.id)?.run {
+            word = wordModel.word
+            furigana = wordModel.furigana
+            interpretation = wordModel.interpretation
+            jlptLevel = JlptLevel.fromStr(wordModel.jlptLevel).code
+            getById(wordModel.id)
+        } ?: insert(wordModel)
     }
 
     override fun delete(word: Word) = transaction(db) {

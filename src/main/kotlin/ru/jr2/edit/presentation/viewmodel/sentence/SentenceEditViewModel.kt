@@ -7,7 +7,7 @@ import ru.jr2.edit.presentation.viewmodel.BaseEditViewModel
 class SentenceEditViewModel(
     sentenceId: Int
 ) : BaseEditViewModel<Sentence>(sentenceId, SentenceDbRepository(), Sentence()) {
-    val pValue = bind(Sentence::pValue)
+    val pSentence = bind(Sentence::pSentence)
     val pFurigana = bind(Sentence::pFurigana)
     val pInterpretation = bind(Sentence::pInterpretation)
 }

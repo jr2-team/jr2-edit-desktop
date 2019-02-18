@@ -5,26 +5,22 @@ import ru.jr2.edit.domain.entity.SentenceEntity
 import tornadofx.getValue
 import tornadofx.setValue
 
-class Sentence(
-    id: Int = 0,
-    value: String = String(),
-    furigana: String = String(),
-    interpretation: String = String()
-) : BaseModel(id, value) {
-    val pFurigana = SimpleStringProperty(furigana)
-    var furigana: String by pFurigana
+class Sentence(id: Int = 0) : BaseModel(id) {
+    val pSentence = SimpleStringProperty()
+    var sentence: String by pSentence
 
-    val pInterpretation = SimpleStringProperty(interpretation)
-    var interpretation: String by pInterpretation
+    val pFurigana = SimpleStringProperty()
+    var furigana: String? by pFurigana
+
+    val pInterpretation = SimpleStringProperty()
+    var interpretation: String? by pInterpretation
 
     companion object {
-        fun fromEntity(sentenceEntity: SentenceEntity): Sentence = with(sentenceEntity) {
-            Sentence(
-                id.value,
-                value,
-                furigana ?: String(),
-                interpretation ?: String()
-            )
-        }
+        fun fromEntity(sentenceEntity: SentenceEntity): Sentence =
+            Sentence(sentenceEntity.id.value).apply {
+                sentence = sentenceEntity.sentence
+                furigana = sentenceEntity.furigana
+                interpretation = sentenceEntity.interpretation
+            }
     }
 }

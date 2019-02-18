@@ -9,7 +9,6 @@ import ru.jr2.edit.domain.entity.MojiEntity
 import ru.jr2.edit.domain.misc.JlptLevel
 import ru.jr2.edit.domain.misc.MojiType
 import ru.jr2.edit.domain.model.Moji
-import ru.jr2.edit.domain.model.Word
 
 class MojiDbRepository(
     override val db: Database = EditApp.instance.db
@@ -26,15 +25,16 @@ class MojiDbRepository(
         MojiEntity.all().map { Moji.fromEntity(it) }
     }
 
-    override fun insert(moji: Moji): Moji = transaction(db) {
+    override fun insert(mojiModel: Moji): Moji = transaction(db) {
         val newMoji = MojiEntity.new {
-            value = moji.value
-            strokeCount = moji.strokeCount
-            kunReading = moji.kunReading
-            onReading = moji.onReading
-            interpretation = moji.interpretation
-            jlptLevel = JlptLevel.fromStr(moji.jlptLevel).code
-            mojiType = MojiType.fromStr(moji.mojiType).code
+            moji = mojiModel.moji
+            strokeCount = mojiModel.strokeCount
+            interpretation = mojiModel.interpretation
+            frequency = mojiModel.frequency
+            grade = mojiModel.grade
+            svg = mojiModel.svg
+            jlptLevel = JlptLevel.fromStr(mojiModel.jlptLevel).code
+            mojiType = MojiType.fromStr(mojiModel.mojiType).code
         }
         Moji.fromEntity(newMoji)
     }
@@ -42,28 +42,30 @@ class MojiDbRepository(
     fun insertAll(mojis: List<Moji>) {
         transaction(db) {
             MojiTable.batchInsert(mojis) {
-                this[MojiTable.value] = it.value
+                this[MojiTable.moji] = it.moji
                 this[MojiTable.strokeCount] = it.strokeCount
-                this[MojiTable.onReading] = it.onReading
-                this[MojiTable.kunReading] = it.kunReading
                 this[MojiTable.interpretation] = it.interpretation
+                this[MojiTable.frequency] = it.frequency
+                this[MojiTable.grade] = it.grade
+                this[MojiTable.svg] = it.svg
                 this[MojiTable.jlptLevel] = JlptLevel.fromStr(it.jlptLevel).code
                 this[MojiTable.mojiType] = MojiType.fromStr(it.mojiType).code
             }
         }
     }
 
-    override fun insertUpdate(moji: Moji): Moji = transaction(db) {
-        MojiEntity.findById(moji.id)?.run {
-            value = moji.value
-            strokeCount = moji.strokeCount
-            kunReading = moji.kunReading
-            onReading = moji.onReading
-            interpretation = moji.interpretation
-            jlptLevel = JlptLevel.fromStr(moji.jlptLevel).code
-            mojiType = MojiType.fromStr(moji.mojiType).code
-            getById(moji.id)
-        } ?: insert(moji)
+    override fun insertUpdate(mojiModel: Moji): Moji = transaction(db) {
+        MojiEntity.findById(mojiModel.id)?.run {
+            moji = mojiModel.moji
+            strokeCount = mojiModel.strokeCount
+            interpretation = mojiModel.interpretation
+            frequency = mojiModel.frequency
+            grade = mojiModel.grade
+            svg = mojiModel.svg
+            jlptLevel = JlptLevel.fromStr(mojiModel.jlptLevel).code
+            mojiType = MojiType.fromStr(mojiModel.mojiType).code
+            getById(mojiModel.id)
+        } ?: insert(mojiModel)
     }
 
 
@@ -99,27 +101,6 @@ class MojiDbRepository(
         }.map {
             Moji.fromEntity(it)
         }
-    }
-
-    fun doesExist(moji: Moji): Boolean = transaction(db) {
-        val mojisFound = MojiEntity.find {
-            (MojiTable.value eq moji.value).and(
-                MojiTable.mojiType eq MojiType.fromStr(moji.mojiType).code
-            )
-        }.count()
-        mojisFound > 0
-    }
-
-    fun getByWord(word: Word): List<Moji> = transaction(db) {
-        word.value.asSequence().map { it }.distinct().map { m ->
-            MojiEntity.find {
-                (MojiTable.value eq m.toString())
-                    .and(MojiTable.mojiType eq MojiType.KANJI.code)
-            }.firstOrNull()
-        }.map {
-            it?.run { Moji.fromEntity(it) }
-        }
-        listOf<Moji>()
     }
 
     @Suppress("NAME_SHADOWING")

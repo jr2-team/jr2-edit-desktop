@@ -27,7 +27,7 @@ class ParseWordEdictUseCase(
 
     // TODO: Подстроить схему БД под JMdict более точно
     private fun transformEntry(wordEdictEntry: WordEdictEntry) = Word().apply {
-        value = wordEdictEntry.kanjiElements
+        word = wordEdictEntry.kanjiElements
             ?.first()
             ?.reading ?: wordEdictEntry.readingElements
             ?.first()
