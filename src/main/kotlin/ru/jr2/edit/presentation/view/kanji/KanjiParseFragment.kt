@@ -1,7 +1,7 @@
-package ru.jr2.edit.presentation.view.moji
+package ru.jr2.edit.presentation.view.kanji
 
 import ru.jr2.edit.Style
-import ru.jr2.edit.presentation.viewmodel.moji.KanjiParseViewModel
+import ru.jr2.edit.presentation.viewmodel.kanji.KanjiParseViewModel
 import tornadofx.*
 
 class KanjiParseFragment : Fragment("Парсинг Edict-словаря канджи") {

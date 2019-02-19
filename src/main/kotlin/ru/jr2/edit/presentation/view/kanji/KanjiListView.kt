@@ -1,16 +1,16 @@
-package ru.jr2.edit.presentation.view.moji
+package ru.jr2.edit.presentation.view.kanji
 
 import javafx.geometry.Pos
 import javafx.scene.control.Button
 import ru.jr2.edit.Style.Companion.bottomButtonPane
 import ru.jr2.edit.Style.Companion.mediumButton
-import ru.jr2.edit.domain.model.Moji
-import ru.jr2.edit.presentation.viewmodel.moji.MojiListViewModel
+import ru.jr2.edit.domain.model.Kanji
+import ru.jr2.edit.presentation.viewmodel.kanji.KanjiListViewModel
 import ru.jr2.edit.util.showWarningMsg
 import tornadofx.*
 
-class MojiListView : View() {
-    private val viewModel: MojiListViewModel by inject()
+class KanjiListView : View() {
+    private val viewModel: KanjiListViewModel by inject()
 
     private var btnEdit: Button by singleAssign()
     private var btnDelete: Button by singleAssign()
@@ -33,31 +33,30 @@ class MojiListView : View() {
             }.action { viewModel.loadContent() }
             paddingAll = 5.0
         }
-        center = tableview(viewModel.mojis) {
-            column(String(), Moji::pMoji) {
+        center = tableview(viewModel.kanjis) {
+            column(String(), Kanji::kanji) {
                 style {
                     alignment = Pos.BASELINE_CENTER
                     fontSize = 18.px
                 }
             }.contentWidth()
-            column("Интерпретации", Moji::pInterpretation)
-            column("Кунное чтение", Moji::pKunReading)
-            column("Онное чтение", Moji::pOnReading)
-            column("Уровень JLPT", Moji::pJlptLevel)
-            column("Тип моджи", Moji::pMojiType)
+            column("Интерпретации", Kanji::pInterpretation)
+            column("Кунное чтение", Kanji::pKunReading)
+            column("Онное чтение", Kanji::pOnReading)
+            column("Уровень JLPT", Kanji::pJlptLevel)
             columnResizePolicy = SmartResize.POLICY
             onSelectionChange { moji ->
-                (moji !is Moji).let {
+                (moji !is Kanji).let {
                     btnEdit.isDisable = it
                     btnDelete.isDisable = it
                 }
                 moji?.let {
-                    viewModel.selectedMoji = it
-                    viewModel.onMojiSelect(it)
+                    viewModel.selectedKanji = it
+                    viewModel.onKanjiSelect(it)
                 }
             }
             onUserSelect(2) {
-                viewModel.onEditMojiClick()
+                viewModel.onEditKanjiClick()
             }
         }
         right = listview(viewModel.components) {
@@ -70,8 +69,8 @@ class MojiListView : View() {
                 lineSpacing = 0.5
             }
             onUserSelect(2) {
-                viewModel.selectedMoji = it
-                viewModel.onEditMojiClick()
+                viewModel.selectedKanji = it
+                viewModel.onEditKanjiClick()
             }
             this.minWidth = 120.0
             this.maxWidth = 120.0
@@ -81,10 +80,10 @@ class MojiListView : View() {
 
             left = buttonbar {
                 button("Добавить") {
-                    action { viewModel.onNewMojiClick() }
+                    action { viewModel.onNewKanjiClick() }
                 }
                 btnEdit = button("Редактировать") {
-                    action { viewModel.onEditMojiClick() }
+                    action { viewModel.onEditKanjiClick() }
                     isDisable = true
                 }
                 btnDelete = button("Удалить") {
@@ -98,7 +97,7 @@ class MojiListView : View() {
 
     private fun showDeleteMojiWarning() = showWarningMsg(
         "Удалить моджи",
-        "Вы уверены, что хотите удалить ${viewModel.selectedMoji.toString()}?",
-        viewModel::onDeleteMojiClick
+        "Вы уверены, что хотите удалить ${viewModel.selectedKanji.toString()}?",
+        viewModel::onDeleteKanjiClick
     )
 }

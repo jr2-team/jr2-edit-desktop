@@ -1,21 +1,20 @@
-package ru.jr2.edit.presentation.view.moji.edit
+package ru.jr2.edit.presentation.view.kanji.edit
 
 import ru.jr2.edit.Style.Companion.mediumButton
 import ru.jr2.edit.Style.Companion.miniButton
 import ru.jr2.edit.Style.Companion.utilityFragment
-import ru.jr2.edit.domain.model.Moji
-import ru.jr2.edit.presentation.viewmodel.moji.MojiEditViewModel
+import ru.jr2.edit.domain.model.Kanji
+import ru.jr2.edit.presentation.viewmodel.kanji.KanjiEditViewModel
 import tornadofx.*
 
-class MojiEditComponentFragment : Fragment("Редактирование списка компонентов") {
-    private val viewModel: MojiEditViewModel by inject()
+class KanjiEditComponentFragment : Fragment("Редактирование списка компонентов") {
+    private val viewModel: KanjiEditViewModel by inject()
 
     override val root = borderpane {
         center = tableview(viewModel.components) {
             placeholder = label("У моджи нет компонентов")
-            column("Моджи", Moji::moji)
-            column("Вид", Moji::pMojiType)
-            column("Интерпретация", Moji::pInterpretation).remainingWidth()
+            column("Моджи", Kanji::kanji)
+            column("Интерпретация", Kanji::pInterpretation).remainingWidth()
             smartResize()
             onSelectionChange { viewModel.selectedComponent = it }
         }

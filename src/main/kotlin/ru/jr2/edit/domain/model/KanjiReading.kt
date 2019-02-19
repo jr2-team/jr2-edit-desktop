@@ -1,8 +1,25 @@
 package ru.jr2.edit.domain.model
 
+import ru.jr2.edit.domain.entity.KanjiReadingEntity
+
 class KanjiReading(
-    val reading: String,
-    val readingType: Int,
-    val priority: Int,
-    val isAnachronism: Boolean
-)
+    id: Int = 0,
+    var reading: String,
+    var readingType: Int,
+    var priority: Int,
+    var isAnachronism: Boolean = false,
+    var kanji: Int
+) : BaseModel(id) {
+    companion object {
+        fun fromEntity(entity: KanjiReadingEntity): KanjiReading {
+            return KanjiReading(
+                entity.id.value,
+                entity.reading,
+                entity.readingType,
+                entity.priority,
+                entity.isAnachronism,
+                entity.kanji.value
+            )
+        }
+    }
+}

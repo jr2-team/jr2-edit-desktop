@@ -1,9 +1,7 @@
 package ru.jr2.edit.data.db.repository
 
 import org.jetbrains.exposed.sql.transactions.transaction
-import org.joda.time.DateTime
 import ru.jr2.edit.data.db.table.GroupTable
-import ru.jr2.edit.data.db.table.MojiTable
 import ru.jr2.edit.domain.entity.GroupEntity
 import ru.jr2.edit.domain.misc.GroupType
 import ru.jr2.edit.domain.model.Group
@@ -40,5 +38,4 @@ class GroupDbRepository : BaseDbRepository<Group>() {
     override fun delete(o: Group) {
 
     }
-
 }

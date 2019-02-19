@@ -1,18 +1,18 @@
-package ru.jr2.edit.presentation.view.moji.edit
+package ru.jr2.edit.presentation.view.kanji.edit
 
 import org.controlsfx.glyphfont.FontAwesome
 import ru.jr2.edit.Style
 import ru.jr2.edit.Style.Companion.utilityFragment
-import ru.jr2.edit.domain.model.Moji
-import ru.jr2.edit.presentation.viewmodel.moji.MojiEditViewModel
-import ru.jr2.edit.presentation.viewmodel.moji.MojiSearchViewModel
+import ru.jr2.edit.domain.model.Kanji
+import ru.jr2.edit.presentation.viewmodel.kanji.KanjiEditViewModel
+import ru.jr2.edit.presentation.viewmodel.kanji.KanjiSearchViewModel
 import tornadofx.*
 import tornadofx.controlsfx.customTextfield
 import tornadofx.controlsfx.toGlyph
 
-class MojiEditSearchFragment : Fragment("Поиск моджи") {
-    private val viewModel: MojiEditViewModel by inject()
-    private val searchViewModel: MojiSearchViewModel by inject()
+class KanjiEditSearchFragment : Fragment("Поиск моджи") {
+    private val viewModel: KanjiEditViewModel by inject()
+    private val searchViewModel: KanjiSearchViewModel by inject()
 
     override val root = borderpane {
         top = customTextfield(right = FontAwesome.Glyph.SEARCH.toGlyph()) {
@@ -20,11 +20,10 @@ class MojiEditSearchFragment : Fragment("Поиск моджи") {
                 searchViewModel.onSearchQueryChanged(query)
             }
         }
-        center = tableview(searchViewModel.mojis) {
-            placeholder = label("Нет моджи по заданному запросу")
-            column("Моджи", Moji::pMoji)
-            column("Вид", Moji::pMojiType)
-            column("Интерпретация", Moji::pInterpretation).remainingWidth()
+        center = tableview(searchViewModel.kanjis) {
+            placeholder = label("Нет канджи по заданному запросу")
+            column("Канджи", Kanji::pKanji)
+            column("Интерпретация", Kanji::pInterpretation).remainingWidth()
             smartResize()
             onSelectionChange { moji ->
                 viewModel.selectedComponent = moji
