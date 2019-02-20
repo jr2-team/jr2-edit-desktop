@@ -19,13 +19,13 @@ enum class JlptLevel(val code: Int, val str: String) {
             else -> throw IllegalArgumentException()
         }
 
-        fun fromStr(str: String) = when (str) {
+        fun fromStr(str: String?) = when (str) {
             JLPT5.str -> JLPT5
             JLPT4.str -> JLPT4
             JLPT3.str -> JLPT3
             JLPT2.str -> JLPT2
             JLPT1.str -> JLPT1
-            NO_LEVEL.str -> NO_LEVEL
+            NO_LEVEL.str, null -> NO_LEVEL
             else -> throw IllegalArgumentException()
         }
 
