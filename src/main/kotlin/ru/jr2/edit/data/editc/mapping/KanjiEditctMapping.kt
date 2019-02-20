@@ -65,10 +65,10 @@ class ReadingMeaning(
 
 @JacksonXmlRootElement(localName = "rmgroup")
 class RmGroup(
-    @JacksonXmlProperty
-    @JacksonXmlElementWrapper(useWrapping = false) val reading: List<Reading>?,
-    @JacksonXmlProperty
-    @JacksonXmlElementWrapper(useWrapping = false) val meaning: List<Meaning>?
+    @JacksonXmlProperty(localName = "reading")
+    @JacksonXmlElementWrapper(useWrapping = false) val readings: List<Reading>?,
+    @JacksonXmlProperty(localName = "meaning")
+    @JacksonXmlElementWrapper(useWrapping = false) val meanings: List<Meaning>?
 )
 
 @JacksonXmlRootElement(localName = "reading")

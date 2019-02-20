@@ -9,33 +9,35 @@ import tornadofx.setValue
 
 class Kanji(id: Int = 0) : BaseModel(id) {
     val pKanji = SimpleStringProperty()
-    val pStrokeCount = SimpleIntegerProperty()
-    val pOnReading = SimpleStringProperty()
-    val pKunReading = SimpleStringProperty()
-    val pInterpretation = SimpleStringProperty()
-    val pFrequency = SimpleIntegerProperty()
-    val pGrade = SimpleIntegerProperty()
-    val pJlptLevel = SimpleStringProperty(JlptLevel.JLPT1.str)
-
     var kanji: String by pKanji
+
+    val pStrokeCount = SimpleIntegerProperty()
     var strokeCount: Int by pStrokeCount
-    var onReading: String by pOnReading
-    var kunReading: String by pKunReading
-    var interpretation: String by pInterpretation
+
+    val pInterpretation = SimpleStringProperty()
+    var interpretation: String? by pInterpretation
+
+    val pFrequency = SimpleIntegerProperty()
     var frequency: Int by pFrequency
+
+    val pGrade = SimpleIntegerProperty()
     var grade: Int by pGrade
-    var svg: String? = null
+
+    val pJlptLevel = SimpleStringProperty(JlptLevel.JLPT1.str)
     var jlptLevel: String by pJlptLevel
 
+    var svg: String? = null
+
+    override fun toString() = kanji
+
     companion object {
-        fun fromEntity(kanjiEntity: KanjiEntity): Kanji = Kanji(kanjiEntity.id.value).apply {
+        fun fromEntity(kanjiEntity: KanjiEntity) = Kanji(kanjiEntity.id.value).apply {
             kanji = kanjiEntity.kanji
             strokeCount = kanjiEntity.strokeCount
-            interpretation = kanjiEntity.interpretation ?: String()
+            interpretation = kanjiEntity.interpretation
             frequency = kanjiEntity.frequency
             grade = kanjiEntity.grade ?: 0
             svg = kanjiEntity.svg
-            // TODO: Переделать
             jlptLevel = JlptLevel.fromCode(kanjiEntity.jlptLevel).str
         }
     }

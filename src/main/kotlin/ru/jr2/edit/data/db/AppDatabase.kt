@@ -29,6 +29,7 @@ class AppDatabase(isInMemory: Boolean = false) {
         fun updateSchema(db: Database) = transaction(db) {
             SchemaUtils.createMissingTablesAndColumns(
                 WordTable,
+                RadicalTable,
                 KanjiTable,
                 SentenceTable,
                 SectionTable,

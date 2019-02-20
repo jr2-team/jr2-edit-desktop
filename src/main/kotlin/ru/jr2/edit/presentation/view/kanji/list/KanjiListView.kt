@@ -1,10 +1,10 @@
-package ru.jr2.edit.presentation.view.kanji
+package ru.jr2.edit.presentation.view.kanji.list
 
 import javafx.geometry.Pos
 import javafx.scene.control.Button
 import ru.jr2.edit.Style.Companion.bottomButtonPane
 import ru.jr2.edit.Style.Companion.mediumButton
-import ru.jr2.edit.domain.model.Kanji
+import ru.jr2.edit.domain.dto.KanjiDto
 import ru.jr2.edit.presentation.viewmodel.kanji.KanjiListViewModel
 import ru.jr2.edit.util.showWarningMsg
 import tornadofx.*
@@ -34,33 +34,32 @@ class KanjiListView : View() {
             paddingAll = 5.0
         }
         center = tableview(viewModel.kanjis) {
-            column(String(), Kanji::kanji) {
+            columnResizePolicy = SmartResize.POLICY
+            column(String(), KanjiDto::kanji) {
                 style {
                     alignment = Pos.BASELINE_CENTER
                     fontSize = 18.px
                 }
             }.contentWidth()
-            column("Интерпретации", Kanji::pInterpretation)
-            column("Кунное чтение", Kanji::pKunReading)
-            column("Онное чтение", Kanji::pOnReading)
-            column("Уровень JLPT", Kanji::pJlptLevel)
-            columnResizePolicy = SmartResize.POLICY
-            onSelectionChange { moji ->
-                (moji !is Kanji).let {
+            column("Интерпретации", KanjiDto::interpretation)
+            column("Онное чтение", KanjiDto::onReadings)
+            column("Кунное чтение", KanjiDto::kunReadings)
+            column("Уровень JLPT", KanjiDto::jlptLevel)
+            onSelectionChange { kanji ->
+                (kanji !is KanjiDto).let {
                     btnEdit.isDisable = it
                     btnDelete.isDisable = it
                 }
-                moji?.let {
-                    viewModel.selectedKanji = it
-                    viewModel.onKanjiSelect(it)
+                kanji?.let {
+                    viewModel.onKanjiSelect(it.id, true)
                 }
             }
-            onUserSelect(2) {
-                viewModel.onEditKanjiClick()
-            }
+            onUserSelect(2) { viewModel.onEditKanjiClick() }
         }
         right = listview(viewModel.components) {
             placeholder = label("Нет компонентов")
+            minWidth = 120.0
+            maxWidth = 120.0
             cellFormat {
                 graphic = vbox {
                     alignment = Pos.CENTER
@@ -69,26 +68,23 @@ class KanjiListView : View() {
                 lineSpacing = 0.5
             }
             onUserSelect(2) {
-                viewModel.selectedKanji = it
+                viewModel.onKanjiSelect(it.id)
                 viewModel.onEditKanjiClick()
             }
-            this.minWidth = 120.0
-            this.maxWidth = 120.0
         }
         bottom = borderpane {
             right = button("Фильтровать")
-
             left = buttonbar {
                 button("Добавить") {
                     action { viewModel.onNewKanjiClick() }
                 }
                 btnEdit = button("Редактировать") {
-                    action { viewModel.onEditKanjiClick() }
                     isDisable = true
+                    action { viewModel.onEditKanjiClick() }
                 }
                 btnDelete = button("Удалить") {
-                    action { showDeleteMojiWarning() }
                     isDisable = true
+                    action { showDeleteMojiWarning() }
                 }
             }
             addClass(bottomButtonPane)
@@ -97,7 +93,7 @@ class KanjiListView : View() {
 
     private fun showDeleteMojiWarning() = showWarningMsg(
         "Удалить моджи",
-        "Вы уверены, что хотите удалить ${viewModel.selectedKanji.toString()}?",
+        "Вы уверены, что хотите удалить ...?",
         viewModel::onDeleteKanjiClick
     )
 }

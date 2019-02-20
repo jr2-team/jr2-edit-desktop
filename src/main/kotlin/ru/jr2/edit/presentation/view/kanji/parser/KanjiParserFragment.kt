@@ -1,10 +1,10 @@
-package ru.jr2.edit.presentation.view.kanji
+package ru.jr2.edit.presentation.view.kanji.parser
 
 import ru.jr2.edit.Style
 import ru.jr2.edit.presentation.viewmodel.kanji.KanjiParseViewModel
 import tornadofx.*
 
-class KanjiParseFragment : Fragment("Парсинг Edict-словаря канджи") {
+class KanjiParserFragment : Fragment("Парсинг Edict-словаря канджи") {
     val viewModel: KanjiParseViewModel by inject()
 
     override val root = form {

@@ -1,7 +1,7 @@
 package ru.jr2.edit.presentation.view
 
 import ru.jr2.edit.presentation.view.group.GroupListView
-import ru.jr2.edit.presentation.view.kanji.KanjiListView
+import ru.jr2.edit.presentation.view.kanji.list.KanjiListView
 import ru.jr2.edit.presentation.view.sentence.SentenceListView
 import ru.jr2.edit.presentation.view.word.WordListView
 import tornadofx.View
@@ -18,7 +18,10 @@ class RootView : View("JR2-Edit") {
         tab("Кана") {
             isClosable = false
         }
-        tab("Моджи") {
+        tab("Радикалы") {
+            isClosable = false
+        }
+        tab("Канджи") {
             isClosable = false
             add(kanjiListView)
         }

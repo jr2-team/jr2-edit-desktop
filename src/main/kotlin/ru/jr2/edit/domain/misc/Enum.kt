@@ -1,26 +1,5 @@
 package ru.jr2.edit.domain.misc
 
-enum class MojiType(val code: Int, val str: String) {
-    RADICAL(0, "Радикал"),
-    KANJI(1, "Канджи");
-
-    companion object {
-        fun fromCode(code: Int): MojiType = when (code) {
-            RADICAL.code -> RADICAL
-            KANJI.code -> KANJI
-            else -> throw IllegalArgumentException()
-        }
-
-        fun fromStr(str: String) = when (str) {
-            RADICAL.str -> RADICAL
-            KANJI.str -> KANJI
-            else -> throw IllegalArgumentException()
-        }
-
-        fun getNames() = MojiType.values().map { it.str }
-    }
-}
-
 enum class JlptLevel(val code: Int, val str: String) {
     JLPT5(5, "JLPT 5"),
     JLPT4(4, "JLPT 4"),
