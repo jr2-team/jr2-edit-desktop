@@ -7,5 +7,5 @@ object GroupKanjiTable : IntIdTable("group_kanji") {
     val defaultPosition = integer("default_position")
     val customPosition = integer("custom_position")
     val group = reference("group_id", GroupTable, CASCADE, CASCADE)
-    val kanji = reference("kanji_id", MojiTable, CASCADE, CASCADE)
+    val kanji = reference("kanji_id", KanjiTable, CASCADE, CASCADE)
 }

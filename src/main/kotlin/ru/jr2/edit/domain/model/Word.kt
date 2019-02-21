@@ -17,7 +17,7 @@ class Word(id: Int = 0) : BaseModel(id) {
     var interpretation: String? by pInterpretation
 
     val pJlptLevel = SimpleStringProperty()
-    var jlptLevel: String by pJlptLevel
+    var jlptLevel: String? by pJlptLevel
 
     companion object {
         fun fromEntity(wordEntity: WordEntity) =

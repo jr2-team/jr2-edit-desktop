@@ -5,7 +5,7 @@ import org.jetbrains.exposed.dao.IntEntity
 import org.jetbrains.exposed.dao.IntEntityClass
 import ru.jr2.edit.data.db.table.WordTable
 
-class WordEntity(id: EntityID<Int>) : IntEntity(id) {
+    class WordEntity(id: EntityID<Int>) : IntEntity(id) {
     var word by WordTable.word
     var furigana by WordTable.furigana
     var interpretation by WordTable.interpretation
