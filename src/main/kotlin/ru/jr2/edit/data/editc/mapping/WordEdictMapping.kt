@@ -1,55 +1,56 @@
 package ru.jr2.edit.data.editc.mapping
 
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlText
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper  as Wrapper
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty as Prop
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement as Root
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlText as Text
 
-@JacksonXmlRootElement(localName = "JMdict")
+@Root(localName = "JMdict")
 class WordDictionary(
-    @JacksonXmlProperty(localName = "entry")
-    @JacksonXmlElementWrapper(useWrapping = false) var entries: List<WordEdictEntry>
-)
+    @Prop(localName = "entry")
+    @Wrapper(useWrapping = false)
+    override var entries: List<WordEdictEntry>
+) : Edict<WordEdictEntry>
 
-@JacksonXmlRootElement(localName = "entry")
+@Root(localName = "entry")
 class WordEdictEntry(
-    @JacksonXmlProperty(localName = "ent_seq") val id: Int = 0,
-    @JacksonXmlProperty(localName = "k_ele")
-    @JacksonXmlElementWrapper(useWrapping = false) val kanjiElements: List<KanjiElement>?,
-    @JacksonXmlProperty(localName = "r_ele")
-    @JacksonXmlElementWrapper(useWrapping = false) val readingElements: List<KanaElement>?,
-    @JacksonXmlProperty(localName = "sense")
-    @JacksonXmlElementWrapper(useWrapping = false) val senses: List<Sense>?
+    @Prop(localName = "ent_seq") val id: Int = 0,
+    @Prop(localName = "k_ele")
+    @Wrapper(useWrapping = false) val kanjiElements: List<KanjiElement>?,
+    @Prop(localName = "r_ele")
+    @Wrapper(useWrapping = false) val readingElements: List<KanaElement>?,
+    @Prop(localName = "sense")
+    @Wrapper(useWrapping = false) val senses: List<Sense>?
 )
 
-@JacksonXmlRootElement(localName = "k_ele")
+@Root(localName = "k_ele")
 class KanjiElement(
-    @JacksonXmlProperty(localName = "keb") val reading: String?,
-    @JacksonXmlProperty(localName = "ke_inf") val info: String?,
-    @JacksonXmlProperty(localName = "ke_pri") val priority: String?
+    @Prop(localName = "keb") val reading: String?,
+    @Prop(localName = "ke_inf") val info: String?,
+    @Prop(localName = "ke_pri") val priority: String?
 )
 
-@JacksonXmlRootElement(localName = "r_ele")
+@Root(localName = "r_ele")
 class KanaElement(
-    @JacksonXmlProperty(localName = "reb") var reading: String?,
-    @JacksonXmlProperty(localName = "re_inf") val info: String?,
-    @JacksonXmlProperty(localName = "re_pri") val priority: String?
+    @Prop(localName = "reb") var reading: String?,
+    @Prop(localName = "re_inf") val info: String?,
+    @Prop(localName = "re_pri") val priority: String?
 )
 
-@JacksonXmlRootElement(localName = "sense")
+@Root(localName = "sense")
 class Sense(
-    @JacksonXmlProperty(localName = "pos")
-    @JacksonXmlElementWrapper(useWrapping = false) val partsOfSpeach: List<String>?,
-    @JacksonXmlProperty(localName = "gloss")
-    @JacksonXmlElementWrapper(useWrapping = false) val glossaryEntries: List<GlossaryEntry>?,
-    @JacksonXmlProperty(localName = "xref")
-    @JacksonXmlElementWrapper(useWrapping = false) val references: List<String>?
+    @Prop(localName = "pos")
+    @Wrapper(useWrapping = false) val partsOfSpeach: List<String>?,
+    @Prop(localName = "gloss")
+    @Wrapper(useWrapping = false) val glossaryEntries: List<GlossaryEntry>?,
+    @Prop(localName = "xref")
+    @Wrapper(useWrapping = false) val references: List<String>?
 )
 
-@JacksonXmlRootElement(localName = "gloss")
+@Root(localName = "gloss")
 class GlossaryEntry(
-    @JacksonXmlProperty(isAttribute = true, localName = "g_type") val type: String?,
-    @JacksonXmlProperty(isAttribute = true, localName = "lang", namespace = "xml") val language: String?
+    @Prop(isAttribute = true, localName = "g_type") val type: String?,
+    @Prop(isAttribute = true, localName = "lang", namespace = "xml") val language: String?
 ) {
-    @JacksonXmlText val definition = String()
+    @Text val definition = String()
 }

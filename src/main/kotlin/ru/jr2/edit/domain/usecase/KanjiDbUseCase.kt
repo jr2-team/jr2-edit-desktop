@@ -2,6 +2,7 @@ package ru.jr2.edit.domain.usecase
 
 import org.jetbrains.exposed.dao.EntityID
 import org.jetbrains.exposed.sql.*
+import org.jetbrains.exposed.sql.transactions.TransactionInterface
 import org.jetbrains.exposed.sql.transactions.transaction
 import ru.jr2.edit.EditApp
 import ru.jr2.edit.data.db.repository.KanjiDbRepository
@@ -15,7 +16,7 @@ import ru.jr2.edit.domain.misc.JlptLevel
 import ru.jr2.edit.domain.model.Kanji
 import ru.jr2.edit.domain.model.KanjiReading
 
-class KanjiUseCase(
+class KanjiDbUseCase(
     private val db: Database = EditApp.instance.db,
     private val kanjiDbRepository: KanjiDbRepository = KanjiDbRepository(db),
     private val kanjiReadingDbRepository: KanjiReadingDbRepository = KanjiReadingDbRepository(db)
@@ -36,8 +37,8 @@ class KanjiUseCase(
                     jlptLevel = JlptLevel.fromCode(it[KanjiTable.jlptLevel] ?: 0).str
                 )
             }
-            /* Проверка на null нужна, поскольку у канджи могут отсутствовать
-            * он-/кун- чтения */
+            /* Проверка на null необходима не смотря на предупрждения компилятора
+            , поскольку у канджи могут отсутствовать он-/кун- чтения */
             if (it[KanjiReadingTable.id] is EntityID<Int>) {
                 val reading = it[KanjiReadingTable.reading]
                 when (it[KanjiReadingTable.readingType]) {
@@ -50,7 +51,7 @@ class KanjiUseCase(
                 }
             }
         }
-        return@transaction kanjiMap.values.toList()
+        kanjiMap.values.toList()
     }
 
     fun getKanjiComponents(kanjiId: Int): List<Kanji> = transaction(db) {
@@ -86,7 +87,7 @@ class KanjiUseCase(
     }
 
     fun deleteKanjiWithComponentsAndReadings(kanji: Kanji) = transaction(db) {
-        /* Не смотря на то, что в форин кеях стоит каскадное удаление,
+        /* Не смотря на то, что в foreign key стоит каскадное удаление,
         * exposed не хочет его производить, поэтому приходится иметь по
         * роуту для удаления каждого состоявляющего канджи */
         kanjiReadingDbRepository.deleteByKanjiId(kanji.id)

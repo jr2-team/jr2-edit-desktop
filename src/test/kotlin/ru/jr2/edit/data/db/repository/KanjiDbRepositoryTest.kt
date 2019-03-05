@@ -11,13 +11,13 @@ import ru.jr2.edit.domain.entity.KanjiReadingEntity
 import ru.jr2.edit.domain.misc.JlptLevel
 import ru.jr2.edit.domain.model.Kanji
 import ru.jr2.edit.domain.model.KanjiReading
-import ru.jr2.edit.domain.usecase.KanjiUseCase
+import ru.jr2.edit.domain.usecase.KanjiDbUseCase
 
 internal class KanjiDbRepositoryTest {
     private val testDb: Database = AppDatabase(true).db
     private val repository = KanjiDbRepository(testDb)
     private val readingsRepository = KanjiReadingDbRepository(testDb)
-    private val kanjiUseCase = KanjiUseCase(testDb)
+    private val kanjiUseCase = KanjiDbUseCase(testDb)
 
     @Test
     fun getById() = transaction(testDb) {

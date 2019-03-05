@@ -3,27 +3,28 @@ package ru.jr2.edit.domain.usecase
 import javafx.beans.property.SimpleStringProperty
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.delay
+import ru.jr2.edit.data.editc.mapping.KanjiDictionary
 import ru.jr2.edit.data.editc.mapping.KanjiEdictEntry
-import ru.jr2.edit.data.editc.repository.KanjiEdictRepository
+import ru.jr2.edit.data.editc.repository.EdictParserRepository
 import ru.jr2.edit.domain.misc.JlptLevel
 import ru.jr2.edit.domain.model.Kanji
 import ru.jr2.edit.domain.model.KanjiReading
 import ru.jr2.edit.util.pmap
 import java.io.File
 
-class ParseKanjiUseCase(
-    private val kanjiUseCase: KanjiUseCase = KanjiUseCase(),
-    private val kanjiEdictRepository: KanjiEdictRepository = KanjiEdictRepository()
+class ParseKanjiEdictUseCase(
+    private val kanjiDbUseCase: KanjiDbUseCase = KanjiDbUseCase(),
+    private val kanjiEdictRepository: EdictParserRepository = EdictParserRepository()
 ) {
     val pParseStateMsg = SimpleStringProperty(String())
 
     suspend fun parseEdictAndSaveToDb(edictFile: File) = coroutineScope {
         changeStateMsg("Получение канджи из файла")
-        val kanjiEntries = kanjiEdictRepository.getKanjiEntriesFromFile(edictFile)
+        val kanjiEntries = kanjiEdictRepository.getEdictEntries<KanjiDictionary, KanjiEdictEntry>(edictFile)
         changeStateMsg("Обработка канджи")
         val kanjisWithKanjiReadings = kanjiEntries.pmap { transformEntry(it) }
         changeStateMsg("Запись канджи в БД")
-        kanjiUseCase.fastKanjiWithReadingsInsertion(kanjisWithKanjiReadings)
+        kanjiDbUseCase.fastKanjiWithReadingsInsertion(kanjisWithKanjiReadings)
     }
 
     private fun transformEntry(kanjiEdictEntry: KanjiEdictEntry): Pair<Kanji, List<KanjiReading>?> {

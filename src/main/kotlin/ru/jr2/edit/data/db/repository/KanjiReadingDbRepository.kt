@@ -1,6 +1,5 @@
 package ru.jr2.edit.data.db.repository
 
-import org.jetbrains.exposed.dao.EntityID
 import org.jetbrains.exposed.sql.Database
 import org.jetbrains.exposed.sql.transactions.transaction
 import ru.jr2.edit.EditApp

@@ -3,7 +3,7 @@ package ru.jr2.edit.presentation.viewmodel.kanji
 import javafx.beans.property.SimpleBooleanProperty
 import javafx.beans.property.SimpleStringProperty
 import kotlinx.coroutines.*
-import ru.jr2.edit.domain.usecase.ParseKanjiUseCase
+import ru.jr2.edit.domain.usecase.ParseKanjiEdictUseCase
 import ru.jr2.edit.presentation.viewmodel.CoroutineViewModel
 import ru.jr2.edit.util.withLoader
 import tornadofx.getValue
@@ -12,7 +12,7 @@ import tornadofx.setValue
 import java.io.File
 
 class KanjiParseViewModel(
-    private val kanjiParsingUseCase: ParseKanjiUseCase = ParseKanjiUseCase()
+    private val kanjiParsingEdictUseCase: ParseKanjiEdictUseCase = ParseKanjiEdictUseCase()
 ) : CoroutineViewModel() {
     val pIsBusy = SimpleBooleanProperty(false)
     val pProcessingStateMsg = SimpleStringProperty("Выбирете Edict файл для обработки")
@@ -21,7 +21,7 @@ class KanjiParseViewModel(
     private var processingStateMsg by pProcessingStateMsg
 
     init {
-        kanjiParsingUseCase.pParseStateMsg.onChange {
+        kanjiParsingEdictUseCase.pParseStateMsg.onChange {
             processingStateMsg = it
         }
     }
@@ -38,7 +38,7 @@ class KanjiParseViewModel(
     private fun parseKanjiEdictFile(edictFile: File) = launch {
         isBusy = true
         withLoader(getLoader()) {
-            kanjiParsingUseCase.parseEdictAndSaveToDb(edictFile)
+            kanjiParsingEdictUseCase.parseEdictAndSaveToDb(edictFile)
         }
     }.invokeOnCompletion {
         handelCompletion(it)

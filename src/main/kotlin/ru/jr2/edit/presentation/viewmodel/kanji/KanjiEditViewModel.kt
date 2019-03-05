@@ -8,7 +8,7 @@ import ru.jr2.edit.data.db.repository.KanjiDbRepository
 import ru.jr2.edit.data.db.repository.KanjiReadingDbRepository
 import ru.jr2.edit.domain.model.Kanji
 import ru.jr2.edit.domain.model.KanjiReading
-import ru.jr2.edit.domain.usecase.KanjiUseCase
+import ru.jr2.edit.domain.usecase.KanjiDbUseCase
 import ru.jr2.edit.presentation.view.kanji.edit.KanjiEditComponentFragment
 import ru.jr2.edit.presentation.view.kanji.edit.KanjiEditReadingFragment
 import ru.jr2.edit.presentation.view.kanji.edit.KanjiEditSearchFragment
@@ -21,7 +21,7 @@ import tornadofx.swap
 
 class KanjiEditViewModel(
     mojiId: Int,
-    private val kanjiUseCase: KanjiUseCase = KanjiUseCase()
+    private val kanjiDbUseCase: KanjiDbUseCase = KanjiDbUseCase()
 ) : BaseEditViewModel<Kanji>(mojiId, KanjiDbRepository(), Kanji()) {
     val pKanji = bind(Kanji::pKanji)
     val pStrokeCount = bind(Kanji::pStrokeCount)
@@ -40,7 +40,7 @@ class KanjiEditViewModel(
             pComponents.value = components.joinToString { c -> c.kanji }
         }
         if (mode == EditMode.UPDATE) {
-            components.addAll(kanjiUseCase.getKanjiComponents(mojiId))
+            components.addAll(kanjiDbUseCase.getKanjiComponents(mojiId))
             readings.addAll(KanjiReadingDbRepository().getByKanjiId(mojiId))
         }
     }
@@ -96,7 +96,7 @@ class KanjiEditViewModel(
 
     override fun onSaveClick(doOnSave: () -> Unit) {
         commit()
-        kanjiUseCase.saveKanjiWithComponentsAndReadings(item, readings, components)
+        kanjiDbUseCase.saveKanjiWithComponentsAndReadings(item, readings, components)
         fire(ItemSavedEvent(true))
     }
 }

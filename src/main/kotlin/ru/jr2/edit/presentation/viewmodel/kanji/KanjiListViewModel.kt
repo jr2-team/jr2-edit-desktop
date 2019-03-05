@@ -5,14 +5,14 @@ import javafx.collections.ObservableList
 import javafx.stage.StageStyle
 import ru.jr2.edit.domain.dto.KanjiDto
 import ru.jr2.edit.domain.model.Kanji
-import ru.jr2.edit.domain.usecase.KanjiUseCase
+import ru.jr2.edit.domain.usecase.KanjiDbUseCase
 import ru.jr2.edit.presentation.view.kanji.edit.KanjiEditFragment
 import ru.jr2.edit.presentation.view.kanji.parser.KanjiParserFragment
 import ru.jr2.edit.presentation.viewmodel.BaseEditViewModel
 import tornadofx.ViewModel
 
 class KanjiListViewModel(
-    private val kanjiUseCase: KanjiUseCase = KanjiUseCase()
+    private val kanjiDbUseCase: KanjiDbUseCase = KanjiDbUseCase()
 ) : ViewModel() {
     private var selectedKanjiId: Int = 0
 
@@ -25,14 +25,14 @@ class KanjiListViewModel(
 
     fun loadContent() {
         kanjis.clear()
-        kanjis.addAll(kanjiUseCase.getAllKanjiWithReadings())
+        kanjis.addAll(kanjiDbUseCase.getAllKanjiWithReadings())
     }
 
     fun onKanjiSelect(kanjiId: Int, needToLoadComponents: Boolean = false) {
         selectedKanjiId = kanjiId
         if (needToLoadComponents) {
             components.clear()
-            components.addAll(kanjiUseCase.getKanjiComponents(kanjiId))
+            components.addAll(kanjiDbUseCase.getKanjiComponents(kanjiId))
         }
     }
 
@@ -44,7 +44,7 @@ class KanjiListViewModel(
     ).openModal(StageStyle.UTILITY, escapeClosesWindow = false, resizable = false)
 
     fun onDeleteKanjiClick() {
-        kanjiUseCase.deleteKanjiWithComponentsAndReadings(selectedKanjiId)
+        kanjiDbUseCase.deleteKanjiWithComponentsAndReadings(selectedKanjiId)
         kanjis.find { it.id == selectedKanjiId }?.let {
             kanjis.remove(it)
         }
