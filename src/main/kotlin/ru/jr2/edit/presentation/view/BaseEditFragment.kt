@@ -10,6 +10,7 @@ abstract class BaseEditFragment<T : BaseModel, VT : BaseEditViewModel<T>>(
     titleEdit: String = "Редактировать запись"
 ) : Fragment() {
     internal abstract val viewModel: VT
+
     val paramItemId: Int by param(0)
 
     init {

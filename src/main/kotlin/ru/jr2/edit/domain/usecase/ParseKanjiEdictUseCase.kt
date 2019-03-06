@@ -7,9 +7,9 @@ import ru.jr2.edit.data.editc.mapping.KanjiDictionary
 import ru.jr2.edit.data.editc.mapping.KanjiEdictEntry
 import ru.jr2.edit.data.editc.repository.EdictParserRepository
 import ru.jr2.edit.domain.misc.JlptLevel
+import ru.jr2.edit.domain.misc.KanjiReadingType
 import ru.jr2.edit.domain.model.KanjiModel
 import ru.jr2.edit.domain.model.KanjiReadingModel
-import ru.jr2.edit.util.pmap
 import java.io.File
 
 class ParseKanjiEdictUseCase(
@@ -22,7 +22,7 @@ class ParseKanjiEdictUseCase(
         changeStateMsg("Получение канджи из файла")
         val kanjiEntries = kanjiEdictRepository.getEdictEntries<KanjiDictionary, KanjiEdictEntry>(edictFile)
         changeStateMsg("Обработка канджи")
-        val kanjisWithKanjiReadings = kanjiEntries.pmap { transformEntry(it) }
+        val kanjisWithKanjiReadings = kanjiEntries.map { transformEntry(it) }
         changeStateMsg("Запись канджи в БД")
         kanjiDbUseCase.saveParsedKanjiWithReadings(kanjisWithKanjiReadings)
     }
@@ -42,7 +42,11 @@ class ParseKanjiEdictUseCase(
         }?.map {
             KanjiReadingModel().apply {
                 reading = it.value
-                readingType = if (it.type == "ja_on") 0 else 1
+                readingType = if (it.type == "ja_on") {
+                    KanjiReadingType.ON_READING.str
+                } else {
+                    KanjiReadingType.KUN_READING.str
+                }
             }
         }
         return Pair(kanji, kanjiReadings)

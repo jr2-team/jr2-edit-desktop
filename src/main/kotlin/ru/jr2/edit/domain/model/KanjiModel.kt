@@ -31,22 +31,35 @@ class KanjiModel(id: Int = 0) : BaseModel(id) {
     override fun toString() = kanji
 
     override fun equals(other: Any?): Boolean {
-        var areEqual = false
-        if (other is KanjiModel) {
-            areEqual = other.id == id
-        }
-        return areEqual
+        if (this === other) return true
+        if (javaClass != other?.javaClass) return false
+        other as KanjiModel
+        return other.id == id
+    }
+
+    // auto-generated
+    override fun hashCode(): Int {
+        var result = pKanji.hashCode()
+        result = 31 * result + pStrokeCount.hashCode()
+        result = 31 * result + pInterpretation.hashCode()
+        result = 31 * result + pFrequency.hashCode()
+        result = 31 * result + pGrade.hashCode()
+        result = 31 * result + pJlptLevel.hashCode()
+        result = 31 * result + (svg?.hashCode() ?: 0)
+        return result
     }
 
     companion object {
-        fun fromEntity(kanjiEntity: KanjiEntity) = KanjiModel(kanjiEntity.id.value).apply {
-            kanji = kanjiEntity.kanji
-            strokeCount = kanjiEntity.strokeCount
-            interpretation = kanjiEntity.interpretation
-            frequency = kanjiEntity.frequency
-            grade = kanjiEntity.grade ?: 0
-            svg = kanjiEntity.svg
-            jlptLevel = JlptLevel.fromCode(kanjiEntity.jlptLevel).str
+        fun fromEntity(kanjiEntity: KanjiEntity): KanjiModel {
+            return KanjiModel(kanjiEntity.id.value).apply {
+                kanji = kanjiEntity.kanji
+                strokeCount = kanjiEntity.strokeCount
+                interpretation = kanjiEntity.interpretation
+                frequency = kanjiEntity.frequency
+                grade = kanjiEntity.grade ?: 0
+                svg = kanjiEntity.svg
+                jlptLevel = JlptLevel.fromCode(kanjiEntity.jlptLevel).str
+            }
         }
     }
 }

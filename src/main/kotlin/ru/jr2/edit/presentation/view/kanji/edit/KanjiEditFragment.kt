@@ -2,6 +2,7 @@ package ru.jr2.edit.presentation.view.kanji.edit
 
 import javafx.geometry.Orientation
 import javafx.geometry.Pos
+import javafx.scene.control.Button
 import javafx.scene.layout.Priority
 import ru.jr2.edit.Style.Companion.largeButton
 import ru.jr2.edit.Style.Companion.mediumButton
@@ -56,32 +57,48 @@ class KanjiEditFragment : BaseEditFragment<KanjiModel, KanjiEditViewModel>() {
     }
 
     private fun renderKanjiReadingBorderPane() = borderpane {
-        paddingTop = 10
+        var btnEditKanjiReading: Button by singleAssign()
+        var btnDeleteKanjiReading: Button by singleAssign()
+        paddingTop = 5
         top = label("Чтения")
-        center = tableview(viewModel.readings) {
+        center = tableview(viewModel.kanjiReadings) {
             maxHeight = 128.0
-            column("Чтение", KanjiReadingModel::reading)
-            column("Приоритет", KanjiReadingModel::priority)
-            column("Анахроизм", KanjiReadingModel::isAnachronism)
-            column("Вид чтения", KanjiReadingModel::readingType)
+            column("Чтение", KanjiReadingModel::pReading)
+            column("Приоритет", KanjiReadingModel::pPriority)
+            column("Анахроизм", KanjiReadingModel::pIsAnachronism)
+            column("Вид чтения", KanjiReadingModel::pReadingType)
+            smartResize()
+            onSelectionChange { kanjiReading ->
+                (kanjiReading !is KanjiReadingModel).let {
+                    btnEditKanjiReading.isDisable = it
+                    btnDeleteKanjiReading.isDisable = it
+                }
+                viewModel.selectedKanjiReading = kanjiReading
+            }
+            onUserSelect(2) { viewModel.onKanjiReadingEditClick() }
         }
-        bottom = hbox {
+        bottom = hbox(10) {
+            paddingTop = 5
+            paddingBottom = 5
             button("Добавить") {
                 addClass(mediumButton)
-            }.action { viewModel.onKanjiReadingAddClick() }
-            button("Изменить") {
+                action { viewModel.onKanjiReadingAddClick() }
+            }
+            btnEditKanjiReading = button("Изменить") {
                 addClass(mediumButton)
-            }.action { viewModel.onKanjiReadingEditClick() }
-            button("Удалить") {
+                action { viewModel.onKanjiReadingEditClick() }
+            }
+            btnDeleteKanjiReading = button("Удалить") {
                 addClass(mediumButton)
-            }.action { viewModel.onKanjiReadingDeleteClick() }
+                action { viewModel.onKanjiReadingDeleteClick() }
+            }
         }
     }
 
     private fun renderKanjiComponentBorderPane() = borderpane {
         left = vbox {
             label("Составные")
-            hbox(10.0) {
+            hbox(10) {
                 button("Добавить") {
                     addClass(mediumButton)
                 }.action { viewModel.onKanjiSearchClick() }

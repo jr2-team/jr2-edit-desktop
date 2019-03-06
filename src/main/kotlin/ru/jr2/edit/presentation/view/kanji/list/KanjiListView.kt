@@ -41,10 +41,10 @@ class KanjiListView : View() {
                 fontSize = 18.px
             }
         }.contentWidth()
-        column("Интерпретации", KanjiDto::interpretation)
-        column("Онное чтение", KanjiDto::onReadings)
-        column("Кунное чтение", KanjiDto::kunReadings)
-        column("Уровень JLPT", KanjiDto::jlptLevel)
+        column("Интерпретации", KanjiDto::interpretation).weightedWidth(3)
+        column("Онное чтение", KanjiDto::onReadings).weightedWidth(1)
+        column("Кунное чтение", KanjiDto::kunReadings).weightedWidth(1)
+        column("Уровень JLPT", KanjiDto::jlptLevel).weightedWidth(1)
         onSelectionChange { kanji ->
             (kanji !is KanjiDto).let {
                 btnEdit.isDisable = it

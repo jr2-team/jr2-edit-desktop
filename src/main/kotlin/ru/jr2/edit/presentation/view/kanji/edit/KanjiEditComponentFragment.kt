@@ -20,7 +20,7 @@ class KanjiEditComponentFragment : Fragment("Редактирование спи
         addClass(utilityFragment)
     }
 
-    private fun renderKanjiComponentTableView() = tableview(kanjiEditViewModel.components) {
+    private fun renderKanjiComponentTableView() = tableview(kanjiEditViewModel.kanjiComponents) {
         placeholder = label("У канджи нет компонентов")
         column("Канджи", KanjiModel::kanji)
         column("Интерпретация", KanjiModel::pInterpretation).remainingWidth()

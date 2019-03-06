@@ -53,3 +53,24 @@ enum class GroupType(val code: Int, val str: String) {
         fun getNames() = GroupType.values().map { it.str }
     }
 }
+
+enum class KanjiReadingType(val code: Int, val str: String) {
+    ON_READING(0, "Онное-чтение"),
+    KUN_READING(1, "Кунное-чтение");
+
+    companion object {
+        fun fromCode(code: Int): KanjiReadingType = when (code) {
+            ON_READING.code -> ON_READING
+            KUN_READING.code -> KUN_READING
+            else -> throw IllegalArgumentException()
+        }
+
+        fun fromStr(str: String): KanjiReadingType = when (str) {
+            ON_READING.str -> ON_READING
+            KUN_READING.str -> KUN_READING
+            else -> throw IllegalArgumentException()
+        }
+
+        fun getNames() = KanjiReadingType.values().map { it.str }
+    }
+}

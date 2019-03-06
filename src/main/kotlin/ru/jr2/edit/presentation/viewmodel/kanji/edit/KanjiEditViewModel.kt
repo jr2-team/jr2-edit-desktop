@@ -10,7 +10,7 @@ import ru.jr2.edit.domain.model.KanjiModel
 import ru.jr2.edit.domain.model.KanjiReadingModel
 import ru.jr2.edit.domain.usecase.KanjiDbUseCase
 import ru.jr2.edit.presentation.view.kanji.edit.KanjiEditComponentFragment
-import ru.jr2.edit.presentation.view.kanji.edit.KanjiEditReadingFragment
+import ru.jr2.edit.presentation.view.kanji.edit.KanjiReadingEditFragment
 import ru.jr2.edit.presentation.view.kanji.edit.KanjiEditSearchFragment
 import ru.jr2.edit.presentation.viewmodel.BaseEditViewModel
 import ru.jr2.edit.presentation.viewmodel.EditMode
@@ -32,31 +32,46 @@ class KanjiEditViewModel(
 
     val pComponents = SimpleStringProperty(String())
 
-    val readings: ObservableList<KanjiReadingModel> = FXCollections.observableArrayList<KanjiReadingModel>()
-    val components: ObservableList<KanjiModel> = FXCollections.observableArrayList<KanjiModel>()
+    val kanjiReadings: ObservableList<KanjiReadingModel> = FXCollections.observableArrayList<KanjiReadingModel>()
+    val kanjiComponents: ObservableList<KanjiModel> = FXCollections.observableArrayList<KanjiModel>()
 
     init {
-        components.onChange {
-            pComponents.value = components.joinToString { c -> c.kanji }
+        kanjiComponents.onChange {
+            pComponents.value = kanjiComponents.joinToString { c -> c.kanji }
         }
         if (mode == EditMode.UPDATE) {
-            components.addAll(kanjiDbUseCase.getKanjiComponents(mojiId))
-            readings.addAll(KanjiReadingDbRepository().getByKanjiId(mojiId))
+            kanjiComponents.addAll(kanjiDbUseCase.getKanjiComponents(mojiId))
+            kanjiReadings.addAll(KanjiReadingDbRepository().getByKanjiId(mojiId))
         }
     }
 
     // Чтения канджи
+    var selectedKanjiReading: KanjiReadingModel? = null
+
     fun onKanjiReadingAddClick() {
-        find<KanjiEditReadingFragment>(Scope(this))
+        find<KanjiReadingEditFragment>(Scope(this))
             .openModal(StageStyle.UTILITY, resizable = false)
     }
 
     fun onKanjiReadingEditClick() {
-
+        find<KanjiReadingEditFragment>(
+            Scope(this),
+            Pair(KanjiReadingEditFragment::paramKanjiReading, selectedKanjiReading)
+        ).openModal(StageStyle.UTILITY, resizable = false)
     }
 
-    fun onKanjiReadingDeleteClick() {
+    fun onKanjiReadingDeleteClick() = selectedKanjiReading?.let {
+        kanjiReadings.remove(selectedKanjiReading)
+    }
 
+    fun onKanjiReadingSaveClick(kanjiReading: KanjiReadingModel) {
+        val idx = kanjiReadings.indexOf(kanjiReading)
+        if (idx > -1) {
+            kanjiReadings.add(idx, kanjiReading)
+            kanjiReadings.removeAt(idx + 1)
+        } else {
+            kanjiReadings.add(kanjiReading)
+        }
     }
 
     // Компоненты канджи
@@ -73,30 +88,34 @@ class KanjiEditViewModel(
     }
 
     fun onComponentAddClick() = selectedComponent?.let {
-        if (!components.contains(it)) components.add(it)
+        if (!kanjiComponents.contains(it)) kanjiComponents.add(it)
     }
 
     fun onComponentRemoveClick() = selectedComponent?.let {
-        components.remove(it)
+        kanjiComponents.remove(it)
     }
 
     fun onComponentMoveUpClick() = selectedComponent?.let {
-        val selectedIdx = components.indexOf(it)
+        val selectedIdx = kanjiComponents.indexOf(it)
         if (selectedIdx > 0) {
-            components.swap(selectedIdx, selectedIdx - 1)
+            kanjiComponents.swap(selectedIdx, selectedIdx - 1)
         }
     }
 
     fun onComponentMoveDownClick() = selectedComponent?.let {
-        val selectedIdx = components.indexOf(it)
-        if (selectedIdx < components.size - 1) {
-            components.swap(selectedIdx, selectedIdx + 1)
+        val selectedIdx = kanjiComponents.indexOf(it)
+        if (selectedIdx < kanjiComponents.size - 1) {
+            kanjiComponents.swap(selectedIdx, selectedIdx + 1)
         }
     }
 
     override fun onSaveClick(doOnSave: () -> Unit) {
         commit()
-        kanjiDbUseCase.saveKanjiWithComponentsAndReadings(item, readings, components)
+        kanjiDbUseCase.saveKanjiWithComponentsAndReadings(
+            kanji = item,
+            readings = kanjiReadings,
+            components = kanjiComponents
+        )
         fire(ItemSavedEvent(true))
     }
 }

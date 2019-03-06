@@ -12,13 +12,14 @@ import ru.jr2.edit.data.db.table.KanjiTable
 import ru.jr2.edit.domain.dto.KanjiDto
 import ru.jr2.edit.domain.entity.KanjiEntity
 import ru.jr2.edit.domain.misc.JlptLevel
+import ru.jr2.edit.domain.misc.KanjiReadingType
 import ru.jr2.edit.domain.model.KanjiModel
 import ru.jr2.edit.domain.model.KanjiReadingModel
 
 class KanjiDbUseCase(
     private val db: Database = EditApp.instance.db,
     private val kanjiDbRepository: KanjiDbRepository = KanjiDbRepository(db),
-    private val kanjiReadingDbRepository: KanjiReadingDbRepository = KanjiReadingDbRepository(db)
+    private val kanjiReadingRepo: KanjiReadingDbRepository = KanjiReadingDbRepository(db)
 ) {
     fun getAllKanjiWithReadings(): List<KanjiDto> = transaction(db) {
         val kanjiMap = mutableMapOf<Int, KanjiDto>()
@@ -77,11 +78,14 @@ class KanjiDbUseCase(
         components: List<KanjiModel>? = null
     ): KanjiModel = transaction(db) {
         val newKanji = kanjiDbRepository.insertUpdate(kanji)
+        kanjiReadingRepo.deleteByKanjiId(newKanji.id)
         readings?.run {
             this.forEach { it.kanji = newKanji.id }
-            kanjiReadingDbRepository.insertUpdate(this)
+            kanjiReadingRepo.insertUpdate(this)
         }
-        components?.run { insertUpdateKanjiComponents(newKanji, this) }
+        components?.run {
+            insertUpdateKanjiComponents(newKanji, this)
+        }
         newKanji
     }
 
@@ -89,7 +93,7 @@ class KanjiDbUseCase(
         /* Не смотря на то, что в foreign key стоит каскадное удаление,
         * exposed не хочет его производить, поэтому приходится иметь по
         * роуту для удаления каждого состоявляющего канджи */
-        kanjiReadingDbRepository.deleteByKanjiId(kanji.id)
+        kanjiReadingRepo.deleteByKanjiId(kanji.id)
         deleteKanjiComponents(kanji)
         kanjiDbRepository.delete(kanji)
     }
@@ -125,7 +129,7 @@ class KanjiDbUseCase(
                 .flatMap { it.second!! }
         ) {
             this[KanjiReadingTable.reading] = it.reading
-            this[KanjiReadingTable.readingType] = it.readingType
+            this[KanjiReadingTable.readingType] = KanjiReadingType.fromStr(it.readingType).code
             this[KanjiReadingTable.priority] = it.priority
             this[KanjiReadingTable.isAnachronism] = it.isAnachronism
             this[KanjiReadingTable.kanji] = EntityID(it.kanji, KanjiTable)

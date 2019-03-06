@@ -22,8 +22,9 @@ class WordListViewModel(
     var selectedWord: WordModel? = null
 
     val pTotalPageCount = SimpleIntegerProperty(0)
-    val pCurrentPage = SimpleIntegerProperty(1)
     private var totalPageCount by pTotalPageCount
+
+    val pCurrentPage = SimpleIntegerProperty(1)
     private var currentPage by pCurrentPage
 
     init {

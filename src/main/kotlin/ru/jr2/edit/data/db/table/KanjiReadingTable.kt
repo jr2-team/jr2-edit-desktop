@@ -7,6 +7,6 @@ object KanjiReadingTable : IntIdTable("kanji_reading") {
     val reading = varchar("reading", 20).default("")
     val readingType = integer("reading_type")
     val priority = integer("priority")
-    val isAnachronism = bool("is_anachronism")
+    val isAnachronism = bool("is_anachronism").default(false)
     val kanji = reference("kanji_id", KanjiTable, CASCADE, CASCADE)
 }

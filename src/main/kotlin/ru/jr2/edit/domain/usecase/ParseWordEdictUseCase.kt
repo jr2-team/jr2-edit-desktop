@@ -8,7 +8,6 @@ import ru.jr2.edit.data.editc.mapping.WordDictionary
 import ru.jr2.edit.data.editc.mapping.WordEdictEntry
 import ru.jr2.edit.data.editc.repository.EdictParserRepository
 import ru.jr2.edit.domain.model.WordModel
-import ru.jr2.edit.util.pmap
 import java.io.File
 
 class ParseWordEdictUseCase(
@@ -21,12 +20,11 @@ class ParseWordEdictUseCase(
         changeStateMsg("Извлечение слов из файла")
         val wordEntries = wordEdictRepository.getEdictEntries<WordDictionary, WordEdictEntry>(edictFile)
         changeStateMsg("Обработка слов")
-        val words = wordEntries.pmap { transformEntry(it) }
+        val words = wordEntries.map { transformEntry(it) }
         changeStateMsg("Запись слов в БД")
         wordDbRepository.insertAll(words)
     }
 
-    // TODO: Подстроить схему БД под JMdict более точно
     private fun transformEntry(wordEdictEntry: WordEdictEntry) = WordModel().apply {
         word = wordEdictEntry.kanjiElements
             ?.first()

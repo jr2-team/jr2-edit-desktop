@@ -11,7 +11,6 @@ import tornadofx.*
 
 class WordListView : View() {
     private val viewModel: WordListViewModel by inject()
-
     private var btnEditWord: Button by singleAssign()
     private var btnDeleteWord: Button by singleAssign()
 
@@ -37,10 +36,10 @@ class WordListView : View() {
     }
 
     private fun renderWordTableView() = tableview(viewModel.words) {
-        column("Слово", WordModel::pWord)
-        column("Фуригана", WordModel::pFurigana)
-        column("Интерпретация", WordModel::pInterpretation).remainingWidth()
-        column("Уровень JLPT", WordModel::pJlptLevel)
+        column("Слово", WordModel::pWord).weightedWidth(1)
+        column("Фуригана", WordModel::pFurigana).weightedWidth(1)
+        column("Интерпретация", WordModel::pInterpretation).weightedWidth(3)
+        column("Уровень JLPT", WordModel::pJlptLevel).weightedWidth(1)
         smartResize()
         onSelectionChange { word ->
             (word !is WordModel).let {
@@ -82,7 +81,6 @@ class WordListView : View() {
             action { showDeleteWordWarning() }
         }
     }
-
 
     private fun showDeleteWordWarning() = showWarningMsg(
         "Удалить слово",
