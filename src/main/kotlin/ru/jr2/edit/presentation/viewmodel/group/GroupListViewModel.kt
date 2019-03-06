@@ -5,7 +5,7 @@ import javafx.collections.FXCollections
 import javafx.collections.ObservableList
 import ru.jr2.edit.data.db.repository.GroupDbRepository
 import ru.jr2.edit.domain.misc.GroupType
-import ru.jr2.edit.domain.model.GroupModel
+import ru.jr2.edit.presentation.model.GroupModel
 import tornadofx.ViewModel
 import tornadofx.onChange
 

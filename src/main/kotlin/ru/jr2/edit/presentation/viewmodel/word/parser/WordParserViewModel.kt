@@ -1,4 +1,4 @@
-package ru.jr2.edit.presentation.viewmodel.word
+package ru.jr2.edit.presentation.viewmodel.word.parser
 
 import javafx.beans.property.SimpleBooleanProperty
 import javafx.beans.property.SimpleStringProperty
@@ -11,7 +11,7 @@ import tornadofx.onChange
 import tornadofx.setValue
 import java.io.File
 
-class WordParseViewModel(
+class WordParserViewModel(
     private val wordParsingUseCase: ParseWordEdictUseCase = ParseWordEdictUseCase()
 ) : CoroutineViewModel() {
     val pIsBusy = SimpleBooleanProperty(false)

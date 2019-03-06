@@ -8,8 +8,8 @@ import ru.jr2.edit.data.editc.mapping.KanjiEdictEntry
 import ru.jr2.edit.data.editc.repository.EdictParserRepository
 import ru.jr2.edit.domain.misc.JlptLevel
 import ru.jr2.edit.domain.misc.KanjiReadingType
-import ru.jr2.edit.domain.model.KanjiModel
-import ru.jr2.edit.domain.model.KanjiReadingModel
+import ru.jr2.edit.presentation.model.KanjiModel
+import ru.jr2.edit.presentation.model.KanjiReadingModel
 import java.io.File
 
 class ParseKanjiEdictUseCase(

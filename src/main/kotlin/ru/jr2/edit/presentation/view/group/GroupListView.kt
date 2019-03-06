@@ -3,7 +3,7 @@ package ru.jr2.edit.presentation.view.group
 import javafx.scene.control.Button
 import ru.jr2.edit.Style
 import ru.jr2.edit.Style.Companion.mediumButton
-import ru.jr2.edit.domain.model.GroupModel
+import ru.jr2.edit.presentation.model.GroupModel
 import ru.jr2.edit.presentation.viewmodel.group.GroupListViewModel
 import tornadofx.*
 

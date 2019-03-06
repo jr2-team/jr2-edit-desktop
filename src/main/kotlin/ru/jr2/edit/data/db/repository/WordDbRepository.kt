@@ -6,7 +6,7 @@ import org.jetbrains.exposed.sql.transactions.transaction
 import ru.jr2.edit.data.db.table.WordTable
 import ru.jr2.edit.domain.entity.WordEntity
 import ru.jr2.edit.domain.misc.JlptLevel
-import ru.jr2.edit.domain.model.WordModel
+import ru.jr2.edit.presentation.model.WordModel
 
 class WordDbRepository : BaseDbRepository<WordModel>() {
     override fun getById(id: Int): WordModel = transaction(db) {

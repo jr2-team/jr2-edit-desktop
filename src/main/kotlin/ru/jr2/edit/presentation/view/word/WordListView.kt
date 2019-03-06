@@ -4,8 +4,8 @@ import javafx.geometry.Pos
 import javafx.scene.control.Button
 import ru.jr2.edit.Style
 import ru.jr2.edit.Style.Companion.paginationControl
-import ru.jr2.edit.domain.model.WordModel
-import ru.jr2.edit.presentation.viewmodel.word.WordListViewModel
+import ru.jr2.edit.presentation.model.WordModel
+import ru.jr2.edit.presentation.viewmodel.word.list.WordListViewModel
 import ru.jr2.edit.util.showWarningMsg
 import tornadofx.*
 

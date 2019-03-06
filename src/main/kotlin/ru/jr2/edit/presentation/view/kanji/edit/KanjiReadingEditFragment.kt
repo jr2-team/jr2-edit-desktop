@@ -2,7 +2,7 @@ package ru.jr2.edit.presentation.view.kanji.edit
 
 import ru.jr2.edit.Style
 import ru.jr2.edit.domain.misc.KanjiReadingType
-import ru.jr2.edit.domain.model.KanjiReadingModel
+import ru.jr2.edit.presentation.model.KanjiReadingModel
 import ru.jr2.edit.presentation.view.BaseEditFragment.Companion.requiredMsg
 import ru.jr2.edit.presentation.viewmodel.kanji.edit.KanjiEditViewModel
 import ru.jr2.edit.presentation.viewmodel.kanji.edit.KanjiReadingEditViewModel

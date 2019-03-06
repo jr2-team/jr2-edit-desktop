@@ -1,7 +1,7 @@
 package ru.jr2.edit.presentation.viewmodel.sentence
 
 import ru.jr2.edit.data.db.repository.SentenceDbRepository
-import ru.jr2.edit.domain.model.SentenceModel
+import ru.jr2.edit.presentation.model.SentenceModel
 import ru.jr2.edit.presentation.viewmodel.BaseEditViewModel
 
 class SentenceEditViewModel(

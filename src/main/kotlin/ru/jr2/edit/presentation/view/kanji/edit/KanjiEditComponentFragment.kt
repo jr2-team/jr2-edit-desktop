@@ -3,7 +3,7 @@ package ru.jr2.edit.presentation.view.kanji.edit
 import ru.jr2.edit.Style
 import ru.jr2.edit.Style.Companion.mediumButton
 import ru.jr2.edit.Style.Companion.utilityFragment
-import ru.jr2.edit.domain.model.KanjiModel
+import ru.jr2.edit.presentation.model.KanjiModel
 import ru.jr2.edit.presentation.viewmodel.kanji.edit.KanjiEditViewModel
 import tornadofx.*
 

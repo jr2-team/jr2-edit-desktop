@@ -3,7 +3,7 @@ package ru.jr2.edit.presentation.view.kanji.edit
 import org.controlsfx.glyphfont.FontAwesome
 import ru.jr2.edit.Style
 import ru.jr2.edit.Style.Companion.utilityFragment
-import ru.jr2.edit.domain.model.KanjiModel
+import ru.jr2.edit.presentation.model.KanjiModel
 import ru.jr2.edit.presentation.viewmodel.kanji.edit.KanjiEditViewModel
 import ru.jr2.edit.presentation.viewmodel.kanji.edit.KanjiSearchViewModel
 import tornadofx.*

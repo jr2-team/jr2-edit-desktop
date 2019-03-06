@@ -7,8 +7,8 @@ import javafx.scene.layout.Priority
 import ru.jr2.edit.Style.Companion.largeButton
 import ru.jr2.edit.Style.Companion.mediumButton
 import ru.jr2.edit.domain.misc.JlptLevel
-import ru.jr2.edit.domain.model.KanjiModel
-import ru.jr2.edit.domain.model.KanjiReadingModel
+import ru.jr2.edit.presentation.model.KanjiModel
+import ru.jr2.edit.presentation.model.KanjiReadingModel
 import ru.jr2.edit.presentation.view.BaseEditFragment
 import ru.jr2.edit.presentation.viewmodel.kanji.edit.KanjiEditViewModel
 import tornadofx.*

@@ -1,7 +1,7 @@
-package ru.jr2.edit.presentation.viewmodel.word
+package ru.jr2.edit.presentation.viewmodel.word.edit
 
 import ru.jr2.edit.data.db.repository.WordDbRepository
-import ru.jr2.edit.domain.model.WordModel
+import ru.jr2.edit.presentation.model.WordModel
 import ru.jr2.edit.presentation.viewmodel.BaseEditViewModel
 
 class WordEditViewModel(

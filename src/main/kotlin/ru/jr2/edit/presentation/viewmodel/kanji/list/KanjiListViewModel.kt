@@ -1,10 +1,10 @@
-package ru.jr2.edit.presentation.viewmodel.kanji
+package ru.jr2.edit.presentation.viewmodel.kanji.list
 
 import javafx.collections.FXCollections
 import javafx.collections.ObservableList
 import javafx.stage.StageStyle
 import ru.jr2.edit.domain.dto.KanjiDto
-import ru.jr2.edit.domain.model.KanjiModel
+import ru.jr2.edit.presentation.model.KanjiModel
 import ru.jr2.edit.domain.usecase.KanjiDbUseCase
 import ru.jr2.edit.presentation.view.kanji.edit.KanjiEditFragment
 import ru.jr2.edit.presentation.view.kanji.parser.KanjiParserFragment

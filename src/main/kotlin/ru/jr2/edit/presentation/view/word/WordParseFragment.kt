@@ -1,11 +1,11 @@
 package ru.jr2.edit.presentation.view.word
 
 import ru.jr2.edit.Style
-import ru.jr2.edit.presentation.viewmodel.word.WordParseViewModel
+import ru.jr2.edit.presentation.viewmodel.word.parser.WordParserViewModel
 import tornadofx.*
 
 class WordParseFragment : Fragment("Парсинг Edict-словоря слов") {
-    private val viewModel: WordParseViewModel by inject()
+    private val viewModel: WordParserViewModel by inject()
 
     override val root = form {
         borderpane {

@@ -1,6 +1,6 @@
 package ru.jr2.edit.presentation.view
 
-import ru.jr2.edit.domain.model.BaseModel
+import ru.jr2.edit.presentation.model.BaseModel
 import ru.jr2.edit.presentation.viewmodel.BaseEditViewModel
 import ru.jr2.edit.util.showWarningMsg
 import tornadofx.Fragment

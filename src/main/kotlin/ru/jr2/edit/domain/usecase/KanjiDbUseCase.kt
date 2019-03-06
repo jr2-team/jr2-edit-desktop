@@ -13,8 +13,8 @@ import ru.jr2.edit.domain.dto.KanjiDto
 import ru.jr2.edit.domain.entity.KanjiEntity
 import ru.jr2.edit.domain.misc.JlptLevel
 import ru.jr2.edit.domain.misc.KanjiReadingType
-import ru.jr2.edit.domain.model.KanjiModel
-import ru.jr2.edit.domain.model.KanjiReadingModel
+import ru.jr2.edit.presentation.model.KanjiModel
+import ru.jr2.edit.presentation.model.KanjiReadingModel
 
 class KanjiDbUseCase(
     private val db: Database = EditApp.instance.db,

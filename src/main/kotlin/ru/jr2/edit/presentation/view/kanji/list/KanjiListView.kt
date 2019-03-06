@@ -4,7 +4,7 @@ import javafx.geometry.Pos
 import javafx.scene.control.Button
 import ru.jr2.edit.Style.Companion.bottomBorderPaneStyle
 import ru.jr2.edit.domain.dto.KanjiDto
-import ru.jr2.edit.presentation.viewmodel.kanji.KanjiListViewModel
+import ru.jr2.edit.presentation.viewmodel.kanji.list.KanjiListViewModel
 import ru.jr2.edit.util.showWarningMsg
 import tornadofx.*
 

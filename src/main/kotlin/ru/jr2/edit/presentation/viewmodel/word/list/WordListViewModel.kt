@@ -1,11 +1,11 @@
-package ru.jr2.edit.presentation.viewmodel.word
+package ru.jr2.edit.presentation.viewmodel.word.list
 
 import javafx.beans.property.SimpleIntegerProperty
 import javafx.collections.FXCollections
 import javafx.collections.ObservableList
 import javafx.stage.StageStyle
 import ru.jr2.edit.data.db.repository.WordDbRepository
-import ru.jr2.edit.domain.model.WordModel
+import ru.jr2.edit.presentation.model.WordModel
 import ru.jr2.edit.presentation.view.word.WordEditFragment
 import ru.jr2.edit.presentation.view.word.WordParseFragment
 import ru.jr2.edit.presentation.viewmodel.BaseEditViewModel

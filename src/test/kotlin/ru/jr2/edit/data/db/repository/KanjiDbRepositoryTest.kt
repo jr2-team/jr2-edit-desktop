@@ -9,8 +9,8 @@ import ru.jr2.edit.data.db.AppDatabase
 import ru.jr2.edit.data.db.table.KanjiComponentTable
 import ru.jr2.edit.domain.entity.KanjiReadingEntity
 import ru.jr2.edit.domain.misc.JlptLevel
-import ru.jr2.edit.domain.model.KanjiModel
-import ru.jr2.edit.domain.model.KanjiReadingModel
+import ru.jr2.edit.presentation.model.KanjiModel
+import ru.jr2.edit.presentation.model.KanjiReadingModel
 import ru.jr2.edit.domain.usecase.KanjiDbUseCase
 
 internal class KanjiDbRepositoryTest {

@@ -2,7 +2,7 @@ package ru.jr2.edit.presentation.view.sentence
 
 import javafx.scene.control.Button
 import ru.jr2.edit.Style
-import ru.jr2.edit.domain.model.SentenceModel
+import ru.jr2.edit.presentation.model.SentenceModel
 import ru.jr2.edit.presentation.viewmodel.sentence.SentenceListViewModel
 import ru.jr2.edit.util.showWarningMsg
 import tornadofx.*

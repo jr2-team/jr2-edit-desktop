@@ -5,7 +5,7 @@ import org.jetbrains.exposed.sql.transactions.transaction
 import ru.jr2.edit.EditApp
 import ru.jr2.edit.data.db.table.KanjiTable
 import ru.jr2.edit.domain.entity.KanjiEntity
-import ru.jr2.edit.domain.model.KanjiModel
+import ru.jr2.edit.presentation.model.KanjiModel
 
 class KanjiDbRepository(
     override val db: Database = EditApp.instance.db

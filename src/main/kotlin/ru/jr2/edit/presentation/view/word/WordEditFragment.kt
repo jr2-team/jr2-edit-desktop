@@ -4,9 +4,9 @@ import javafx.geometry.Pos
 import javafx.scene.layout.Priority
 import ru.jr2.edit.Style.Companion.largeButton
 import ru.jr2.edit.domain.misc.JlptLevel
-import ru.jr2.edit.domain.model.WordModel
+import ru.jr2.edit.presentation.model.WordModel
 import ru.jr2.edit.presentation.view.BaseEditFragment
-import ru.jr2.edit.presentation.viewmodel.word.WordEditViewModel
+import ru.jr2.edit.presentation.viewmodel.word.edit.WordEditViewModel
 import tornadofx.*
 
 class WordEditFragment : BaseEditFragment<WordModel, WordEditViewModel>() {

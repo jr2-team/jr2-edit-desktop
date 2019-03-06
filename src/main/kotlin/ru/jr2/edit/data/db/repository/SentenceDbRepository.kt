@@ -2,7 +2,7 @@ package ru.jr2.edit.data.db.repository
 
 import org.jetbrains.exposed.sql.transactions.transaction
 import ru.jr2.edit.domain.entity.SentenceEntity
-import ru.jr2.edit.domain.model.SentenceModel
+import ru.jr2.edit.presentation.model.SentenceModel
 
 class SentenceDbRepository : BaseDbRepository<SentenceModel>() {
     override fun getById(id: Int): SentenceModel = transaction(db) {

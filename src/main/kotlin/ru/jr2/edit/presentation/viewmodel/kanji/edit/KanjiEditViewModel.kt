@@ -6,8 +6,8 @@ import javafx.collections.ObservableList
 import javafx.stage.StageStyle
 import ru.jr2.edit.data.db.repository.KanjiDbRepository
 import ru.jr2.edit.data.db.repository.KanjiReadingDbRepository
-import ru.jr2.edit.domain.model.KanjiModel
-import ru.jr2.edit.domain.model.KanjiReadingModel
+import ru.jr2.edit.presentation.model.KanjiModel
+import ru.jr2.edit.presentation.model.KanjiReadingModel
 import ru.jr2.edit.domain.usecase.KanjiDbUseCase
 import ru.jr2.edit.presentation.view.kanji.edit.KanjiEditComponentFragment
 import ru.jr2.edit.presentation.view.kanji.edit.KanjiReadingEditFragment

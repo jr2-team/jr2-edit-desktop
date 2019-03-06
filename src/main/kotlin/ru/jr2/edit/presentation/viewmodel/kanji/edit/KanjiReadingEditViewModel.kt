@@ -1,6 +1,6 @@
 package ru.jr2.edit.presentation.viewmodel.kanji.edit
 
-import ru.jr2.edit.domain.model.KanjiReadingModel
+import ru.jr2.edit.presentation.model.KanjiReadingModel
 import tornadofx.ItemViewModel
 
 class KanjiReadingEditViewModel(

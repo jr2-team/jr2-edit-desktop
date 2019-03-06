@@ -7,7 +7,7 @@ import ru.jr2.edit.data.db.repository.WordDbRepository
 import ru.jr2.edit.data.editc.mapping.WordDictionary
 import ru.jr2.edit.data.editc.mapping.WordEdictEntry
 import ru.jr2.edit.data.editc.repository.EdictParserRepository
-import ru.jr2.edit.domain.model.WordModel
+import ru.jr2.edit.presentation.model.WordModel
 import java.io.File
 
 class ParseWordEdictUseCase(

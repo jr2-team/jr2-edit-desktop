@@ -1,4 +1,4 @@
-package ru.jr2.edit.presentation.viewmodel.kanji
+package ru.jr2.edit.presentation.viewmodel.kanji.parser
 
 import javafx.beans.property.SimpleBooleanProperty
 import javafx.beans.property.SimpleStringProperty

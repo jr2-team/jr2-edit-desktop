@@ -1,4 +1,4 @@
-package ru.jr2.edit.domain.model
+package ru.jr2.edit.presentation.model
 
 import javafx.beans.property.SimpleStringProperty
 import ru.jr2.edit.domain.entity.SentenceEntity

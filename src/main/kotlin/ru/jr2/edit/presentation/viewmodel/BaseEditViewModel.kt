@@ -1,7 +1,7 @@
 package ru.jr2.edit.presentation.viewmodel
 
 import ru.jr2.edit.data.db.repository.BaseDbRepository
-import ru.jr2.edit.domain.model.BaseModel
+import ru.jr2.edit.presentation.model.BaseModel
 import tornadofx.FXEvent
 import tornadofx.ItemViewModel
 
