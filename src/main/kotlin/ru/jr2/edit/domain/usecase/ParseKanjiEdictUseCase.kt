@@ -7,8 +7,8 @@ import ru.jr2.edit.data.editc.mapping.KanjiDictionary
 import ru.jr2.edit.data.editc.mapping.KanjiEdictEntry
 import ru.jr2.edit.data.editc.repository.EdictParserRepository
 import ru.jr2.edit.domain.misc.JlptLevel
-import ru.jr2.edit.domain.model.Kanji
-import ru.jr2.edit.domain.model.KanjiReading
+import ru.jr2.edit.domain.model.KanjiModel
+import ru.jr2.edit.domain.model.KanjiReadingModel
 import ru.jr2.edit.util.pmap
 import java.io.File
 
@@ -24,11 +24,11 @@ class ParseKanjiEdictUseCase(
         changeStateMsg("Обработка канджи")
         val kanjisWithKanjiReadings = kanjiEntries.pmap { transformEntry(it) }
         changeStateMsg("Запись канджи в БД")
-        kanjiDbUseCase.fastKanjiWithReadingsInsertion(kanjisWithKanjiReadings)
+        kanjiDbUseCase.saveParsedKanjiWithReadings(kanjisWithKanjiReadings)
     }
 
-    private fun transformEntry(kanjiEdictEntry: KanjiEdictEntry): Pair<Kanji, List<KanjiReading>?> {
-        val kanji = Kanji().apply {
+    private fun transformEntry(kanjiEdictEntry: KanjiEdictEntry): Pair<KanjiModel, List<KanjiReadingModel>?> {
+        val kanji = KanjiModel().apply {
             kanji = kanjiEdictEntry.literal
             strokeCount = kanjiEdictEntry.misc.strokeCount
             interpretation = kanjiEdictEntry.readingMeaning?.rmgroup?.meanings?.filter {
@@ -40,7 +40,7 @@ class ParseKanjiEdictUseCase(
         val kanjiReadings = kanjiEdictEntry.readingMeaning?.rmgroup?.readings?.filter {
             it.type == "ja_on" || it.type == "ja_kun"
         }?.map {
-            KanjiReading().apply {
+            KanjiReadingModel().apply {
                 reading = it.value
                 readingType = if (it.type == "ja_on") 0 else 1
             }

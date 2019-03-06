@@ -46,13 +46,13 @@ class WordParseViewModel(
     }
 
     private fun getLoader(): Job = launch {
-        var iter = 0
+        var i = 0
         repeat(Int.MAX_VALUE) {
-            if (iter > 3) {
+            if (i > 3) {
                 processingStateMsg = processingStateMsg.removeSuffix("...")
             }
             processingStateMsg += '.'
-            iter++
+            i++
             delay(200L)
         }
     }

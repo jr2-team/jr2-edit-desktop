@@ -6,44 +6,44 @@ import org.jetbrains.exposed.sql.transactions.transaction
 import ru.jr2.edit.data.db.table.WordTable
 import ru.jr2.edit.domain.entity.WordEntity
 import ru.jr2.edit.domain.misc.JlptLevel
-import ru.jr2.edit.domain.model.Word
+import ru.jr2.edit.domain.model.WordModel
 
-class WordDbRepository : BaseDbRepository<Word>() {
-    override fun getById(id: Int): Word = transaction(db) {
-        return@transaction Word.fromEntity(WordEntity[id])
+class WordDbRepository : BaseDbRepository<WordModel>() {
+    override fun getById(id: Int): WordModel = transaction(db) {
+        return@transaction WordModel.fromEntity(WordEntity[id])
     }
 
-    override fun getById(vararg id: Int): List<Word> = transaction(db) {
+    override fun getById(vararg id: Int): List<WordModel> = transaction(db) {
         id.map {
-            Word.fromEntity(WordEntity[it])
+            WordModel.fromEntity(WordEntity[it])
         }
     }
 
-    override fun getAll(): List<Word> = transaction(db) {
-        WordEntity.all().map { Word.fromEntity(it) }
+    override fun getAll(): List<WordModel> = transaction(db) {
+        WordEntity.all().map { WordModel.fromEntity(it) }
     }
 
-    fun getWithOffset(n: Int, offset: Int): List<Word> = transaction(db) {
+    fun getWithOffset(n: Int, offset: Int): List<WordModel> = transaction(db) {
         WordTable.selectAll()
             .limit(n, offset)
             .map {
-                Word.fromEntity(WordEntity.wrapRow(it))
+                WordModel.fromEntity(WordEntity.wrapRow(it))
             }
     }
 
     fun getCount(): Int = transaction(db) { WordEntity.count() }
 
-    override fun insert(model: Word): Word = transaction(db) {
+    override fun insert(model: WordModel): WordModel = transaction(db) {
         val newWord = WordEntity.new {
             this.word = model.word
             furigana = model.furigana
             interpretation = model.interpretation
             jlptLevel = JlptLevel.fromStr(model.jlptLevel).code
         }
-        Word.fromEntity(newWord)
+        WordModel.fromEntity(newWord)
     }
 
-    fun insertAll(words: List<Word>) {
+    fun insertAll(words: List<WordModel>) {
         transaction(db) {
             WordTable.batchInsert(words) {
                 this[WordTable.word] = it.word
@@ -54,7 +54,7 @@ class WordDbRepository : BaseDbRepository<Word>() {
         }
     }
 
-    override fun insertUpdate(model: Word): Word = transaction(db) {
+    override fun insertUpdate(model: WordModel): WordModel = transaction(db) {
         WordEntity.findById(model.id)?.run {
             word = model.word
             furigana = model.furigana
@@ -64,7 +64,7 @@ class WordDbRepository : BaseDbRepository<Word>() {
         } ?: insert(model)
     }
 
-    override fun delete(model: Word) = transaction(db) {
+    override fun delete(model: WordModel) = transaction(db) {
         WordEntity[model.id].delete()
     }
 }

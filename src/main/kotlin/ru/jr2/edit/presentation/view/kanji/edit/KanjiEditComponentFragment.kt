@@ -1,10 +1,10 @@
 package ru.jr2.edit.presentation.view.kanji.edit
 
+import ru.jr2.edit.Style
 import ru.jr2.edit.Style.Companion.mediumButton
-import ru.jr2.edit.Style.Companion.miniButton
 import ru.jr2.edit.Style.Companion.utilityFragment
-import ru.jr2.edit.domain.model.Kanji
-import ru.jr2.edit.presentation.viewmodel.kanji.KanjiEditViewModel
+import ru.jr2.edit.domain.model.KanjiModel
+import ru.jr2.edit.presentation.viewmodel.kanji.edit.KanjiEditViewModel
 import tornadofx.*
 
 class KanjiEditComponentFragment : Fragment("Редактирование списка компонентов") {
@@ -12,30 +12,36 @@ class KanjiEditComponentFragment : Fragment("Редактирование спи
 
     override val root = borderpane {
         paddingAll = 10.0
-        center = tableview(kanjiEditViewModel.components) {
-            placeholder = label("У моджи нет компонентов")
-            column("Моджи", Kanji::kanji)
-            column("Интерпретация", Kanji::pInterpretation).remainingWidth()
-            smartResize()
-            onSelectionChange { kanjiEditViewModel.selectedComponent = it }
-        }
+        center = renderKanjiComponentTableView()
         bottom = borderpane {
-            right = buttonbar {
-                button("-") {
-                    addClass(miniButton)
-                }.action { kanjiEditViewModel.onComponentRemoveClick() }
-                button("⌃") {
-                    addClass(miniButton)
-                }.action { kanjiEditViewModel.onComponentMoveUpClick() }
-                button("˅") {
-                    addClass(miniButton)
-                }.action { kanjiEditViewModel.onComponentMoveDownClick() }
-            }
-            left = button("ОК") {
-                action { close() }
-                addClass(mediumButton)
-            }
+            right = renderKanjiComponentContentControlButtonBar()
+            left = renderOKButton()
         }
         addClass(utilityFragment)
+    }
+
+    private fun renderKanjiComponentTableView() = tableview(kanjiEditViewModel.components) {
+        placeholder = label("У канджи нет компонентов")
+        column("Канджи", KanjiModel::kanji)
+        column("Интерпретация", KanjiModel::pInterpretation).remainingWidth()
+        smartResize()
+        onSelectionChange { kanjiEditViewModel.selectedComponent = it }
+    }
+
+    private fun renderKanjiComponentContentControlButtonBar() = buttonbar {
+        button("-") {
+            addClass(Style.miniButton)
+        }.action { kanjiEditViewModel.onComponentRemoveClick() }
+        button("⌃") {
+            addClass(Style.miniButton)
+        }.action { kanjiEditViewModel.onComponentMoveUpClick() }
+        button("˅") {
+            addClass(Style.miniButton)
+        }.action { kanjiEditViewModel.onComponentMoveDownClick() }
+    }
+
+    private fun renderOKButton() = button("ОК") {
+        action { close() }
+        addClass(mediumButton)
     }
 }

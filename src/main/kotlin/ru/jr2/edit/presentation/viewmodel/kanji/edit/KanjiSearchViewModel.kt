@@ -1,15 +1,15 @@
-package ru.jr2.edit.presentation.viewmodel.kanji
+package ru.jr2.edit.presentation.viewmodel.kanji.edit
 
 import javafx.collections.FXCollections
 import javafx.collections.ObservableList
 import ru.jr2.edit.data.db.repository.KanjiDbRepository
-import ru.jr2.edit.domain.model.Kanji
+import ru.jr2.edit.domain.model.KanjiModel
 import tornadofx.ViewModel
 
 class KanjiSearchViewModel(
     private val kanjiRepository: KanjiDbRepository = KanjiDbRepository()
 ) : ViewModel() {
-    val kanjis: ObservableList<Kanji> = FXCollections.observableArrayList<Kanji>().also {
+    val kanjis: ObservableList<KanjiModel> = FXCollections.observableArrayList<KanjiModel>().also {
         it.addAll(kanjiRepository.getAll())
     }
 

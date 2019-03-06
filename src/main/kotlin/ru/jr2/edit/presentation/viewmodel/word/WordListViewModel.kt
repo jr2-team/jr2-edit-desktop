@@ -5,7 +5,7 @@ import javafx.collections.FXCollections
 import javafx.collections.ObservableList
 import javafx.stage.StageStyle
 import ru.jr2.edit.data.db.repository.WordDbRepository
-import ru.jr2.edit.domain.model.Word
+import ru.jr2.edit.domain.model.WordModel
 import ru.jr2.edit.presentation.view.word.WordEditFragment
 import ru.jr2.edit.presentation.view.word.WordParseFragment
 import ru.jr2.edit.presentation.viewmodel.BaseEditViewModel
@@ -18,8 +18,8 @@ import kotlin.math.ceil
 class WordListViewModel(
     private val wordRepository: WordDbRepository = WordDbRepository()
 ) : ViewModel() {
-    val words: ObservableList<Word> = FXCollections.observableArrayList<Word>()
-    var selectedWord: Word? = null
+    val words: ObservableList<WordModel> = FXCollections.observableArrayList<WordModel>()
+    var selectedWord: WordModel? = null
 
     val pTotalPageCount = SimpleIntegerProperty(0)
     val pCurrentPage = SimpleIntegerProperty(1)

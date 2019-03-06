@@ -9,14 +9,13 @@ import ru.jr2.edit.data.db.AppDatabase
 import ru.jr2.edit.data.db.table.KanjiComponentTable
 import ru.jr2.edit.domain.entity.KanjiReadingEntity
 import ru.jr2.edit.domain.misc.JlptLevel
-import ru.jr2.edit.domain.model.Kanji
-import ru.jr2.edit.domain.model.KanjiReading
+import ru.jr2.edit.domain.model.KanjiModel
+import ru.jr2.edit.domain.model.KanjiReadingModel
 import ru.jr2.edit.domain.usecase.KanjiDbUseCase
 
 internal class KanjiDbRepositoryTest {
     private val testDb: Database = AppDatabase(true).db
     private val repository = KanjiDbRepository(testDb)
-    private val readingsRepository = KanjiReadingDbRepository(testDb)
     private val kanjiUseCase = KanjiDbUseCase(testDb)
 
     @Test
@@ -43,7 +42,7 @@ internal class KanjiDbRepositoryTest {
         assertEquals(getKanjiReadings().count(), KanjiReadingEntity.all().count())
         assertEquals(
             getKanjiComponents().map { it.kanji },
-            repository.getComponentsOfKanji(testMoji.id).map { it.kanji }
+            kanjiUseCase.getKanjiComponents(testMoji.id).map { it.kanji }
         )
     }
 
@@ -61,7 +60,7 @@ internal class KanjiDbRepositoryTest {
         assertEquals(0, KanjiComponentTable.selectAll().count())
     }
 
-    private fun getTestMoji() = Kanji().apply {
+    private fun getTestMoji() = KanjiModel().apply {
         kanji = "生"
         strokeCount = 5
         jlptLevel = JlptLevel.JLPT4.str
@@ -70,17 +69,17 @@ internal class KanjiDbRepositoryTest {
     }
 
     private fun getKanjiReadings() = listOf(
-        KanjiReading(0, "セイ", 0, 0, false, 0),
-        KanjiReading(0, "ショウ", 0, 1, false, 0),
-        KanjiReading(0, "い.きる", 1, 0, false, 0),
-        KanjiReading(0, "い.かす", 1, 1, false, 0)
+        KanjiReadingModel(0, "セイ", 0, 0, false, 0),
+        KanjiReadingModel(0, "ショウ", 0, 1, false, 0),
+        KanjiReadingModel(0, "い.きる", 1, 0, false, 0),
+        KanjiReadingModel(0, "い.かす", 1, 1, false, 0)
     )
 
     private fun getKanjiComponents() = listOf(
-        Kanji().apply { kanji = "A" },
-        Kanji().apply { kanji = "B" },
-        Kanji().apply { kanji = "C" },
-        Kanji().apply { kanji = "D" },
-        Kanji().apply { kanji = "E" }
+        KanjiModel().apply { kanji = "A" },
+        KanjiModel().apply { kanji = "B" },
+        KanjiModel().apply { kanji = "C" },
+        KanjiModel().apply { kanji = "D" },
+        KanjiModel().apply { kanji = "E" }
     )
 }

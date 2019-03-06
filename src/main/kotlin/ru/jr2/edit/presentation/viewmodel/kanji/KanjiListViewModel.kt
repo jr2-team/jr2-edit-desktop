@@ -4,7 +4,7 @@ import javafx.collections.FXCollections
 import javafx.collections.ObservableList
 import javafx.stage.StageStyle
 import ru.jr2.edit.domain.dto.KanjiDto
-import ru.jr2.edit.domain.model.Kanji
+import ru.jr2.edit.domain.model.KanjiModel
 import ru.jr2.edit.domain.usecase.KanjiDbUseCase
 import ru.jr2.edit.presentation.view.kanji.edit.KanjiEditFragment
 import ru.jr2.edit.presentation.view.kanji.parser.KanjiParserFragment
@@ -17,10 +17,12 @@ class KanjiListViewModel(
     private var selectedKanjiId: Int = 0
 
     val kanjis: ObservableList<KanjiDto> = FXCollections.observableArrayList<KanjiDto>()
-    val components: ObservableList<Kanji> = FXCollections.observableArrayList<Kanji>()
+    val components: ObservableList<KanjiModel> = FXCollections.observableArrayList<KanjiModel>()
 
     init {
-        subscribe<BaseEditViewModel.ItemSavedEvent> { ctx -> if (ctx.isSaved) loadContent() }
+        subscribe<BaseEditViewModel.ItemSavedEvent> { ctx ->
+            if (ctx.isSaved) loadContent()
+        }
     }
 
     fun loadContent() {
@@ -28,7 +30,7 @@ class KanjiListViewModel(
         kanjis.addAll(kanjiDbUseCase.getAllKanjiWithReadings())
     }
 
-    fun onKanjiSelect(kanjiId: Int, needToLoadComponents: Boolean = false) {
+    fun onKanjiSelectChange(kanjiId: Int, needToLoadComponents: Boolean = false) {
         selectedKanjiId = kanjiId
         if (needToLoadComponents) {
             components.clear()

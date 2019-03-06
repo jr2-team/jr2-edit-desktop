@@ -7,7 +7,7 @@ import ru.jr2.edit.domain.misc.JlptLevel
 import tornadofx.getValue
 import tornadofx.setValue
 
-class Kanji(id: Int = 0) : BaseModel(id) {
+class KanjiModel(id: Int = 0) : BaseModel(id) {
     val pKanji = SimpleStringProperty()
     var kanji: String by pKanji
 
@@ -30,8 +30,16 @@ class Kanji(id: Int = 0) : BaseModel(id) {
 
     override fun toString() = kanji
 
+    override fun equals(other: Any?): Boolean {
+        var areEqual = false
+        if (other is KanjiModel) {
+            areEqual = other.id == id
+        }
+        return areEqual
+    }
+
     companion object {
-        fun fromEntity(kanjiEntity: KanjiEntity) = Kanji(kanjiEntity.id.value).apply {
+        fun fromEntity(kanjiEntity: KanjiEntity) = KanjiModel(kanjiEntity.id.value).apply {
             kanji = kanjiEntity.kanji
             strokeCount = kanjiEntity.strokeCount
             interpretation = kanjiEntity.interpretation

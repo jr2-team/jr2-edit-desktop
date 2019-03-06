@@ -1,27 +1,23 @@
 package ru.jr2.edit.presentation.view.kanji.edit
 
 import ru.jr2.edit.Style
-import ru.jr2.edit.data.db.repository.KanjiReadingDbRepository
-import ru.jr2.edit.domain.model.KanjiReading
+import ru.jr2.edit.domain.model.KanjiReadingModel
 import ru.jr2.edit.presentation.view.BaseEditFragment
-import ru.jr2.edit.presentation.viewmodel.BaseEditViewModel
-import ru.jr2.edit.presentation.viewmodel.kanji.KanjiEditViewModel
+import ru.jr2.edit.presentation.viewmodel.kanji.edit.KanjiReadingEditViewModel
+import ru.jr2.edit.presentation.viewmodel.kanji.edit.KanjiEditViewModel
 import tornadofx.*
 
-class KanjiEditReadingFragment : BaseEditFragment<KanjiReading, KanjiEditReadingViewModel>() {
-    override val viewModel = KanjiEditReadingViewModel(paramItemId)
+class KanjiEditReadingFragment : BaseEditFragment<KanjiReadingModel, KanjiReadingEditViewModel>() {
+    override val viewModel = KanjiReadingEditViewModel(paramItemId)
+
     private val kanjiEditViewModel: KanjiEditViewModel by inject()
 
     override val root = borderpane {
-        center = form {
-            add(renderKanjiReadingPropertiesFieldSet())
-        }
-        bottom = form {
-            add(renderBottomButtonBar())
-        }
+        center = renderKanjiReadingPropertiesForm()
+        bottom = renderBottomBorderPane()
     }
 
-    private fun renderKanjiReadingPropertiesFieldSet() = form {
+    private fun renderKanjiReadingPropertiesForm() = form {
         fieldset {
             field("Чтение") {
                 textfield(viewModel.pReading) { }
@@ -36,28 +32,15 @@ class KanjiEditReadingFragment : BaseEditFragment<KanjiReading, KanjiEditReading
         }
     }
 
-    private fun renderBottomButtonBar() = borderpane {
+    private fun renderBottomBorderPane() = borderpane {
         right = button("Сохранить") {
             action { }
             addClass(Style.mediumButton)
         }
-
         left = button("Отмена") {
             action { close() }
             addClass(Style.mediumButton)
         }
+        paddingAll = 10
     }
-}
-
-class KanjiEditReadingViewModel(
-    kanjiReadingId: Int
-) : BaseEditViewModel<KanjiReading>(
-    kanjiReadingId,
-    KanjiReadingDbRepository(),
-    KanjiReading()
-) {
-    val pReading = bind(KanjiReading::pReading)
-    val pReadingType = bind(KanjiReading::pReadingType)
-    val pPriority = bind(KanjiReading::pPriority)
-    val pIsAnachronism = bind(KanjiReading::pIsAnachronism)
 }

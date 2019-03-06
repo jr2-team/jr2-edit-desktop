@@ -5,7 +5,7 @@ import ru.jr2.edit.domain.entity.SentenceEntity
 import tornadofx.getValue
 import tornadofx.setValue
 
-class Sentence(id: Int = 0) : BaseModel(id) {
+class SentenceModel(id: Int = 0) : BaseModel(id) {
     val pSentence = SimpleStringProperty()
     var sentence: String by pSentence
 
@@ -16,8 +16,8 @@ class Sentence(id: Int = 0) : BaseModel(id) {
     var interpretation: String? by pInterpretation
 
     companion object {
-        fun fromEntity(sentenceEntity: SentenceEntity): Sentence =
-            Sentence(sentenceEntity.id.value).apply {
+        fun fromEntity(sentenceEntity: SentenceEntity): SentenceModel =
+            SentenceModel(sentenceEntity.id.value).apply {
                 sentence = sentenceEntity.sentence
                 furigana = sentenceEntity.furigana
                 interpretation = sentenceEntity.interpretation

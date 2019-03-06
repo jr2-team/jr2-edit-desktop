@@ -9,26 +9,25 @@ class KanjiParserFragment : Fragment("Парсинг Edict-словаря кан
 
     override val root = form {
         borderpane {
-            top = label(viewModel.pProcessingStateMsg)
-
-            bottom = buttonbar {
-                button("Обработать файл") {
-                    disableProperty().bind(viewModel.pIsBusy)
-                    action {
-                        viewModel.onKanjiEdictFileChoose(chooseFile(null, emptyArray()))
-                    }
-                    addClass(Style.mediumButton)
-                }
-                button("Отмена") {
-                    disableProperty().bind(viewModel.pIsBusy.not())
-                    action { viewModel.onCancelProcessingClick() }
-                    addClass(Style.mediumButton)
-                }
-
-                paddingTop = 10.0
-            }
-
             paddingAll = 10.0
+            top = label(viewModel.pProcessingStateMsg)
+            bottom = renderSelectFileCancelButtonBar()
+        }
+    }
+
+    private fun renderSelectFileCancelButtonBar() = buttonbar {
+        paddingTop = 10.0
+        button("Обработать файл") {
+            disableProperty().bind(viewModel.pIsBusy)
+            action {
+                viewModel.onKanjiEdictFileChoose(chooseFile(null, emptyArray()))
+            }
+            addClass(Style.mediumButton)
+        }
+        button("Отмена") {
+            disableProperty().bind(viewModel.pIsBusy.not())
+            action { viewModel.onCancelProcessingClick() }
+            addClass(Style.mediumButton)
         }
     }
 }

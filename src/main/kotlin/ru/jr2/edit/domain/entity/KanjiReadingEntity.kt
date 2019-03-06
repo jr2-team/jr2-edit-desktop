@@ -5,7 +5,7 @@ import org.jetbrains.exposed.dao.IntEntity
 import org.jetbrains.exposed.dao.IntEntityClass
 import ru.jr2.edit.data.db.table.KanjiReadingTable
 import ru.jr2.edit.data.db.table.KanjiTable
-import ru.jr2.edit.domain.model.KanjiReading
+import ru.jr2.edit.domain.model.KanjiReadingModel
 
 class KanjiReadingEntity(id: EntityID<Int>) : IntEntity(id) {
     var reading by KanjiReadingTable.reading
@@ -14,7 +14,7 @@ class KanjiReadingEntity(id: EntityID<Int>) : IntEntity(id) {
     var isAnachronism by KanjiReadingTable.isAnachronism
     var kanji by KanjiReadingTable.kanji
 
-    fun updateWithModel(model: KanjiReading) {
+    fun updateWithModel(model: KanjiReadingModel) {
         reading = model.reading
         readingType = model.readingType
         priority = model.priority

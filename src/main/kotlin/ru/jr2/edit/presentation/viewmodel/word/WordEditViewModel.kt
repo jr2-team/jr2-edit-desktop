@@ -1,14 +1,14 @@
 package ru.jr2.edit.presentation.viewmodel.word
 
 import ru.jr2.edit.data.db.repository.WordDbRepository
-import ru.jr2.edit.domain.model.Word
+import ru.jr2.edit.domain.model.WordModel
 import ru.jr2.edit.presentation.viewmodel.BaseEditViewModel
 
 class WordEditViewModel(
     wordId: Int
-) : BaseEditViewModel<Word>(wordId, WordDbRepository(), Word()) {
-    val pWord = bind(Word::pWord)
-    val pFurigana = bind(Word::pFurigana)
-    val pInterpretation = bind(Word::pInterpretation)
-    val pJlptLevel = bind(Word::pJlptLevel)
+) : BaseEditViewModel<WordModel>(wordId, WordDbRepository(), WordModel()) {
+    val pWord = bind(WordModel::pWord)
+    val pFurigana = bind(WordModel::pFurigana)
+    val pInterpretation = bind(WordModel::pInterpretation)
+    val pJlptLevel = bind(WordModel::pJlptLevel)
 }

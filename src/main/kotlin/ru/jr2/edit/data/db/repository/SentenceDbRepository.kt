@@ -2,33 +2,33 @@ package ru.jr2.edit.data.db.repository
 
 import org.jetbrains.exposed.sql.transactions.transaction
 import ru.jr2.edit.domain.entity.SentenceEntity
-import ru.jr2.edit.domain.model.Sentence
+import ru.jr2.edit.domain.model.SentenceModel
 
-class SentenceDbRepository : BaseDbRepository<Sentence>() {
-    override fun getById(id: Int): Sentence = transaction(db) {
-        return@transaction Sentence.fromEntity(SentenceEntity[id])
+class SentenceDbRepository : BaseDbRepository<SentenceModel>() {
+    override fun getById(id: Int): SentenceModel = transaction(db) {
+        return@transaction SentenceModel.fromEntity(SentenceEntity[id])
     }
 
-    override fun getById(vararg id: Int): List<Sentence> = transaction(db) {
+    override fun getById(vararg id: Int): List<SentenceModel> = transaction(db) {
         return@transaction id.map {
-            Sentence.fromEntity(SentenceEntity[it])
+            SentenceModel.fromEntity(SentenceEntity[it])
         }
     }
 
-    override fun getAll(): List<Sentence> = transaction(db) {
-        return@transaction SentenceEntity.all().map { Sentence.fromEntity(it) }
+    override fun getAll(): List<SentenceModel> = transaction(db) {
+        return@transaction SentenceEntity.all().map { SentenceModel.fromEntity(it) }
     }
 
-    override fun insert(model: Sentence): Sentence = transaction(db) {
+    override fun insert(model: SentenceModel): SentenceModel = transaction(db) {
         val newSentence = SentenceEntity.new {
             sentence = model.sentence
             furigana = model.furigana
             interpretation = model.interpretation
         }
-        return@transaction Sentence.fromEntity(newSentence)
+        return@transaction SentenceModel.fromEntity(newSentence)
     }
 
-    override fun insertUpdate(model: Sentence): Sentence = transaction(db) {
+    override fun insertUpdate(model: SentenceModel): SentenceModel = transaction(db) {
         return@transaction SentenceEntity.findById(model.id)?.run {
             sentence = model.sentence
             furigana = model.furigana
@@ -37,7 +37,7 @@ class SentenceDbRepository : BaseDbRepository<Sentence>() {
         } ?: insert(model)
     }
 
-    override fun delete(model: Sentence) = transaction(db) {
+    override fun delete(model: SentenceModel) = transaction(db) {
         SentenceEntity[model.id].delete()
     }
 }

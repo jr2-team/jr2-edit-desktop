@@ -7,17 +7,29 @@ class Style : Stylesheet() {
         val largeButton by cssclass()
         val mediumButton by cssclass()
         val miniButton by cssclass()
-        val bottomButtonPane by cssclass()
+        val bottomBorderPaneStyle by cssclass()
         val utilityFragment by cssclass()
         val fragmentMiniButton by cssclass()
         val paginationControl by cssclass()
     }
 
     init {
+        // default component styles
         textArea {
             prefRowCount = 3
             maxWidth = 300.px
             wrapText = true
+        }
+
+        // custom styles
+        bottomBorderPaneStyle {
+            padding = box(10.px)
+            buttonBar {
+                button {
+                    minWidth = 120.px
+                    minHeight = 28.px
+                }
+            }
         }
 
         paginationControl {
@@ -25,16 +37,6 @@ class Style : Stylesheet() {
                 minWidth = 48.px
                 maxWidth = 48.px
                 minHeight = 28.px
-            }
-        }
-
-        bottomButtonPane {
-            padding = box(10.px)
-            buttonBar {
-                button {
-                    minWidth = 120.px
-                    minHeight = 28.px
-                }
             }
         }
 

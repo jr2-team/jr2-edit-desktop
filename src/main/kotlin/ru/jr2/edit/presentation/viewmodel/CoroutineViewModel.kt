@@ -7,11 +7,10 @@ import kotlinx.coroutines.javafx.JavaFx as Main
 
 abstract class CoroutineViewModel : ViewModel(), CoroutineScope {
     private val viewModelJob = SupervisorJob()
+
     override val coroutineContext: CoroutineContext
         get() = viewModelJob + Dispatchers.Main
 
 
-    internal fun cancelJob() {
-        viewModelJob.cancelChildren()
-    }
+    internal fun cancelJob() = viewModelJob.cancelChildren()
 }

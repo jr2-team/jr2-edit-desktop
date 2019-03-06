@@ -6,7 +6,7 @@ import ru.jr2.edit.domain.misc.JlptLevel
 import tornadofx.getValue
 import tornadofx.setValue
 
-class Word(id: Int = 0) : BaseModel(id) {
+class WordModel(id: Int = 0) : BaseModel(id) {
     val pWord = SimpleStringProperty()
     var word: String by pWord
 
@@ -20,12 +20,11 @@ class Word(id: Int = 0) : BaseModel(id) {
     var jlptLevel: String? by pJlptLevel
 
     companion object {
-        fun fromEntity(wordEntity: WordEntity) =
-            Word(wordEntity.id.value).apply {
-                word = wordEntity.word
-                furigana = wordEntity.furigana
-                interpretation = wordEntity.interpretation
-                jlptLevel = JlptLevel.fromCode(wordEntity.jlptLevel).str
-            }
+        fun fromEntity(wordEntity: WordEntity) = WordModel(wordEntity.id.value).apply {
+            word = wordEntity.word
+            furigana = wordEntity.furigana
+            interpretation = wordEntity.interpretation
+            jlptLevel = JlptLevel.fromCode(wordEntity.jlptLevel).str
+        }
     }
 }

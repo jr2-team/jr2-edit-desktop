@@ -5,7 +5,7 @@ import org.jetbrains.exposed.dao.IntEntity
 import org.jetbrains.exposed.dao.IntEntityClass
 import ru.jr2.edit.data.db.table.KanjiTable
 import ru.jr2.edit.domain.misc.JlptLevel
-import ru.jr2.edit.domain.model.Kanji
+import ru.jr2.edit.domain.model.KanjiModel
 
 class KanjiEntity(id: EntityID<Int>) : IntEntity(id) {
     var kanji by KanjiTable.kanji
@@ -16,7 +16,7 @@ class KanjiEntity(id: EntityID<Int>) : IntEntity(id) {
     var svg by KanjiTable.svg
     var jlptLevel by KanjiTable.jlptLevel
 
-    fun updateWithModel(model: Kanji) {
+    fun updateWithModel(model: KanjiModel) {
         kanji = model.kanji
         strokeCount = model.strokeCount
         interpretation = model.interpretation

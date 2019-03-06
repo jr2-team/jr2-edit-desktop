@@ -1,4 +1,4 @@
-package ru.jr2.edit.presentation.viewmodel.kanji
+package ru.jr2.edit.presentation.viewmodel.kanji.edit
 
 import javafx.beans.property.SimpleStringProperty
 import javafx.collections.FXCollections
@@ -6,8 +6,8 @@ import javafx.collections.ObservableList
 import javafx.stage.StageStyle
 import ru.jr2.edit.data.db.repository.KanjiDbRepository
 import ru.jr2.edit.data.db.repository.KanjiReadingDbRepository
-import ru.jr2.edit.domain.model.Kanji
-import ru.jr2.edit.domain.model.KanjiReading
+import ru.jr2.edit.domain.model.KanjiModel
+import ru.jr2.edit.domain.model.KanjiReadingModel
 import ru.jr2.edit.domain.usecase.KanjiDbUseCase
 import ru.jr2.edit.presentation.view.kanji.edit.KanjiEditComponentFragment
 import ru.jr2.edit.presentation.view.kanji.edit.KanjiEditReadingFragment
@@ -22,18 +22,18 @@ import tornadofx.swap
 class KanjiEditViewModel(
     mojiId: Int,
     private val kanjiDbUseCase: KanjiDbUseCase = KanjiDbUseCase()
-) : BaseEditViewModel<Kanji>(mojiId, KanjiDbRepository(), Kanji()) {
-    val pKanji = bind(Kanji::pKanji)
-    val pStrokeCount = bind(Kanji::pStrokeCount)
-    val pInterpretation = bind(Kanji::pInterpretation)
-    val pFrequency = bind(Kanji::pFrequency)
-    val pGrade = bind(Kanji::pGrade)
-    val pJlptLevel = bind(Kanji::pJlptLevel)
+) : BaseEditViewModel<KanjiModel>(mojiId, KanjiDbRepository(), KanjiModel()) {
+    val pKanji = bind(KanjiModel::pKanji)
+    val pStrokeCount = bind(KanjiModel::pStrokeCount)
+    val pInterpretation = bind(KanjiModel::pInterpretation)
+    val pFrequency = bind(KanjiModel::pFrequency)
+    val pGrade = bind(KanjiModel::pGrade)
+    val pJlptLevel = bind(KanjiModel::pJlptLevel)
 
     val pComponents = SimpleStringProperty(String())
 
-    val readings: ObservableList<KanjiReading> = FXCollections.observableArrayList<KanjiReading>()
-    val components: ObservableList<Kanji> = FXCollections.observableArrayList<Kanji>()
+    val readings: ObservableList<KanjiReadingModel> = FXCollections.observableArrayList<KanjiReadingModel>()
+    val components: ObservableList<KanjiModel> = FXCollections.observableArrayList<KanjiModel>()
 
     init {
         components.onChange {
@@ -60,7 +60,7 @@ class KanjiEditViewModel(
     }
 
     // Компоненты канджи
-    var selectedComponent: Kanji? = null
+    var selectedComponent: KanjiModel? = null
 
     fun onKanjiSearchClick() {
         find<KanjiEditSearchFragment>(Scope(this))

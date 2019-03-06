@@ -4,7 +4,7 @@ import javafx.collections.FXCollections
 import javafx.collections.ObservableList
 import javafx.stage.StageStyle
 import ru.jr2.edit.data.db.repository.SentenceDbRepository
-import ru.jr2.edit.domain.model.Sentence
+import ru.jr2.edit.domain.model.SentenceModel
 import ru.jr2.edit.presentation.view.sentence.SentenceEditFragment
 import ru.jr2.edit.presentation.viewmodel.BaseEditViewModel
 import tornadofx.ViewModel
@@ -12,9 +12,9 @@ import tornadofx.ViewModel
 class SentenceListViewModel(
     private val sentenceRepository: SentenceDbRepository = SentenceDbRepository()
 ) : ViewModel() {
-    val sentences: ObservableList<Sentence> = FXCollections.observableArrayList<Sentence>()
+    val sentences: ObservableList<SentenceModel> = FXCollections.observableArrayList<SentenceModel>()
 
-    var selectedSentence: Sentence? = null
+    var selectedSentence: SentenceModel? = null
 
     init {
         subscribe<BaseEditViewModel.ItemSavedEvent> { ctx ->

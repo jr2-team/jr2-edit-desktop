@@ -5,50 +5,50 @@ import org.jetbrains.exposed.sql.transactions.transaction
 import ru.jr2.edit.EditApp
 import ru.jr2.edit.data.db.table.KanjiReadingTable
 import ru.jr2.edit.domain.entity.KanjiReadingEntity
-import ru.jr2.edit.domain.model.KanjiReading
+import ru.jr2.edit.domain.model.KanjiReadingModel
 
 class KanjiReadingDbRepository(
     override val db: Database = EditApp.instance.db
-) : BaseDbRepository<KanjiReading>(db) {
-    override fun getById(id: Int): KanjiReading = transaction(db) {
-        KanjiReading.fromEntity(KanjiReadingEntity[id])
+) : BaseDbRepository<KanjiReadingModel>(db) {
+    override fun getById(id: Int): KanjiReadingModel = transaction(db) {
+        KanjiReadingModel.fromEntity(KanjiReadingEntity[id])
     }
 
-    override fun getById(vararg id: Int): List<KanjiReading> = transaction(db) {
-        id.map { KanjiReading.fromEntity(KanjiReadingEntity[it]) }
+    override fun getById(vararg id: Int): List<KanjiReadingModel> = transaction(db) {
+        id.map { KanjiReadingModel.fromEntity(KanjiReadingEntity[it]) }
     }
 
-    override fun getAll(): List<KanjiReading> = transaction(db) {
-        KanjiReadingEntity.all().map { KanjiReading.fromEntity(it) }
+    override fun getAll(): List<KanjiReadingModel> = transaction(db) {
+        KanjiReadingEntity.all().map { KanjiReadingModel.fromEntity(it) }
     }
 
-    fun getByKanjiId(kanjiId: Int): List<KanjiReading> = transaction(db) {
+    fun getByKanjiId(kanjiId: Int): List<KanjiReadingModel> = transaction(db) {
         KanjiReadingEntity.find {
             KanjiReadingTable.kanji eq kanjiId
         }.map {
-            KanjiReading.fromEntity(it)
+            KanjiReadingModel.fromEntity(it)
         }
     }
 
-    override fun insert(model: KanjiReading): KanjiReading = transaction(db) {
+    override fun insert(model: KanjiReadingModel): KanjiReadingModel = transaction(db) {
         val newKanjiReading = KanjiReadingEntity.new {
             updateWithModel(model)
         }
-        KanjiReading.fromEntity(newKanjiReading)
+        KanjiReadingModel.fromEntity(newKanjiReading)
     }
 
-    override fun insertUpdate(model: KanjiReading): KanjiReading = transaction(db) {
+    override fun insertUpdate(model: KanjiReadingModel): KanjiReadingModel = transaction(db) {
         KanjiReadingEntity.findById(model.id)?.run {
             updateWithModel(model)
             getById(model.id)
         } ?: insert(model)
     }
 
-    fun insertUpdate(models: List<KanjiReading>): List<KanjiReading> = transaction(db) {
+    fun insertUpdate(models: List<KanjiReadingModel>): List<KanjiReadingModel> = transaction(db) {
         models.map { insertUpdate(it) }
     }
 
-    override fun delete(model: KanjiReading) = transaction(db) {
+    override fun delete(model: KanjiReadingModel) = transaction(db) {
         KanjiReadingEntity[model.id].delete()
     }
 

@@ -4,7 +4,7 @@ import javafx.geometry.Pos
 import javafx.scene.control.Button
 import ru.jr2.edit.Style
 import ru.jr2.edit.Style.Companion.paginationControl
-import ru.jr2.edit.domain.model.Word
+import ru.jr2.edit.domain.model.WordModel
 import ru.jr2.edit.presentation.viewmodel.word.WordListViewModel
 import ru.jr2.edit.util.showWarningMsg
 import tornadofx.*
@@ -21,63 +21,68 @@ class WordListView : View() {
     }
 
     override val root = borderpane {
-        top = hbox {
-            button("Edict") {
-                addClass(Style.mediumButton)
-            }.action { viewModel.onParseClick() }
-            button("Обновить данные") {
-                addClass(Style.mediumButton)
-            }.action { viewModel.loadContent() }
-            paddingAll = 5.0
-        }
-        center = tableview(viewModel.words) {
-            column("Слово", Word::pWord)
-            column("Фуригана", Word::pFurigana)
-            column("Интерпретация", Word::pInterpretation).remainingWidth()
-            column("Уровень JLPT", Word::pJlptLevel)
-            smartResize()
-            onSelectionChange { word ->
-                (word !is Word).let {
-                    btnEditWord.isDisable = it
-                    btnDeleteWord.isDisable = it
-                }
-                viewModel.selectedWord = word
-            }
-            onUserSelect(2) { viewModel.onEditWordClick() }
-        }
+        top = renderAdditionalFunctionHBox()
+        center = renderWordTableView()
         bottom = borderpane {
-            right = hbox {
-                button("-") {
-                    action { viewModel.onChangePageClick(false) }
-                }
-                textfield(viewModel.pCurrentPage) {
-                    alignment = Pos.BASELINE_CENTER
-                    filterInput {
-                        with(it.controlNewText) {
-                            isInt() && toInt() in 1..viewModel.pTotalPageCount.value
-                        }
-                    }
-                }
-                button("+").action { viewModel.onChangePageClick(true) }
-                label(viewModel.pTotalPageCount) {
-                    alignment = Pos.BASELINE_CENTER
-                }
-                addClass(paginationControl)
-            }
-            left = buttonbar {
-                button("Добавить").action { viewModel.onNewWordClick() }
-                btnEditWord = button("Редактировать") {
-                    isDisable = true
-                    action { viewModel.onEditWordClick() }
-                }
-                btnDeleteWord = button("Удалить") {
-                    isDisable = true
-                    action { showDeleteWordWarning() }
-                }
-            }
-            addClass(Style.bottomButtonPane)
+            right = renderPaginationControlHBox()
+            left = renderContentControlButtonBar()
+            addClass(Style.bottomBorderPaneStyle)
         }
     }
+
+    private fun renderAdditionalFunctionHBox() = hbox {
+        paddingAll = 5
+        button("Слова из Edict").action { viewModel.onParseClick() }
+        button("Обновить данные").action { viewModel.loadContent() }
+    }
+
+    private fun renderWordTableView() = tableview(viewModel.words) {
+        column("Слово", WordModel::pWord)
+        column("Фуригана", WordModel::pFurigana)
+        column("Интерпретация", WordModel::pInterpretation).remainingWidth()
+        column("Уровень JLPT", WordModel::pJlptLevel)
+        smartResize()
+        onSelectionChange { word ->
+            (word !is WordModel).let {
+                btnEditWord.isDisable = it
+                btnDeleteWord.isDisable = it
+            }
+            viewModel.selectedWord = word
+        }
+        onUserSelect(2) { viewModel.onEditWordClick() }
+    }
+
+    private fun renderPaginationControlHBox() = hbox {
+        button("-") {
+            action { viewModel.onChangePageClick(false) }
+        }
+        textfield(viewModel.pCurrentPage) {
+            alignment = Pos.BASELINE_CENTER
+            filterInput {
+                with(it.controlNewText) {
+                    isInt() && toInt() in 1..viewModel.pTotalPageCount.value
+                }
+            }
+        }
+        button("+").action { viewModel.onChangePageClick(true) }
+        label(viewModel.pTotalPageCount) {
+            alignment = Pos.BASELINE_CENTER
+        }
+        addClass(paginationControl)
+    }
+
+    private fun renderContentControlButtonBar() = buttonbar {
+        button("Добавить").action { viewModel.onNewWordClick() }
+        btnEditWord = button("Редактировать") {
+            isDisable = true
+            action { viewModel.onEditWordClick() }
+        }
+        btnDeleteWord = button("Удалить") {
+            isDisable = true
+            action { showDeleteWordWarning() }
+        }
+    }
+
 
     private fun showDeleteWordWarning() = showWarningMsg(
         "Удалить слово",

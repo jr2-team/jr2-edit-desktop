@@ -7,7 +7,7 @@ import ru.jr2.edit.domain.entity.KanjiReadingEntity
 import tornadofx.getValue
 import tornadofx.setValue
 
-class KanjiReading(id: Int = 0) : BaseModel(id) {
+class KanjiReadingModel(id: Int = 0) : BaseModel(id) {
     val pReading = SimpleStringProperty()
     var reading: String by pReading
 
@@ -24,8 +24,8 @@ class KanjiReading(id: Int = 0) : BaseModel(id) {
     var kanji: Int = 0
 
     companion object {
-        fun fromEntity(readingEntity: KanjiReadingEntity): KanjiReading {
-            return KanjiReading(readingEntity.id.value).apply {
+        fun fromEntity(readingEntity: KanjiReadingEntity): KanjiReadingModel {
+            return KanjiReadingModel(readingEntity.id.value).apply {
                 reading = readingEntity.reading
                 readingType = readingEntity.readingType
                 priority = readingEntity.priority
