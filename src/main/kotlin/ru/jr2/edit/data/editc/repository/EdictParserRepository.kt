@@ -11,12 +11,12 @@ import javax.xml.stream.XMLInputFactory
 class EdictParserRepository(
     val xmlMapper: XmlMapper = EditApp.instance.xmlMapper
 ) {
-    suspend inline fun <reified TEditc : Edict<TEntry>, TEntry> getEdictEntries(
+    suspend inline fun <reified TEdict : Edict<TEntry>, TEntry> getEdictEntries(
         edictFile: File
     ): List<TEntry> = withContext(Dispatchers.IO) {
         val xmlStreamReader = XMLInputFactory
             .newInstance()
             .createXMLStreamReader(edictFile.inputStream())
-        xmlMapper.readValue(xmlStreamReader, TEditc::class.java).entries
+        xmlMapper.readValue(xmlStreamReader, TEdict::class.java).entries
     }
 }

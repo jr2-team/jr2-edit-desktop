@@ -4,7 +4,7 @@ import org.jetbrains.exposed.sql.transactions.transaction
 import ru.jr2.edit.data.db.table.GroupTable
 import ru.jr2.edit.domain.entity.GroupEntity
 import ru.jr2.edit.domain.misc.GroupType
-import ru.jr2.edit.presentation.model.GroupModel
+import ru.jr2.edit.presentation.group.model.GroupModel
 
 class GroupDbRepository : BaseDbRepository<GroupModel>() {
     override fun getById(id: Int): GroupModel = transaction(db) {

@@ -2,7 +2,7 @@ package ru.jr2.edit.data.db.repository
 
 import org.jetbrains.exposed.sql.Database
 import ru.jr2.edit.EditApp
-import ru.jr2.edit.presentation.model.BaseModel
+import ru.jr2.edit.presentation.base.model.BaseModel
 
 abstract class BaseDbRepository<T : BaseModel>(
     internal open val db: Database = EditApp.instance.db

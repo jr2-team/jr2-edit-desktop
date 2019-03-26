@@ -5,7 +5,7 @@ import com.fasterxml.jackson.dataformat.xml.XmlMapper
 import com.fasterxml.jackson.module.kotlin.registerKotlinModule
 import javafx.stage.Stage
 import ru.jr2.edit.data.db.AppDatabase
-import ru.jr2.edit.presentation.view.RootView
+import ru.jr2.edit.presentation.RootView
 import tornadofx.App
 import tornadofx.importStylesheet
 

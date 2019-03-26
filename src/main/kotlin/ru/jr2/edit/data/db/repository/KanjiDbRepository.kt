@@ -5,8 +5,9 @@ import org.jetbrains.exposed.sql.transactions.transaction
 import ru.jr2.edit.EditApp
 import ru.jr2.edit.data.db.table.KanjiTable
 import ru.jr2.edit.domain.entity.KanjiEntity
-import ru.jr2.edit.presentation.model.KanjiModel
+import ru.jr2.edit.presentation.kanji.model.KanjiModel
 
+@Suppress("PARAMETER_NAME_CHANGED_ON_OVERRIDE")
 class KanjiDbRepository(
     override val db: Database = EditApp.instance.db
 ) : BaseDbRepository<KanjiModel>(db) {

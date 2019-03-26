@@ -6,7 +6,7 @@ import org.jetbrains.exposed.dao.IntEntityClass
 import ru.jr2.edit.data.db.table.KanjiReadingTable
 import ru.jr2.edit.data.db.table.KanjiTable
 import ru.jr2.edit.domain.misc.KanjiReadingType
-import ru.jr2.edit.presentation.model.KanjiReadingModel
+import ru.jr2.edit.presentation.kanji.model.KanjiReadingModel
 
 class KanjiReadingEntity(id: EntityID<Int>) : IntEntity(id) {
     var reading by KanjiReadingTable.reading

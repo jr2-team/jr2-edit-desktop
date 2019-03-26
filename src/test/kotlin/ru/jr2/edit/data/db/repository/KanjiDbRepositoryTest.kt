@@ -9,9 +9,9 @@ import ru.jr2.edit.data.db.AppDatabase
 import ru.jr2.edit.data.db.table.KanjiComponentTable
 import ru.jr2.edit.domain.entity.KanjiReadingEntity
 import ru.jr2.edit.domain.misc.JlptLevel
-import ru.jr2.edit.presentation.model.KanjiModel
-import ru.jr2.edit.presentation.model.KanjiReadingModel
 import ru.jr2.edit.domain.usecase.KanjiDbUseCase
+import ru.jr2.edit.presentation.kanji.model.KanjiModel
+import ru.jr2.edit.presentation.kanji.model.KanjiReadingModel
 
 internal class KanjiDbRepositoryTest {
     private val testDb: Database = AppDatabase(true).db
@@ -68,12 +68,8 @@ internal class KanjiDbRepositoryTest {
         grade = 1
     }
 
-    private fun getKanjiReadings() = listOf(
-        KanjiReadingModel(0, "セイ", 0, 0, false, 0),
-        KanjiReadingModel(0, "ショウ", 0, 1, false, 0),
-        KanjiReadingModel(0, "い.きる", 1, 0, false, 0),
-        KanjiReadingModel(0, "い.かす", 1, 1, false, 0)
-    )
+    // TODO: Add test data
+    private fun getKanjiReadings() = emptyList<KanjiReadingModel>()
 
     private fun getKanjiComponents() = listOf(
         KanjiModel().apply { kanji = "A" },

@@ -8,8 +8,8 @@ import ru.jr2.edit.data.editc.mapping.KanjiEdictEntry
 import ru.jr2.edit.data.editc.repository.EdictParserRepository
 import ru.jr2.edit.domain.misc.JlptLevel
 import ru.jr2.edit.domain.misc.KanjiReadingType
-import ru.jr2.edit.presentation.model.KanjiModel
-import ru.jr2.edit.presentation.model.KanjiReadingModel
+import ru.jr2.edit.presentation.kanji.model.KanjiModel
+import ru.jr2.edit.presentation.kanji.model.KanjiReadingModel
 import java.io.File
 
 class ParseKanjiEdictUseCase(
@@ -24,10 +24,12 @@ class ParseKanjiEdictUseCase(
         changeStateMsg("Обработка канджи")
         val kanjisWithKanjiReadings = kanjiEntries.map { transformEntry(it) }
         changeStateMsg("Запись канджи в БД")
-        kanjiDbUseCase.saveParsedKanjiWithReadings(kanjisWithKanjiReadings)
+        kanjiDbUseCase.saveParsedKanjisWithReadings(kanjisWithKanjiReadings)
     }
 
-    private fun transformEntry(kanjiEdictEntry: KanjiEdictEntry): Pair<KanjiModel, List<KanjiReadingModel>?> {
+    private fun transformEntry(
+        kanjiEdictEntry: KanjiEdictEntry
+    ): Pair<KanjiModel, List<KanjiReadingModel>?> {
         val kanji = KanjiModel().apply {
             kanji = kanjiEdictEntry.literal
             strokeCount = kanjiEdictEntry.misc.strokeCount

@@ -13,16 +13,17 @@ import ru.jr2.edit.domain.dto.KanjiDto
 import ru.jr2.edit.domain.entity.KanjiEntity
 import ru.jr2.edit.domain.misc.JlptLevel
 import ru.jr2.edit.domain.misc.KanjiReadingType
-import ru.jr2.edit.presentation.model.KanjiModel
-import ru.jr2.edit.presentation.model.KanjiReadingModel
+import ru.jr2.edit.presentation.kanji.model.KanjiModel
+import ru.jr2.edit.presentation.kanji.model.KanjiReadingModel
 
 class KanjiDbUseCase(
     private val db: Database = EditApp.instance.db,
-    private val kanjiDbRepository: KanjiDbRepository = KanjiDbRepository(db),
+    private val kanjiRepo: KanjiDbRepository = KanjiDbRepository(db),
     private val kanjiReadingRepo: KanjiReadingDbRepository = KanjiReadingDbRepository(db)
 ) {
-    fun getAllKanjiWithReadings(): List<KanjiDto> = transaction(db) {
-        val kanjiMap = mutableMapOf<Int, KanjiDto>()
+    @Suppress("SENSELESS_COMPARISON")
+    fun getAllKanjiWithReadings(): List<KanjiDto> = transaction {
+        val kanjiMap = hashMapOf<Int, KanjiDto>()
         KanjiTable.leftJoin(
             KanjiReadingTable,
             { KanjiTable.id },
@@ -39,7 +40,7 @@ class KanjiDbUseCase(
             }
             /* Проверка на null необходима не смотря на предупрждения компилятора
             , поскольку у канджи могут отсутствовать он-/кун- чтения */
-            if (it[KanjiReadingTable.id] is EntityID<Int>) {
+            if (it[KanjiReadingTable.id] != null) {
                 val reading = it[KanjiReadingTable.reading]
                 when (it[KanjiReadingTable.readingType]) {
                     0 -> kanjiMap[kanjiId]?.onReadings?.apply {
@@ -67,9 +68,7 @@ class KanjiDbUseCase(
                 componentAlias[KanjiComponentTable.kanji] eq KanjiEntity[kanjiId].id
             }
             .orderBy(componentAlias[KanjiComponentTable.order])
-            .map {
-                KanjiModel.fromEntity(KanjiEntity.wrapRow(it))
-            }
+            .map { KanjiModel.fromEntity(KanjiEntity.wrapRow(it)) }
     }
 
     fun saveKanjiWithComponentsAndReadings(
@@ -77,56 +76,49 @@ class KanjiDbUseCase(
         readings: List<KanjiReadingModel>? = null,
         components: List<KanjiModel>? = null
     ): KanjiModel = transaction(db) {
-        val newKanji = kanjiDbRepository.insertUpdate(kanji)
+        val newKanji = kanjiRepo.insertUpdate(kanji)
         kanjiReadingRepo.deleteByKanjiId(newKanji.id)
         readings?.run {
             this.forEach { it.kanji = newKanji.id }
             kanjiReadingRepo.insertUpdate(this)
         }
-        components?.run {
-            insertUpdateKanjiComponents(newKanji, this)
-        }
+        components?.run { insertUpdateKanjiComponents(newKanji, this) }
         newKanji
     }
 
     fun deleteKanjiWithComponentsAndReadings(kanji: KanjiModel) = transaction(db) {
         /* Не смотря на то, что в foreign key стоит каскадное удаление,
-        * exposed не хочет его производить, поэтому приходится иметь по
+        * оно непроисходит, поэтому приходится иметь по
         * роуту для удаления каждого состоявляющего канджи */
+        // TODO: Fix cascade dropping
         kanjiReadingRepo.deleteByKanjiId(kanji.id)
         deleteKanjiComponents(kanji)
-        kanjiDbRepository.delete(kanji)
+        kanjiRepo.delete(kanji)
     }
 
     fun deleteKanjiWithComponentsAndReadings(kanjiId: Int) = transaction(db) {
-        val kanjiToDelete = kanjiDbRepository.getById(kanjiId)
+        val kanjiToDelete = kanjiRepo.getById(kanjiId)
         deleteKanjiWithComponentsAndReadings(kanjiToDelete)
     }
 
-    fun saveParsedKanjiWithReadings(
+    fun saveParsedKanjisWithReadings(
         kanjisWithReadings: List<Pair<KanjiModel, List<KanjiReadingModel>?>>
     ) = transaction(db) {
-        val insertedKanjiId = KanjiTable.batchInsert(kanjisWithReadings.map { it.first }) {
+        val insertedKanjiIds = KanjiTable.batchInsert(kanjisWithReadings.map { it.first }) {
             this[KanjiTable.kanji] = it.kanji
             this[KanjiTable.strokeCount] = it.strokeCount
             this[KanjiTable.interpretation] = it.interpretation
             this[KanjiTable.frequency] = it.frequency
             this[KanjiTable.grade] = it.grade
             this[KanjiTable.jlptLevel] = JlptLevel.fromStr(it.jlptLevel).code
-        }.map {
-            KanjiEntity.wrapRow(it).id.value
-        }
+        }.map { it[KanjiTable.id].value }
 
-        insertedKanjiId.forEachIndexed { idx, kanjiId ->
-            kanjisWithReadings[idx].second?.forEach {
-                it.kanji = kanjiId
-            }
+        insertedKanjiIds.forEachIndexed { idx, kanjiId ->
+            kanjisWithReadings[idx].second?.forEach { it.kanji = kanjiId }
         }
 
         KanjiReadingTable.batchInsert(
-            kanjisWithReadings
-                .filter { it.second is List<KanjiReadingModel> }
-                .flatMap { it.second!! }
+            kanjisWithReadings.filter { it.second != null }.flatMap { it.second!! }
         ) {
             this[KanjiReadingTable.reading] = it.reading
             this[KanjiReadingTable.readingType] = KanjiReadingType.fromStr(it.readingType).code
@@ -136,7 +128,10 @@ class KanjiDbUseCase(
         }
     }
 
-    private fun insertUpdateKanjiComponents(kanji: KanjiModel, components: List<KanjiModel>) = transaction(db) {
+    private fun insertUpdateKanjiComponents(
+        kanji: KanjiModel,
+        components: List<KanjiModel>
+    ) = transaction(db) {
         deleteKanjiComponents(kanji)
         var orderIdx = -1
         KanjiComponentTable.batchInsert(components) {
