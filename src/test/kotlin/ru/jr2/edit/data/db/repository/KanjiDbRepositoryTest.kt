@@ -1,22 +1,22 @@
 package ru.jr2.edit.data.db.repository
 
-import junit.framework.Assert.assertEquals
 import org.jetbrains.exposed.sql.Database
 import org.jetbrains.exposed.sql.selectAll
 import org.jetbrains.exposed.sql.transactions.transaction
-import org.junit.Test
 import ru.jr2.edit.data.db.AppDatabase
 import ru.jr2.edit.data.db.table.KanjiComponentTable
 import ru.jr2.edit.domain.entity.KanjiReadingEntity
-import ru.jr2.edit.domain.misc.JlptLevel
 import ru.jr2.edit.domain.usecase.KanjiDbUseCase
 import ru.jr2.edit.presentation.kanji.model.KanjiModel
 import ru.jr2.edit.presentation.kanji.model.KanjiReadingModel
+import ru.jr2.edit.util.JlptLevel
+import kotlin.test.Test
+import kotlin.test.assertEquals
 
 internal class KanjiDbRepositoryTest {
-    private val testDb: Database = AppDatabase(true).db
-    private val repository = KanjiDbRepository(testDb)
-    private val kanjiUseCase = KanjiDbUseCase(testDb)
+    private val testDb: Database = AppDatabase(isInMemory = true).db
+    private val repository = KanjiDbRepository()
+    private val kanjiUseCase = KanjiDbUseCase()
 
     @Test
     fun getById() = transaction(testDb) {

@@ -8,9 +8,9 @@ import kotlinx.coroutines.withContext
 import ru.jr2.edit.data.editc.mapping.WordDictionary
 import ru.jr2.edit.data.editc.mapping.WordEdictEntry
 import ru.jr2.edit.data.editc.repository.EdictParserRepository
-import ru.jr2.edit.domain.misc.JlptLevel
 import ru.jr2.edit.presentation.word.model.WordInterpretationModel
 import ru.jr2.edit.presentation.word.model.WordModel
+import ru.jr2.edit.util.JlptLevel
 import java.io.File
 
 class ParseWordEdictUseCase(

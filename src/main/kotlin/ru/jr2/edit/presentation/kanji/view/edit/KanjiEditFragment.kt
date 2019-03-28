@@ -6,7 +6,7 @@ import javafx.scene.control.Button
 import javafx.scene.layout.Priority
 import ru.jr2.edit.Style.Companion.largeButton
 import ru.jr2.edit.Style.Companion.mediumButton
-import ru.jr2.edit.domain.misc.JlptLevel
+import ru.jr2.edit.util.JlptLevel
 import ru.jr2.edit.presentation.kanji.model.KanjiModel
 import ru.jr2.edit.presentation.kanji.model.KanjiReadingModel
 import ru.jr2.edit.presentation.base.view.BaseEditFragment
@@ -47,7 +47,7 @@ class KanjiEditFragment : BaseEditFragment<KanjiModel, KanjiEditViewModel>() {
             }.required(message = requiredMsg)
         }
         field("Основные переводы") {
-            textarea(viewModel.pInterpretation) { vgrow = Priority.NEVER }
+            textarea(viewModel.pInterp) { vgrow = Priority.NEVER }
         }
         field("Частотность") { textfield(viewModel.pFrequency) }
         field("Класс") { textfield(viewModel.pGrade) }
@@ -59,6 +59,7 @@ class KanjiEditFragment : BaseEditFragment<KanjiModel, KanjiEditViewModel>() {
     private fun renderKanjiReadingBorderPane() = borderpane {
         var btnEditKanjiReading: Button by singleAssign()
         var btnDeleteKanjiReading: Button by singleAssign()
+
         paddingTop = 5
         top = label("Чтения")
         center = tableview(viewModel.kanjiReadings) {

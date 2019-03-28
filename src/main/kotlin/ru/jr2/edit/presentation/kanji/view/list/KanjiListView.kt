@@ -2,6 +2,7 @@ package ru.jr2.edit.presentation.kanji.view.list
 
 import javafx.geometry.Pos
 import javafx.scene.control.Button
+import ru.jr2.edit.Style
 import ru.jr2.edit.Style.Companion.bottomBorderPaneStyle
 import ru.jr2.edit.domain.dto.KanjiDto
 import ru.jr2.edit.presentation.kanji.viewmodel.list.KanjiListViewModel
@@ -23,17 +24,21 @@ class KanjiListView : View() {
         top = renderAdditionalFunctionHBox()
         center = renderKanjiTableView()
         right = renderKanjiComponentListView()
-        bottom = renderContentControlBorderPane()
+        bottom = borderpane {
+            left = renderContentControlButtonBar()
+            right = renderPaginationControlHBox()
+            addClass(bottomBorderPaneStyle)
+        }
     }
 
     private fun renderAdditionalFunctionHBox() = hbox {
         paddingAll = 5
-        button("Канджи из Edict").action { viewModel.onParseClick() }
         button("KanjiVG").action { }
         button("Обновить данные").action { viewModel.loadContent() }
     }
 
     private fun renderKanjiTableView() = tableview(viewModel.kanjis) {
+        placeholder = progressindicator { setMaxSize(28.0, 28.0) }
         columnResizePolicy = SmartResize.POLICY
         column(String(), KanjiDto::kanji) {
             style {
@@ -41,7 +46,7 @@ class KanjiListView : View() {
                 fontSize = 18.px
             }
         }.contentWidth()
-        column("Интерпретации", KanjiDto::interpretation).weightedWidth(3)
+        column("Интерпретации", KanjiDto::interp).weightedWidth(3)
         column("Онное чтение", KanjiDto::onReadings).weightedWidth(1)
         column("Кунное чтение", KanjiDto::kunReadings).weightedWidth(1)
         column("Уровень JLPT", KanjiDto::jlptLevel).weightedWidth(1)
@@ -72,22 +77,38 @@ class KanjiListView : View() {
         }
     }
 
-    private fun renderContentControlBorderPane() = borderpane {
-        right = button("Фильтровать")
-        left = buttonbar {
-            button("Добавить") {
-                action { viewModel.onNewKanjiClick() }
-            }
-            btnEdit = button("Редактировать") {
-                isDisable = true
-                action { viewModel.onEditKanjiClick() }
-            }
-            btnDelete = button("Удалить") {
-                isDisable = true
-                action { showDeleteMojiWarning() }
+    private fun renderContentControlButtonBar() = buttonbar {
+        button("Добавить") {
+            action { viewModel.onNewKanjiClick() }
+        }
+        btnEdit = button("Редактировать") {
+            isDisable = true
+            action { viewModel.onEditKanjiClick() }
+        }
+        btnDelete = button("Удалить") {
+            isDisable = true
+            action { showDeleteMojiWarning() }
+        }
+        button("Фильтровать")
+    }
+
+    private fun renderPaginationControlHBox() = hbox {
+        button("-") {
+            action { viewModel.onChangePageClick(false) }
+        }
+        textfield(viewModel.pCurrentPage) {
+            alignment = Pos.BASELINE_CENTER
+            filterInput {
+                with(it.controlNewText) {
+                    isInt() && toInt() in 1..viewModel.pTotalPageCount.value
+                }
             }
         }
-        addClass(bottomBorderPaneStyle)
+        button("+").action { viewModel.onChangePageClick(true) }
+        label(viewModel.pTotalPageCount) {
+            alignment = Pos.BASELINE_CENTER
+        }
+        addClass(Style.paginationControl)
     }
 
     private fun showDeleteMojiWarning() = showWarningMsg(

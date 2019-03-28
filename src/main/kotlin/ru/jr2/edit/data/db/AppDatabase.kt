@@ -33,7 +33,7 @@ class AppDatabase(isInMemory: Boolean = false) {
                 KanjiTable,
                 SentenceTable,
                 SectionTable,
-                WordInterpretationTable,
+                WordInterpTable,
                 KanjiReadingTable,
                 KanjiComponentTable,
                 GroupTable,

@@ -1,15 +1,11 @@
 package ru.jr2.edit.data.db.repository
 
-import org.jetbrains.exposed.sql.Database
 import org.jetbrains.exposed.sql.transactions.transaction
-import ru.jr2.edit.EditApp
 import ru.jr2.edit.data.db.table.KanjiReadingTable
 import ru.jr2.edit.domain.entity.KanjiReadingEntity
 import ru.jr2.edit.presentation.kanji.model.KanjiReadingModel
 
-class KanjiReadingDbRepository(
-    override val db: Database = EditApp.instance.db
-) : BaseDbRepository<KanjiReadingModel>(db) {
+class KanjiReadingDbRepository : BaseDbRepository<KanjiReadingModel>() {
     override fun getById(id: Int): KanjiReadingModel = transaction(db) {
         KanjiReadingModel.fromEntity(KanjiReadingEntity[id])
     }

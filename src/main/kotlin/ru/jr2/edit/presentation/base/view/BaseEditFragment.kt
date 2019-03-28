@@ -1,7 +1,7 @@
 package ru.jr2.edit.presentation.base.view
 
-import ru.jr2.edit.presentation.base.viewmodel.BaseEditViewModel
 import ru.jr2.edit.presentation.base.model.BaseModel
+import ru.jr2.edit.presentation.base.viewmodel.BaseEditViewModel
 import ru.jr2.edit.util.showWarningMsg
 import tornadofx.Fragment
 
@@ -20,8 +20,10 @@ abstract class BaseEditFragment<T : BaseModel, VT : BaseEditViewModel<T>>(
     override fun onBeforeShow() {
         super.onBeforeShow()
         currentStage?.setOnCloseRequest {
-            showCloseWindowWarning()
-            it.consume()
+            if (viewModel.isDirty) {
+                showCloseWindowWarning()
+                it.consume()
+            }
         }
     }
 

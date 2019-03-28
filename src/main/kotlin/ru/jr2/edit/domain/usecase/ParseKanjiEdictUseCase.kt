@@ -6,8 +6,8 @@ import kotlinx.coroutines.delay
 import ru.jr2.edit.data.editc.mapping.KanjiDictionary
 import ru.jr2.edit.data.editc.mapping.KanjiEdictEntry
 import ru.jr2.edit.data.editc.repository.EdictParserRepository
-import ru.jr2.edit.domain.misc.JlptLevel
-import ru.jr2.edit.domain.misc.KanjiReadingType
+import ru.jr2.edit.util.JlptLevel
+import ru.jr2.edit.util.KanjiReadingType
 import ru.jr2.edit.presentation.kanji.model.KanjiModel
 import ru.jr2.edit.presentation.kanji.model.KanjiReadingModel
 import java.io.File
@@ -33,7 +33,7 @@ class ParseKanjiEdictUseCase(
         val kanji = KanjiModel().apply {
             kanji = kanjiEdictEntry.literal
             strokeCount = kanjiEdictEntry.misc.strokeCount
-            interpretation = kanjiEdictEntry.readingMeaning?.rmgroup?.meanings?.filter {
+            interp = kanjiEdictEntry.readingMeaning?.rmgroup?.meanings?.filter {
                 it.language.isEmpty()
             }?.joinToString { it.value }
             jlptLevel = JlptLevel.fromCode(kanjiEdictEntry.misc.jlpt).str

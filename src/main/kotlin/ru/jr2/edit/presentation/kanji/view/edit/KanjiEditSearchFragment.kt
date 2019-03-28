@@ -31,7 +31,7 @@ class KanjiEditSearchFragment : Fragment("Поиск моджи") {
     private fun renderKanjiTableView() = tableview(searchViewModel.kanjis) {
         placeholder = label("Нет канджи по заданному запросу")
         column("Канджи", KanjiModel::pKanji)
-        column("Интерпретация", KanjiModel::pInterpretation).remainingWidth()
+        column("Интерпретация", KanjiModel::pInterp).remainingWidth()
         smartResize()
         onSelectionChange { moji ->
             viewModel.selectedComponent = moji

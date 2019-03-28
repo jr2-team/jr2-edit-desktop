@@ -5,8 +5,8 @@ import org.jetbrains.exposed.sql.selectAll
 import org.jetbrains.exposed.sql.transactions.transaction
 import ru.jr2.edit.data.db.table.WordTable
 import ru.jr2.edit.domain.entity.WordEntity
-import ru.jr2.edit.domain.misc.JlptLevel
 import ru.jr2.edit.presentation.word.model.WordModel
+import ru.jr2.edit.util.JlptLevel
 
 class WordDbRepository : BaseDbRepository<WordModel>() {
     override fun getById(id: Int): WordModel = transaction(db) {
@@ -37,7 +37,6 @@ class WordDbRepository : BaseDbRepository<WordModel>() {
         val newWord = WordEntity.new {
             this.word = model.word
             furigana = model.furigana
-            interpretation = model.interpretation
             jlptLevel = JlptLevel.fromStr(model.jlptLevel).code
         }
         WordModel.fromEntity(newWord)
@@ -48,7 +47,6 @@ class WordDbRepository : BaseDbRepository<WordModel>() {
             WordTable.batchInsert(words) {
                 this[WordTable.word] = it.word
                 this[WordTable.furigana] = it.furigana
-                this[WordTable.interpretation] = it.interpretation
                 this[WordTable.jlptLevel] = JlptLevel.fromStr(it.jlptLevel).code
             }
         }
@@ -58,7 +56,6 @@ class WordDbRepository : BaseDbRepository<WordModel>() {
         WordEntity.findById(model.id)?.run {
             word = model.word
             furigana = model.furigana
-            interpretation = model.interpretation
             jlptLevel = JlptLevel.fromStr(model.jlptLevel).code
             getById(model.id)
         } ?: insert(model)

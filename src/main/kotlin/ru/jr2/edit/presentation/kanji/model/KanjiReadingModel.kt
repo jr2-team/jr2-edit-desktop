@@ -4,7 +4,7 @@ import javafx.beans.property.SimpleBooleanProperty
 import javafx.beans.property.SimpleIntegerProperty
 import javafx.beans.property.SimpleStringProperty
 import ru.jr2.edit.domain.entity.KanjiReadingEntity
-import ru.jr2.edit.domain.misc.KanjiReadingType
+import ru.jr2.edit.util.KanjiReadingType
 import ru.jr2.edit.presentation.base.model.BaseModel
 import tornadofx.getValue
 import tornadofx.setValue

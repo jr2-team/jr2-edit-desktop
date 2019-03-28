@@ -1,12 +1,12 @@
 package ru.jr2.edit.presentation.word.view
 
 import javafx.geometry.Pos
-import javafx.scene.layout.Priority
 import ru.jr2.edit.Style.Companion.largeButton
-import ru.jr2.edit.domain.misc.JlptLevel
-import ru.jr2.edit.presentation.word.model.WordModel
 import ru.jr2.edit.presentation.base.view.BaseEditFragment
+import ru.jr2.edit.presentation.word.model.WordInterpretationModel
+import ru.jr2.edit.presentation.word.model.WordModel
 import ru.jr2.edit.presentation.word.viewmodel.edit.WordEditViewModel
+import ru.jr2.edit.util.JlptLevel
 import tornadofx.*
 
 class WordEditFragment : BaseEditFragment<WordModel, WordEditViewModel>() {
@@ -16,6 +16,7 @@ class WordEditFragment : BaseEditFragment<WordModel, WordEditViewModel>() {
         paddingAll = 10
         center = form {
             add(renderWordPropertiesFieldSet())
+            add(renderWordInterpretationBorderPane())
         }
         bottom = renderSaveHBox()
     }
@@ -27,20 +28,19 @@ class WordEditFragment : BaseEditFragment<WordModel, WordEditViewModel>() {
         field("Фуригана") {
             textfield(viewModel.pFurigana)
         }
-        field("Основные интерпритации") {
-            textarea(viewModel.pInterpretation) {
-                vgrow = Priority.NEVER
-                required(message = requiredMsg)
-            }
-        }
         field("Уровень JLPT") {
             combobox(viewModel.pJlptLevel, JlptLevel.getNames())
         }
     }
 
     private fun renderWordInterpretationBorderPane() = borderpane {
-        top = label("Интеритации")
-        // center = tableview() {  }
+        setPrefSize(400.0, 400.0)
+        top = label("Интерпритации")
+        center = tableview(viewModel.wordInterps) {
+            column("Язык", WordInterpretationModel::pLanguage).weightedWidth(1)
+            column("Часть речи", WordInterpretationModel::pPos).weightedWidth(1)
+            column("Интерпритация", WordInterpretationModel::pInterpretation).weightedWidth(3)
+        }
         bottom = hbox { }
     }
 

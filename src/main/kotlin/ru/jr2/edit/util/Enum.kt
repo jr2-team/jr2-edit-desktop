@@ -1,4 +1,6 @@
-package ru.jr2.edit.domain.misc
+package ru.jr2.edit.util
+
+enum class EditMode { UPDATE, CREATE }
 
 enum class JlptLevel(val code: Int, val str: String) {
     JLPT5(5, "JLPT 5"),

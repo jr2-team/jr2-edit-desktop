@@ -3,8 +3,8 @@ package ru.jr2.edit.data.db.repository
 import org.jetbrains.exposed.sql.transactions.transaction
 import ru.jr2.edit.data.db.table.GroupTable
 import ru.jr2.edit.domain.entity.GroupEntity
-import ru.jr2.edit.domain.misc.GroupType
 import ru.jr2.edit.presentation.group.model.GroupModel
+import ru.jr2.edit.util.GroupType
 
 class GroupDbRepository : BaseDbRepository<GroupModel>() {
     override fun getById(id: Int): GroupModel = transaction(db) {
@@ -35,7 +35,7 @@ class GroupDbRepository : BaseDbRepository<GroupModel>() {
         return GroupModel()
     }
 
-    override fun delete(o: GroupModel) {
-
+    override fun delete(model: GroupModel) = transaction {
+        GroupEntity[model.id].delete()
     }
 }

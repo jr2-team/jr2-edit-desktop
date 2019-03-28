@@ -2,7 +2,7 @@ package ru.jr2.edit.presentation.group.model
 
 import javafx.beans.property.SimpleStringProperty
 import ru.jr2.edit.domain.entity.GroupEntity
-import ru.jr2.edit.domain.misc.GroupType
+import ru.jr2.edit.util.GroupType
 import ru.jr2.edit.presentation.base.model.BaseModel
 import tornadofx.getValue
 import tornadofx.setValue

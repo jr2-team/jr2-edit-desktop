@@ -3,7 +3,7 @@ package ru.jr2.edit.presentation.kanji.model
 import javafx.beans.property.SimpleIntegerProperty
 import javafx.beans.property.SimpleStringProperty
 import ru.jr2.edit.domain.entity.KanjiEntity
-import ru.jr2.edit.domain.misc.JlptLevel
+import ru.jr2.edit.util.JlptLevel
 import ru.jr2.edit.presentation.base.model.BaseModel
 import tornadofx.getValue
 import tornadofx.setValue
@@ -15,8 +15,8 @@ class KanjiModel(id: Int = 0) : BaseModel(id) {
     val pStrokeCount = SimpleIntegerProperty()
     var strokeCount: Int by pStrokeCount
 
-    val pInterpretation = SimpleStringProperty()
-    var interpretation: String? by pInterpretation
+    val pInterp = SimpleStringProperty()
+    var interp: String? by pInterp
 
     val pFrequency = SimpleIntegerProperty()
     var frequency: Int by pFrequency
@@ -42,7 +42,7 @@ class KanjiModel(id: Int = 0) : BaseModel(id) {
     override fun hashCode(): Int {
         var result = pKanji.hashCode()
         result = 31 * result + pStrokeCount.hashCode()
-        result = 31 * result + pInterpretation.hashCode()
+        result = 31 * result + pInterp.hashCode()
         result = 31 * result + pFrequency.hashCode()
         result = 31 * result + pGrade.hashCode()
         result = 31 * result + pJlptLevel.hashCode()
@@ -55,7 +55,7 @@ class KanjiModel(id: Int = 0) : BaseModel(id) {
             return KanjiModel(kanjiEntity.id.value).apply {
                 kanji = kanjiEntity.kanji
                 strokeCount = kanjiEntity.strokeCount
-                interpretation = kanjiEntity.interpretation
+                interp = kanjiEntity.interp
                 frequency = kanjiEntity.frequency
                 grade = kanjiEntity.grade ?: 0
                 svg = kanjiEntity.svg

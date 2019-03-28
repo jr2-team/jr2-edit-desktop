@@ -23,7 +23,7 @@ class KanjiEditComponentFragment : Fragment("Редактирование спи
     private fun renderKanjiComponentTableView() = tableview(kanjiEditViewModel.kanjiComponents) {
         placeholder = label("У канджи нет компонентов")
         column("Канджи", KanjiModel::kanji)
-        column("Интерпретация", KanjiModel::pInterpretation).remainingWidth()
+        column("Интерпретация", KanjiModel::pInterp).remainingWidth()
         smartResize()
         onSelectionChange { kanjiEditViewModel.selectedComponent = it }
     }

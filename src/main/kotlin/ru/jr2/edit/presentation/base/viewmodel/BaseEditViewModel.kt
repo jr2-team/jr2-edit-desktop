@@ -1,8 +1,8 @@
 package ru.jr2.edit.presentation.base.viewmodel
 
 import ru.jr2.edit.data.db.repository.BaseDbRepository
-import ru.jr2.edit.presentation.EditMode
 import ru.jr2.edit.presentation.base.model.BaseModel
+import ru.jr2.edit.util.EditMode
 import tornadofx.FXEvent
 import tornadofx.ItemViewModel
 
@@ -19,11 +19,11 @@ abstract class BaseEditViewModel<T : BaseModel>(
         }
     }
 
-    open fun onSaveClick(doOnSave: () -> Unit = { fire(
-        ItemSavedEvent(
-            true
-        )
-    ) }) {
+    open fun onSaveClick(
+        // @formatter: off
+        doOnSave: () -> Unit = { fire(ItemSavedEvent(true)) }
+        // @formatter: on
+    ) {
         commit()
         when (mode) {
             EditMode.UPDATE -> repository.insertUpdate(item)

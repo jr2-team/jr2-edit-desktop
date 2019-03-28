@@ -8,6 +8,4 @@ class GroupEditViewModel(
     groupId: Int
 ) : BaseEditViewModel<GroupModel>(groupId, GroupDbRepository(),
     GroupModel()
-) {
-
-}
+)

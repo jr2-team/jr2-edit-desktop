@@ -1,19 +1,48 @@
 package ru.jr2.edit.domain.usecase
 
 import org.jetbrains.exposed.dao.EntityID
-import org.jetbrains.exposed.sql.Database
+import org.jetbrains.exposed.sql.alias
 import org.jetbrains.exposed.sql.batchInsert
+import org.jetbrains.exposed.sql.leftJoin
+import org.jetbrains.exposed.sql.selectAll
 import org.jetbrains.exposed.sql.transactions.transaction
-import ru.jr2.edit.EditApp
-import ru.jr2.edit.data.db.table.WordInterpretationTable
+import ru.jr2.edit.data.db.table.WordInterpTable
 import ru.jr2.edit.data.db.table.WordTable
-import ru.jr2.edit.domain.misc.JlptLevel
+import ru.jr2.edit.domain.dto.WordDto
 import ru.jr2.edit.presentation.word.model.WordInterpretationModel
 import ru.jr2.edit.presentation.word.model.WordModel
+import ru.jr2.edit.util.JlptLevel
 
-class WordDbUseCase(
-    private val db: Database = EditApp.instance.db
-) {
+class WordDbUseCase {
+    fun getWordWithInterps(n: Int, offset: Int, langFilter: String = "rus") = transaction {
+        val wordMap = hashMapOf<Int, WordDto>()
+        val wordAlias = WordTable.selectAll().limit(n, offset).alias("word")
+        wordAlias.leftJoin(
+            WordInterpTable,
+            { wordAlias[WordTable.id] },
+            { WordInterpTable.word }
+        ).selectAll().map {
+            val wordId = it[wordAlias[WordTable.id]].value
+            if (!wordMap.containsKey(wordId)) {
+                wordMap[wordId] = WordDto(
+                    id = wordId,
+                    word = it[wordAlias[WordTable.word]],
+                    furigana = it[wordAlias[WordTable.furigana]] ?: String(),
+                    interps = StringBuilder()
+                )
+            }
+            val lang = it[WordInterpTable.language]
+            val interp = it[WordInterpTable.interp]
+            if (langFilter == lang) {
+                wordMap[wordId]?.interps?.apply {
+                    if (isNotEmpty()) append("\n")
+                    append(interp)
+                }
+            }
+        }
+        return@transaction wordMap.values.sortedBy { it.id }
+    }
+
     fun saveParsedWordsWithInterpretations(
         wordsWithInterpretations: List<Pair<WordModel, List<WordInterpretationModel>?>>
     ) {
@@ -26,10 +55,9 @@ class WordDbUseCase(
 
     private fun savePortionOfWords(
         wordsWithInterpretations: List<Pair<WordModel, List<WordInterpretationModel>?>>
-    ) = transaction(db) {
+    ) = transaction {
         val insertedWordIds = WordTable.batchInsert(wordsWithInterpretations.asSequence().map { it.first }.toList()) {
             this[WordTable.word] = it.word
-            this[WordTable.interpretation] = it.interpretation
             this[WordTable.furigana] = it.furigana
             this[WordTable.jlptLevel] = JlptLevel.fromStr(it.jlptLevel).code
         }.map { it[WordTable.id].value }
@@ -37,13 +65,13 @@ class WordDbUseCase(
         insertedWordIds.forEachIndexed { idx, wordId ->
             wordsWithInterpretations[idx].second?.forEach { it.word = wordId }
         }
-        WordInterpretationTable.batchInsert(
+        WordInterpTable.batchInsert(
             wordsWithInterpretations.asSequence().filter { it.second != null }.toList().flatMap { it.second?.toList()!! }
         ) {
-            this[WordInterpretationTable.interpretation] = it.interpretation
-            this[WordInterpretationTable.language] = it.language
-            this[WordInterpretationTable.pos] = it.pos
-            this[WordInterpretationTable.word] = EntityID(it.word, WordTable)
+            this[WordInterpTable.interp] = it.interpretation
+            this[WordInterpTable.language] = it.language
+            this[WordInterpTable.pos] = it.pos
+            this[WordInterpTable.word] = EntityID(it.word, WordTable)
         }
     }
 }
