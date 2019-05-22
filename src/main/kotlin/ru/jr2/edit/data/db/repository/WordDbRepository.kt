@@ -31,7 +31,9 @@ class WordDbRepository : BaseDbRepository<WordModel>() {
             }
     }
 
-    fun getCount(): Int = transaction(db) { WordEntity.count() }
+    fun getCount(): Int = transaction(db) {
+        WordEntity.count()
+    }
 
     override fun insert(model: WordModel): WordModel = transaction(db) {
         val newWord = WordEntity.new {

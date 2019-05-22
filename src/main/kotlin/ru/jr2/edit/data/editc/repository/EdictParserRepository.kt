@@ -6,7 +6,6 @@ import kotlinx.coroutines.withContext
 import ru.jr2.edit.data.editc.mapping.Edict
 import ru.jr2.edit.util.Injectable
 import java.io.File
-import javax.xml.stream.XMLInputFactory
 
 class EdictParserRepository(
     val xmlMapper: XmlMapper = Injectable.xmlMapper
@@ -14,9 +13,6 @@ class EdictParserRepository(
     suspend inline fun <reified TEdict : Edict<TEntry>, TEntry> getEdictEntries(
         edictFile: File
     ): List<TEntry> = withContext(Dispatchers.IO) {
-        val xmlStreamReader = XMLInputFactory
-            .newInstance()
-            .createXMLStreamReader(edictFile.inputStream())
-        xmlMapper.readValue(xmlStreamReader, TEdict::class.java).entries
+        xmlMapper.readValue(edictFile, TEdict::class.java).entries
     }
 }

@@ -70,7 +70,7 @@ class WordDbUseCase {
         ) {
             this[WordInterpTable.interp] = it.interpretation
             this[WordInterpTable.language] = it.language
-            this[WordInterpTable.pos] = it.pos
+            this[WordInterpTable.pos] = it.pos.take(100)
             this[WordInterpTable.word] = EntityID(it.word, WordTable)
         }
     }

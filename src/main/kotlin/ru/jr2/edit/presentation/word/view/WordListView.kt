@@ -17,7 +17,7 @@ class WordListView : View() {
 
     override fun onTabSelected() {
         super.onTabSelected()
-        if (viewModel.words.isEmpty()) viewModel.loadContent()
+        if (viewModel.observableWords.isEmpty()) viewModel.loadContent()
     }
 
     override val root = borderpane {
@@ -35,7 +35,7 @@ class WordListView : View() {
         button("Обновить данные").action { viewModel.loadContent() }
     }
 
-    private fun renderWordTableView() = tableview(viewModel.words) {
+    private fun renderWordTableView() = tableview(viewModel.observableWords) {
         placeholder = progressindicator { setMaxSize(28.0, 28.0) }
         column("Слово", WordDto::word).weightedWidth(1)
         column("Фуригана", WordDto::furigana).weightedWidth(1)

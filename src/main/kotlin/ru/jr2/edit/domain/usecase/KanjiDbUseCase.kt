@@ -3,8 +3,6 @@ package ru.jr2.edit.domain.usecase
 import org.jetbrains.exposed.dao.EntityID
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.transactions.transaction
-import ru.jr2.edit.EditApp
-import ru.jr2.edit.data.db.AppDatabase
 import ru.jr2.edit.data.db.repository.KanjiDbRepository
 import ru.jr2.edit.data.db.repository.KanjiReadingDbRepository
 import ru.jr2.edit.data.db.table.KanjiComponentTable
@@ -12,10 +10,10 @@ import ru.jr2.edit.data.db.table.KanjiReadingTable
 import ru.jr2.edit.data.db.table.KanjiTable
 import ru.jr2.edit.domain.dto.KanjiDto
 import ru.jr2.edit.domain.entity.KanjiEntity
-import ru.jr2.edit.util.JlptLevel
-import ru.jr2.edit.util.KanjiReadingType
 import ru.jr2.edit.presentation.kanji.model.KanjiModel
 import ru.jr2.edit.presentation.kanji.model.KanjiReadingModel
+import ru.jr2.edit.util.JlptLevel
+import ru.jr2.edit.util.KanjiReadingType
 import ru.jr2.edit.util.SqlLogger
 
 class KanjiDbUseCase(
@@ -40,8 +38,8 @@ class KanjiDbUseCase(
                     jlptLevel = JlptLevel.fromCode(it[kanjiAlias[KanjiTable.jlptLevel]] ?: 0).str
                 )
             }
-            /* Проверка на null необходима не смотря на предупрждения компилятора
-            , поскольку у канджи могут отсутствовать он-/кун- чтения */
+            // Проверка на null необходима не смотря на предупрждения компилятора,
+            // поскольку у канджи могут отсутствовать он-/кун- чтения
             if (it[KanjiReadingTable.id] != null) {
                 val reading = it[KanjiReadingTable.reading]
                 when (it[KanjiReadingTable.readingType]) {
@@ -90,9 +88,9 @@ class KanjiDbUseCase(
     }
 
     fun deleteKanjiWithComponentsAndReadings(kanji: KanjiModel) = transaction {
-        /* Не смотря на то, что в foreign key стоит каскадное удаление,
-        * оно непроисходит, поэтому приходится иметь по
-        * роуту для удаления каждого состоявляющего канджи */
+        // Не смотря на то, что в foreign key стоит каскадное удаление,
+        // оно непроисходит, поэтому приходится иметь по
+        // роуту для удаления каждого состоявляющего канджи
         // TODO: Fix cascade dropping
         kanjiReadingRepo.deleteByKanjiId(kanji.id)
         deleteKanjiComponents(kanji)

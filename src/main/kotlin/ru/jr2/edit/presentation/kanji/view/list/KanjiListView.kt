@@ -37,7 +37,7 @@ class KanjiListView : View() {
         button("Обновить данные").action { viewModel.loadContent() }
     }
 
-    private fun renderKanjiTableView() = tableview(viewModel.kanjis) {
+    private fun renderKanjiTableView() = tableview(viewModel.observableKanjis) {
         placeholder = progressindicator { setMaxSize(28.0, 28.0) }
         columnResizePolicy = SmartResize.POLICY
         column(String(), KanjiDto::kanji) {
@@ -60,7 +60,7 @@ class KanjiListView : View() {
         onUserSelect(2) { viewModel.onEditKanjiClick() }
     }
 
-    private fun renderKanjiComponentListView() = listview(viewModel.components) {
+    private fun renderKanjiComponentListView() = listview(viewModel.observableComponents) {
         placeholder = label("Нет компонентов")
         minWidth = 120.0
         maxWidth = 120.0

@@ -2,6 +2,7 @@ package ru.jr2.edit.presentation.word.viewmodel.list
 
 import javafx.beans.property.SimpleIntegerProperty
 import javafx.collections.FXCollections
+import javafx.collections.ObservableList
 import javafx.stage.StageStyle
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -12,7 +13,6 @@ import ru.jr2.edit.domain.usecase.WordDbUseCase
 import ru.jr2.edit.presentation.base.viewmodel.BaseEditViewModel
 import ru.jr2.edit.presentation.base.viewmodel.CoroutineViewModel
 import ru.jr2.edit.presentation.word.view.WordEditFragment
-import ru.jr2.edit.presentation.word.view.WordParseFragment
 import tornadofx.getValue
 import tornadofx.onChange
 import tornadofx.setValue
@@ -22,7 +22,7 @@ class WordListViewModel(
     private val wordRepository: WordDbRepository = WordDbRepository(),
     private val wordDbUseCase: WordDbUseCase = WordDbUseCase()
 ) : CoroutineViewModel() {
-    val words = FXCollections.observableArrayList<WordDto>()
+    val observableWords: ObservableList<WordDto> = FXCollections.observableArrayList<WordDto>()
     var selectedWord: WordDto? = null
 
     val pTotalPageCount = SimpleIntegerProperty(0)
@@ -43,11 +43,11 @@ class WordListViewModel(
 
     fun loadContent() = launch {
         totalPageCount = ceil(wordRepository.getCount() / WORDS_A_PAGE.toDouble()).toInt()
-        words.clear()
+        observableWords.clear()
         val wordsToAdd = withContext(Dispatchers.Default) {
             wordDbUseCase.getWordWithInterps(WORDS_A_PAGE, (currentPage - 1) * 100)
         }
-        words.addAll(wordsToAdd)
+        observableWords.addAll(wordsToAdd)
     }
 
     fun onChangePageClick(goToTheNext: Boolean) {
@@ -60,17 +60,16 @@ class WordListViewModel(
 
     fun onNewWordClick() {
         find<WordEditFragment>().openModal(
-            StageStyle.UTILITY,
+            stageStyle = StageStyle.UTILITY,
             resizable = false,
             escapeClosesWindow = false
         )
     }
 
     fun onEditWordClick() {
-        find<WordEditFragment>(
-            Pair(WordEditFragment::paramItemId, selectedWord?.id)
-        ).openModal(
-            StageStyle.UTILITY,
+        val paramItemIdPair = Pair(WordEditFragment::paramItemId, selectedWord?.id)
+        find<WordEditFragment>(paramItemIdPair).openModal(
+            stageStyle = StageStyle.UTILITY,
             resizable = false,
             escapeClosesWindow = false
         )
